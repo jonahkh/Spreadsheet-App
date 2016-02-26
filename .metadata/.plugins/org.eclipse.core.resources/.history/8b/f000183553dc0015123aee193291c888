@@ -61,14 +61,4 @@ public class Cell {
 	public String getFormula() {
 		return formula;
 	}
-	
-	/**
-	 * Prints out a representation of this cell's internal status. 
-	 * (Useful for debugging.)
-	 * @return A string representation of the cell's internal status.
-	 */
-	public String toString() {
-		// We can also print out the dependencies later if needed.
-		return "[R: " + row + "C: " + column + " Value: " + value + "]";
-	}
 }
