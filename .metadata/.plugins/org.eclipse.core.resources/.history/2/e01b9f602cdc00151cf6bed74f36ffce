@@ -1,0 +1,24 @@
+package model;
+
+public class ExpressionTreeNode {
+
+	/** The token for this node. */
+	private Token token;
+	
+	/** References the left node to this node. */
+	private ExpressionTreeNode left;
+	
+	/** References the right node to this node. */
+	private ExpressionTreeNode right;
+	
+	public ExpressionTreeNode(final Token theToken, final ExpressionTreeNode theLeft, 
+			final ExpressionTreeNode theRight) {
+		token = theToken;
+		left = theLeft;
+		right = theRight;
+	}
+	
+	public ExpressionTreeNode(final Token theToken) {
+		this(theToken, null, null);
+	}
+}
