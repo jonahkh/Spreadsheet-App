@@ -1,6 +1,23 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This class represents a single cell in a spreadsheet. It contains data
+ * specific to this cell and can depend on the value of other cells for 
+ * mathematical computations.
+ * 
+ * @author Jonah Howard
+ * @author Henry Lai
+ */
 public class Cell {
+	
+	/** The column of this cell. */
+	private final int column;
+	
+	/** The row of this cell. */
+	private final int row;
 	
 	/** Represents the formula corresponding to this cell. */
 	private String formula;
@@ -8,26 +25,24 @@ public class Cell {
 	/** The value contained in this cell. */
 	private int value;
 	
-	/** The column of this cell. */
-	private int column;
-	
-	/** The row of this cell. */
-	private int row;
-	
 	/** The expression tree for this cell. */
 	private ExpressionTree expressionTree;
+	
+	/** The list of dependencies for this cell. */
+	private List<Cell> myDependencies;
 	
 	/**
 	 * Initializes a new cell.
 	 * 
-	 * @param theColumn
-	 * @param theRow
+	 * @param theColumn The column where this cell is located.
+	 * @param theRow The row where this cell is located.
 	 */
 	public Cell(final int theColumn, final int theRow) {
 		column = theColumn;
 		row = theRow;
 		expressionTree = new ExpressionTree();
 		value = 0;
+		myDependencies = new ArrayList<Cell>();
 	}
 	
 	/**
