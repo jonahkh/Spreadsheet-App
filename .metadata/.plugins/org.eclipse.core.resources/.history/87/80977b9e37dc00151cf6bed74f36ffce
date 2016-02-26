@@ -1,0 +1,23 @@
+package model;
+
+public class Spreadsheet {
+	
+	/** The current spreadsheet. */
+	private final Cell[][] spreadsheet;
+	
+	public Spreadsheet(final int size) {
+		spreadsheet = new Cell[size][size];
+	}
+	
+	public void printCellFormula(final CellToken theToken) {
+		
+	}
+	
+	public void printAllFormulas() {
+		
+	}
+	
+	public void getCellToken(String theInputCell, int n, CellToken theToken) {
+		
+	}
+}

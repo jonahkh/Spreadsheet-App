@@ -27,20 +27,10 @@ public class Spreadsheet {
 		
 	}
 	
-	/**
-	 * Returns the number of rows for this spreadsheet.
-	 * 
-	 * @return the number of rows for this spreadsheet
-	 */
 	public int getNumRows() {
 		return ROWS;
 	}
 	
-	/**
-	 * Returns the number of rows for this spreadsheet.
-	 * 
-	 * @return the number of rows for this spreadsheet
-	 */
 	public int getNumColumns() {
 		return COLUMNS;
 	}
