@@ -5,10 +5,10 @@ import javax.swing.JTable;
 public class Spreadsheet {
 
 	/** How many columns are in this spreadsheet. */
-	public static final int COLUMNS = 6;
+	public static final int COLUMNS = 35;
 
 	/** How many rows are in this spreadsheet. */
-	public static final int ROWS = 6;
+	public static final int ROWS = 20;
 	
 	public static final int LETTERS = 26;
 
@@ -38,8 +38,8 @@ public class Spreadsheet {
 		}
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLUMNS + 1; j++) {
-				if (i > 0 && j == 0) {
-					spreadsheet[i][j] = i - 1;
+				if (j == 0) {
+					spreadsheet[i][j] = i;
 				} else {
 					spreadsheet[i][j] = "";
 				}
@@ -55,10 +55,6 @@ public class Spreadsheet {
 		return spreadsheet;
 	}
 	
-	public void print() {
-		System.out.println("Hello");
-	}
-
 	public String convertToString(int n) {
 		StringBuilder result = new StringBuilder();
 		do {

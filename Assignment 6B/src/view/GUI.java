@@ -15,8 +15,6 @@ public class GUI {
 	public GUI() {
 		myFrame = new JFrame();
 		mySpreadsheet = new Spreadsheet();
-		System.out.println(mySpreadsheet.getColumnNames().toString());
-		System.out.println(mySpreadsheet.getSpreadsheet().toString());
 		myFrame.add(new JScrollPane(mySpreadsheet.getTable()), BorderLayout.CENTER);
 		myFrame.pack();
 	}
