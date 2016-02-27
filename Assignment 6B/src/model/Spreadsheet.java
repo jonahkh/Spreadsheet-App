@@ -1,5 +1,7 @@
 package model;
 
+import javax.swing.JTable;
+
 public class Spreadsheet {
 
 	/** How many columns are in this spreadsheet. */
@@ -14,16 +16,34 @@ public class Spreadsheet {
 	private final Object[][] spreadsheet;
 	
 	private final Object[] columnNames;
+	
+	private final JTable myTable;
 
 	public Spreadsheet() {
-		spreadsheet = new Cell[ROWS][COLUMNS + 1];
+		spreadsheet = new Object[ROWS][COLUMNS + 1];
 		columnNames = new String[COLUMNS + 1];
 		fillColumnNames();
+		myTable = new JTable(spreadsheet, columnNames);
+		myTable.getTableHeader().setReorderingAllowed(false);
+	}
+	
+	public JTable getTable() {
+		return myTable;
 	}
 	
 	private void fillColumnNames() {
+		columnNames[0] = "";
 		for (int i = 1; i < COLUMNS + 1; i++) {
-			columnNames[i] = convertToString(i);
+			columnNames[i] = convertToString(i - 1);
+		}
+		for (int i = 0; i < ROWS; i++) {
+			for (int j = 0; j < COLUMNS + 1; j++) {
+				if (i > 0 && j == 0) {
+					spreadsheet[i][j] = i - 1;
+				} else {
+					spreadsheet[i][j] = "";
+				}
+			}
 		}
 	}
 	

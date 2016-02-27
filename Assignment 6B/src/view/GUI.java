@@ -10,7 +10,6 @@ import model.Spreadsheet;
 
 public class GUI {
 	private final JFrame myFrame;
-	private final JTable myTable;
 	private final Spreadsheet mySpreadsheet;
 
 	public GUI() {
@@ -18,9 +17,7 @@ public class GUI {
 		mySpreadsheet = new Spreadsheet();
 		System.out.println(mySpreadsheet.getColumnNames().toString());
 		System.out.println(mySpreadsheet.getSpreadsheet().toString());
-		myTable = new JTable(mySpreadsheet.getSpreadsheet(), mySpreadsheet.getColumnNames());
-//		myTable = new JTable(stuff, names);
-		myFrame.add(new JScrollPane(myTable), BorderLayout.CENTER);
+		myFrame.add(new JScrollPane(mySpreadsheet.getTable()), BorderLayout.CENTER);
 		myFrame.pack();
 	}
 	
