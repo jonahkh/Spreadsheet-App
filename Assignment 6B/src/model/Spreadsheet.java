@@ -11,9 +11,9 @@ public class Spreadsheet {
 	public static final int LETTERS = 26;
 
 	/** The current spreadsheet. */
-	private final Cell[][] spreadsheet;
+	private final Object[][] spreadsheet;
 	
-	private final String[] columnNames;
+	private final Object[] columnNames;
 
 	public Spreadsheet() {
 		spreadsheet = new Cell[ROWS][COLUMNS + 1];
@@ -27,11 +27,11 @@ public class Spreadsheet {
 		}
 	}
 	
-	public String[] getColumnNames() {
+	public Object[] getColumnNames() {
 		return columnNames;
 	}
 
-	public Cell[][] getSpreadsheet() {
+	public Object[][] getSpreadsheet() {
 		return spreadsheet;
 	}
 	
