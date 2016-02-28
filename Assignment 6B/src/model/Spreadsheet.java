@@ -1,9 +1,22 @@
 package model;
 
+import java.util.Stack;
+
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 
-public class Spreadsheet {
+/**
+ * This class represents a spreadsheet. It stores the information for all of the cells of the
+ * spreadsheet.
+ * 
+ * @author Jonah Howard
+ */
+public class Spreadsheet implements TableModelListener {
 
+	protected static final Cell[][] CELLS = initializeCells();
+	
 	/** How many columns are in this spreadsheet. */
 	public static final int COLUMNS = 35;
 
@@ -15,20 +28,50 @@ public class Spreadsheet {
 	/** The current spreadsheet. */
 	private final Object[][] spreadsheet;
 	
+	/** Represents each cell of the spreadsheet. */
+	private final Object[][] cells;
+	
+	/** Represents the names of the columns. */
 	private final Object[] columnNames;
 	
+	/** Represents the current JTable. */
 	private final JTable myTable;
 
+	/**
+	 * Initializes a new Spreadsheet.
+	 */
 	public Spreadsheet() {
 		spreadsheet = new Object[ROWS][COLUMNS + 1];
 		columnNames = new String[COLUMNS + 1];
+		cells = new Cell[ROWS][COLUMNS + 1];
+//		initializeCells();
 		fillColumnNames();
 		myTable = new JTable(spreadsheet, columnNames);
+		TableModel model = null;
+		myTable.getModel().addTableModelListener(this);
 		myTable.getTableHeader().setReorderingAllowed(false);
+	}
+	
+	@Override
+	public void tableChanged(final TableModelEvent theEvent) {
+		System.out.println(spreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
+		((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()]).parseInput(
+				(String) spreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
 	}
 	
 	public JTable getTable() {
 		return myTable;
+	}
+	
+	private static Cell[][] initializeCells() {
+		final Cell[][] newCells = new Cell[ROWS][COLUMNS + 1];
+		for (int i = 0; i < ROWS; i++) {
+			for (int j = 1; j < COLUMNS + 1; j++) {
+//				cells[i][j] = new Cell();
+				newCells[i][j] = new Cell();
+			}
+		}
+		return newCells;
 	}
 	
 	private void fillColumnNames() {
@@ -55,126 +98,62 @@ public class Spreadsheet {
 		return spreadsheet;
 	}
 	
-	public String convertToString(int n) {
+	/**
+	 * Returns the String representation of the passed column.
+	 * 
+	 * @param theColumn the current column being converted
+	 * @return the String representation of the passed column
+	 */
+	public String convertToString(int theColumn) {
 		StringBuilder result = new StringBuilder();
 		do {
 			// Solve rounding issue
 			if (result.length() > 0) {
-				n--;
+				theColumn--;
 			}
-			result.insert(0, (char) ((n % LETTERS) + 65));
-			n /= LETTERS;
-		} while (n > 0);
+			result.insert(0, (char) ((theColumn % LETTERS) + 65));
+			theColumn /= LETTERS;
+		} while (theColumn > 0);
 		return result.toString();
 	}
 
-	public int convertToInt(String s) {
+	/**
+	 * Returns the integer version of the passed column.
+	 * 
+	 * @param theColumn the current column being converted
+	 * @return the integer version of the passed column
+	 */
+	public int convertToInt(final String theColumn) {
 		int current = 0;
 		int result = 0;
 		int currentLetter;
-		while (current < s.length()) {
+		while (current < theColumn.length()) {
 			if (current > 0) {
 				result++;
 			}
-			currentLetter = s.charAt(current) - 65;
+			currentLetter = theColumn.charAt(current) - 65;
 			result *= LETTERS;
 			result += currentLetter;
 			current++;
 		}
 		return result;
 	}
+	
 
-	int getCellToken(String inputString, int startIndex, CellToken cellToken) {
-		char ch;
-		int column = 0;
-		int row = 0;
-		int index = startIndex;
 
-		// handle a bad startIndex
-		if ((startIndex < 0) || (startIndex >= inputString.length())) {
-			cellToken.setColumn(BadCell);
-			cellToken.setRow(BadCell);
-			return index;
-		}
 
-		// get rid of leading whitespace characters
-		while (index < inputString.length()) {
-			ch = inputString.charAt(index);
-			if (!Character.isWhitespace(ch)) {
-				break;
-			}
-			index++;
-		}
-		if (index == inputString.length) {
-			// reached the end of the string before finding a capital letter
-			cellToken.setColumn(BadCell);
-			cellToken.setRow(BadCell);
-			return index;
-		}
-
-		// ASSERT: index now points to the first non-whitespace character
-
-		ch = inputString.charAt(index);
-		// process CAPITAL alphabetic characters to calculate the column
-		if (!Character.isUpperCase(ch)) {
-			cellToken.setColumn(BadCell);
-			cellToken.setRow(BadCell);
-			return index;
-		} else {
-			column = ch - 'A';
-			index++;
-		}
-
-		while (index < inputString.length()) {
-			ch = inputString.charAt(index);
-			if (Character.isUpperCase(ch)) {
-				column = ((column + 1) * 26) + (ch - 'A');
-				index++;
-			} else {
-				break;
-			}
-		}
-		if (index == inputString.length()) {
-			// reached the end of the string before fully parsing the cell
-			// reference
-			cellToken.setColumn(BadCell);
-			cellToken.setRow(BadCell);
-			return index;
-		}
-
-		// ASSERT: We have processed leading whitespace and the
-		// capital letters of the cell reference
-
-		// read numeric characters to calculate the row
-		if (Character.isDigit(ch)) {
-			row = ch - '0';
-			index++;
-		} else {
-			cellToken.setColumn(BadCell);
-			cellToken.setRow(BadCell);
-			return index;
-		}
-
-		while (index < inputString.length()) {
-			ch = inputString.charAt(index);
-			if (Character.isDigit(ch)) {
-				row = (row * 10) + (ch - '0');
-				index++;
-			} else {
-				break;
-			}
-		}
-
-		// successfully parsed a cell reference
-		cellToken.setColumn(column);
-		cellToken.setRow(row);
-		return index;
-	}
-
+	/**
+	 * Prints the formula for the passed cell token.
+	 * 
+	 * @param theToken the cell token being considered
+	 */
 	public void printCellFormula(final CellToken theToken) {
 
 	}
 
+	/**
+	 * Prints the formulas of all cells.
+	 */
 	public void printAllFormulas() {
 
 	}

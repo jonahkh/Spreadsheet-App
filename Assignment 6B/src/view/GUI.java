@@ -25,11 +25,6 @@ public class GUI {
 		myFrame.setVisible(true);
 	}
 	
-	
-	
-	
-	
-	
 	public static void main(String... args) {
 		GUI gui = new GUI();
 		gui.run();
