@@ -6,10 +6,10 @@ public class ExpressionTreeNode {
 	private Token token;
 	
 	/** References the left node to this node. */
-	private ExpressionTreeNode left;
+	protected ExpressionTreeNode left;
 	
 	/** References the right node to this node. */
-	private ExpressionTreeNode right;
+	protected ExpressionTreeNode right;
 	
 	/**
 	 * Initializes a new ExpressionTreeNode.
