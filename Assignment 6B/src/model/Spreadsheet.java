@@ -19,7 +19,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	private static final long serialVersionUID = 9025127485326978066L;
 
 	/** Represents each cell of the spreadsheet. */
-	public static final Object[][] CELLS = initializeCells();
+	public static final Cell[][] CELLS = initializeCells();
 	
 	/** How many columns are in this spreadsheet. */
 	public static final int COLUMNS = 35;

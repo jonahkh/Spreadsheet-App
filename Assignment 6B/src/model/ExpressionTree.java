@@ -58,25 +58,25 @@ public class ExpressionTree {
      */
     public int evaluate(ExpressionTreeNode t) {
         int total = 0;
+        int value1 = 0;
+        int value2 = 0;
+        
         if (t != null && t.token instanceof OperatorToken) {
+            //evaluate left subtree and store value as value1
             if (t.left.token instanceof OperatorToken)
-                evaluate(t.left);
-            else if (t.right.token instanceof OperatorToken)
-                evaluate(t.right);
-            
-            int value1 = 0;
-            int value2 = 0;
-            
-            if(t.left.token instanceof LiteralToken)
+                value1 = evaluate(t.left);
+            else if(t.left.token instanceof LiteralToken)
                 value1 = ((LiteralToken) t.left.token).getValue();
             else if (t.left.token instanceof CellToken)
-                ;
-            
-            if(t.right.token instanceof LiteralToken)
+                value1 = Spreadsheet.CELLS[((CellToken) t.left.token).getRow()][((CellToken) t.left.token).getColumn()].getValue();
+            //evaluate right subtree and store value as value2
+            if (t.right.token instanceof OperatorToken)
+                value2 = evaluate(t.right);
+            else if(t.right.token instanceof LiteralToken)
                 value2 = ((LiteralToken) t.right.token).getValue();
             else if (t.right.token instanceof CellToken)
-                ;
-            
+                value2 = Spreadsheet.CELLS[((CellToken) t.right.token).getRow()][((CellToken) t.right.token).getColumn()].getValue();;
+            //calculate total using the values from the two subtrees
             switch(((OperatorToken) t.token).getOperatorToken()) {
                 case OperatorToken.PLUS:
                     total = value1 + value2;
