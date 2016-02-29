@@ -54,7 +54,9 @@ public class Spreadsheet implements TableModelListener {
 	
 	@Override
 	public void tableChanged(final TableModelEvent theEvent) {
+		// Prints the contents of the cell
 		System.out.println(spreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
+		
 		((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()]).parseInput(
 				(String) spreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
 	}
@@ -168,9 +170,9 @@ public class Spreadsheet implements TableModelListener {
 	}
 
 	/**
-	 * Returns the number of rows for this spreadsheet.
+	 * Returns the number of columns for this spreadsheet.
 	 * 
-	 * @return the number of rows for this spreadsheet
+	 * @return the number of columns for this spreadsheet
 	 */
 	public int getNumColumns() {
 		return COLUMNS;
