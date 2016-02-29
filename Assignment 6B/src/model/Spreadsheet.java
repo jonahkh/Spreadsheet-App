@@ -5,6 +5,7 @@ import java.util.Stack;
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 /**
@@ -13,7 +14,7 @@ import javax.swing.table.TableModel;
  * 
  * @author Jonah Howard
  */
-public class Spreadsheet implements TableModelListener {
+public class Spreadsheet extends DefaultTableModel implements TableModelListener {
 	
 	/** How many columns are in this spreadsheet. */
 	public static final int COLUMNS = 35;
@@ -54,7 +55,7 @@ public class Spreadsheet implements TableModelListener {
 	@Override
 	public void tableChanged(final TableModelEvent theEvent) {
 		// Prints the contents of the cell
-		System.out.println(spreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
+//		System.out.println(spreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
 		
 		((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()]).parseInput(
 				(String) spreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
@@ -62,6 +63,17 @@ public class Spreadsheet implements TableModelListener {
 	
 	public JTable getTable() {
 		return myTable;
+	}
+	
+	
+	@Override
+	public boolean isCellEditable(int row, int column) {
+		System.out.println("Here");
+		if (column == 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	private static Cell[][] initializeCells() {
@@ -166,14 +178,5 @@ public class Spreadsheet implements TableModelListener {
 	 */
 	public int getNumRows() {
 		return ROWS;
-	}
-
-	/**
-	 * Returns the number of columns for this spreadsheet.
-	 * 
-	 * @return the number of columns for this spreadsheet
-	 */
-	public int getNumColumns() {
-		return COLUMNS;
 	}
 }

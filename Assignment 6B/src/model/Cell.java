@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  * This class represents a single cell in a spreadsheet. It contains data
  * specific to this cell and can depend on the value of other cells for 
@@ -70,8 +72,6 @@ public class Cell {
 	public void evaluate (final Spreadsheet theSpreadsheet) {
 		// Stub
 	}
-	
-
 
 	
 	public Stack<Token> getFormula(String formula) {

@@ -1,5 +1,7 @@
 package model;
 
+import javax.swing.table.DefaultTableModel;
+
 public class CellToken implements Token {
 
 	/** Represents a bad cell. */
