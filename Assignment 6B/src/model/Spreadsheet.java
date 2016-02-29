@@ -14,8 +14,6 @@ import javax.swing.table.TableModel;
  * @author Jonah Howard
  */
 public class Spreadsheet implements TableModelListener {
-
-	protected static final Cell[][] CELLS = initializeCells();
 	
 	/** How many columns are in this spreadsheet. */
 	public static final int COLUMNS = 35;
@@ -44,7 +42,7 @@ public class Spreadsheet implements TableModelListener {
 		spreadsheet = new Object[ROWS][COLUMNS + 1];
 		columnNames = new String[COLUMNS + 1];
 		cells = new Cell[ROWS][COLUMNS + 1];
-//		initializeCells();
+		initializecells();
 		fillColumnNames();
 		myTable = new JTable(spreadsheet, columnNames);
 		TableModel model = null;
@@ -57,7 +55,7 @@ public class Spreadsheet implements TableModelListener {
 		// Prints the contents of the cell
 		System.out.println(spreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
 		
-		((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()]).parseInput(
+		((Cell) cells[theEvent.getFirstRow()][theEvent.getColumn()]).parseInput(
 				(String) spreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
 	}
 	
@@ -65,15 +63,15 @@ public class Spreadsheet implements TableModelListener {
 		return myTable;
 	}
 	
-	private static Cell[][] initializeCells() {
-		final Cell[][] newCells = new Cell[ROWS][COLUMNS + 1];
+	private static Cell[][] initializecells() {
+		final Cell[][] newcells = new Cell[ROWS][COLUMNS + 1];
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 1; j < COLUMNS + 1; j++) {
 //				cells[i][j] = new Cell();
-				newCells[i][j] = new Cell();
+				newcells[i][j] = new Cell();
 			}
 		}
-		return newCells;
+		return newcells;
 	}
 	
 	private void fillColumnNames() {
@@ -106,7 +104,7 @@ public class Spreadsheet implements TableModelListener {
 	 * @param theColumn the current column being converted
 	 * @return the String representation of the passed column
 	 */
-	public String convertToString(int theColumn) {
+	public static String convertToString(int theColumn) {
 		StringBuilder result = new StringBuilder();
 		do {
 			// Solve rounding issue
@@ -125,7 +123,7 @@ public class Spreadsheet implements TableModelListener {
 	 * @param theColumn the current column being converted
 	 * @return the integer version of the passed column
 	 */
-	public int convertToInt(final String theColumn) {
+	public static int convertToInt(final String theColumn) {
 		int current = 0;
 		int result = 0;
 		int currentLetter;
