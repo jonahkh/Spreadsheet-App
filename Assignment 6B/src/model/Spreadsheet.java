@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Stack;
-
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -16,6 +14,9 @@ import javax.swing.table.TableModel;
  */
 public class Spreadsheet extends DefaultTableModel implements TableModelListener {
 	
+	/** A generated Serial Version UID. */
+	private static final long serialVersionUID = 9025127485326978066L;
+
 	/** Represents each cell of the spreadsheet. */
 	public static final Object[][] CELLS = initializeCells();
 	
@@ -61,6 +62,11 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 				(String) spreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
 	}
 	
+	/**
+	 * Returns the current JTable. 
+	 * 
+	 * @return the current table
+	 */
 	public JTable getTable() {
 		return myTable;
 	}
@@ -75,6 +81,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			return true;
 		}
 	}
+	
 	
 	private static Cell[][] initializeCells() {
 		final Cell[][] newcells = new Cell[ROWS][COLUMNS + 1];
