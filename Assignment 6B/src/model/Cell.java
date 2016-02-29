@@ -39,7 +39,6 @@ public class Cell {
 		expressionTree = new ExpressionTree();
 		value = 0;
 		myDependencies = new ArrayList<Cell>();
-
 	}
 
 	/**
@@ -86,7 +85,7 @@ public class Cell {
 		int literalValue = 0;
 
 		CellToken cellToken;
-		OperatorToken operatorToken = new OperatorToken('a'); // Temporary
+		OperatorToken operatorToken = new OperatorToken('a');   // Temporary
 																// holder
 																// variable to
 																// access

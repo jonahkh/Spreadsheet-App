@@ -16,7 +16,6 @@ public class ExpressionTree {
         this(null);
     }
     
-    
     public ExpressionTree(final ExpressionTreeNode theNode) {
     	root = theNode;
     }
@@ -38,7 +37,7 @@ public class ExpressionTree {
             printTree(root);
     }
     
-       /**
+    /**
      * Internal method that prints this tree in post-order traversal.
      * 
      * @param t the node that roots the (sub)tree
