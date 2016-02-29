@@ -48,11 +48,7 @@ public class Cell {
 	 * @param input The new input for this cell
 	 */
 	public void parseInput(final String input) {
-		for (int i = 0; i < input.length(); i++) {
-			if (input.charAt(i) < 48 || input.charAt(i) > 57) { // If not an integer
-				value = 1;
-			}
-		}
+		System.out.println(Spreadsheet.CELLS[1][1]);
 	}
 	
 	/**

@@ -1,24 +1,24 @@
-package model;
+/*package model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-/*
+
  * Driver program of a spreadsheet application.
  * Text-based user interface.
  *
  * @author Donald Chinn
- */
+ 
 import java.io.InputStreamReader;
 import java.util.Stack;
 
 public class SpreadsheetApp {
     
-    /**
+    *//**
      * Read a string from standard input.
      * All characters up to the first carriage return are read.
      * The return string does not include the carriage return.
      * @return  a line of input from standard input
-     */
+     *//*
     public static String readString() {
         BufferedReader inputReader;
         String returnString = "";
@@ -97,7 +97,7 @@ public class SpreadsheetApp {
         inputFormula = readString();
         expTreeTokenStack = getFormula (inputFormula);
     
-        /*
+        
         // This code prints out the expression stack from
         // top to bottom (that is, reverse of postfix).
         while (!expTreeTokenStack.isEmpty())
@@ -105,7 +105,7 @@ public class SpreadsheetApp {
             expTreeToken = expTreeTokenStack.topAndPop();
             printExpressionTreeToken(expTreeToken);
         }
-        */
+        
     
         theSpreadsheet.changeCellFormulaAndRecalculate(cellToken, expTreeTokenStack);
         System.out.println();
@@ -128,10 +128,10 @@ public class SpreadsheetApp {
             System.out.println("f: print out a cell's formula");
             System.out.println("a: print all cell formulas");
             System.out.println("c: change the formula of a cell");
-    /* BONUS
+     BONUS
             System.out.println("r: read in a spreadsheet from a textfile");
             System.out.println("s: save the spreadsheet to a textfile");
-     */
+     
             System.out.println();
             System.out.println("q: quit");
     
@@ -157,7 +157,7 @@ public class SpreadsheetApp {
                     menuChangeCellFormula(theSpreadsheet);
                     break;
         
-                    /* BONUS:
+                     BONUS:
                 case 'r':
                     menuReadSpreadsheet(theSpreadsheet);
                     break;
@@ -165,7 +165,7 @@ public class SpreadsheetApp {
                 case 's':
                     menuSaveSpreadsheet(theSpreadsheet);
                     break;
-                    */
+                    
         
                 case 'q':
                     done = true;
@@ -182,4 +182,4 @@ public class SpreadsheetApp {
         System.out.println("Thank you for using our spreadsheet.");
     }
 
-}
+}*/

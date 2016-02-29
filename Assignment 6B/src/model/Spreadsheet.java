@@ -16,6 +16,9 @@ import javax.swing.table.TableModel;
  */
 public class Spreadsheet extends DefaultTableModel implements TableModelListener {
 	
+	/** Represents each cell of the spreadsheet. */
+	public static final Object[][] CELLS = initializeCells();
+	
 	/** How many columns are in this spreadsheet. */
 	public static final int COLUMNS = 35;
 
@@ -27,9 +30,6 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 
 	/** The current spreadsheet. */
 	private final Object[][] spreadsheet;
-	
-	/** Represents each cell of the spreadsheet. */
-	private static final Object[][] CELLS = initializeCells();
 	
 	/** Represents the names of the columns. */
 	private final Object[] columnNames;
