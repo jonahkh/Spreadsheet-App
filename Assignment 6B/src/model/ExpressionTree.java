@@ -6,7 +6,11 @@ public class ExpressionTree {
     private ExpressionTreeNode root;
     
     public ExpressionTree() {
-        root = null;
+        this(null);
+    }
+    
+    public ExpressionTree(final ExpressionTreeNode theNode) {
+    	root = theNode;
     }
     
     /**

@@ -21,13 +21,14 @@ public class Spreadsheet implements TableModelListener {
 	/** How many rows are in this spreadsheet. */
 	public static final int ROWS = 20;
 	
+	/** Count of letters. */
 	public static final int LETTERS = 26;
 
 	/** The current spreadsheet. */
 	private final Object[][] spreadsheet;
 	
 	/** Represents each cell of the spreadsheet. */
-	private final Object[][] cells;
+	private static final Object[][] CELLS = initializeCells();
 	
 	/** Represents the names of the columns. */
 	private final Object[] columnNames;
@@ -41,8 +42,8 @@ public class Spreadsheet implements TableModelListener {
 	public Spreadsheet() {
 		spreadsheet = new Object[ROWS][COLUMNS + 1];
 		columnNames = new String[COLUMNS + 1];
-		cells = new Cell[ROWS][COLUMNS + 1];
-		initializecells();
+//		CELLS = new Cell[ROWS][COLUMNS + 1];
+//		initializeCells();
 		fillColumnNames();
 		myTable = new JTable(spreadsheet, columnNames);
 		TableModel model = null;
@@ -55,7 +56,7 @@ public class Spreadsheet implements TableModelListener {
 		// Prints the contents of the cell
 		System.out.println(spreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
 		
-		((Cell) cells[theEvent.getFirstRow()][theEvent.getColumn()]).parseInput(
+		((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()]).parseInput(
 				(String) spreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
 	}
 	
@@ -63,7 +64,7 @@ public class Spreadsheet implements TableModelListener {
 		return myTable;
 	}
 	
-	private static Cell[][] initializecells() {
+	private static Cell[][] initializeCells() {
 		final Cell[][] newcells = new Cell[ROWS][COLUMNS + 1];
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 1; j < COLUMNS + 1; j++) {
