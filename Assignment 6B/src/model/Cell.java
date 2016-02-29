@@ -104,11 +104,11 @@ public class Cell {
 	        if (operatorToken.isOperator(ch)) {
 	            // We found an operator token
 	            switch (ch) {
-	                case OperatorToken.Plus:
-	                case OperatorToken.Minus:
-	                case OperatorToken.Mult:
-	                case OperatorToken.Div:
-	                case OperatorToken.LeftParen:
+	                case OperatorToken.PLUS:
+	                case OperatorToken.MINUS:
+	                case OperatorToken.MULT:
+	                case OperatorToken.DIV:
+	                case OperatorToken.LT_PAREN:
 	                    // push operatorTokens onto the output stack until
 	                    // we reach an operator on the operator stack that has
 	                    // lower priority than the current one.
@@ -116,7 +116,7 @@ public class Cell {
 	                    while (!operatorStack.isEmpty()) {
 	                        stackOperator = (OperatorToken) operatorStack.peek();
 	                        if ((stackOperator.priority() >= operatorToken.operatorPriority(ch)) &&
-	                            (stackOperator.getOperatorToken() != OperatorToken.LeftParen) ) {
+	                            (stackOperator.getOperatorToken() != OperatorToken.LT_PAREN) ) {
 
 	                            // output the operator to the return stack    
 	                            operatorStack.pop();
@@ -142,7 +142,7 @@ public class Cell {
 	            OperatorToken stackOperator;
 	            stackOperator = (OperatorToken) operatorStack.pop();
 	            // This code does not handle operatorStack underflow.
-	            while (stackOperator.getOperatorToken() != OperatorToken.LeftParen) {
+	            while (stackOperator.getOperatorToken() != OperatorToken.LT_PAREN) {
 	                // pop operators off the stack until a LeftParen appears and
 	                // place the operators on the output stack
 	                returnStack.push(stackOperator);

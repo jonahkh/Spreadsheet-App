@@ -1,11 +1,11 @@
 package model;
 
 public class OperatorToken implements Token{
-	public static final char Plus = '+';
-	public static final char Minus = '-';
-	public static final char Mult = '*';
-	public static final char Div = '/';
-	public static final char LeftParen = '(';
+	public static final char PLUS = '+';
+	public static final char MINUS = '-';
+	public static final char MULT = '*';
+	public static final char DIV = '/';
+	public static final char LT_PAREN = '(';
 	private char operatorToken;
 
 	public OperatorToken(final char theOperator) {
@@ -27,11 +27,11 @@ public class OperatorToken implements Token{
 	 * @return  whether ch is an operator
 	 */
 	boolean isOperator (char ch) {
-	    return ((ch == Plus) ||
-	            (ch == Minus) ||
-	            (ch == Mult) ||
-	            (ch == Div) ||
-	            (ch == LeftParen) );
+	    return ((ch == PLUS) ||
+	            (ch == MINUS) ||
+	            (ch == MULT) ||
+	            (ch == DIV) ||
+	            (ch == LT_PAREN) );
 	}
 	
 	/**
@@ -52,15 +52,15 @@ public class OperatorToken implements Token{
 	        System.exit(0);
 	    }
 	    switch (ch) {
-	        case Plus:
+	        case PLUS:
 	            return 0;
-	        case Minus:
+	        case MINUS:
 	            return 0;
-	        case Mult:
+	        case MULT:
 	            return 1;
-	        case Div:
+	        case DIV:
 	            return 1;
-	        case LeftParen:
+	        case LT_PAREN:
 	            return 2;
 
 	        default:
@@ -84,15 +84,15 @@ public class OperatorToken implements Token{
 	 */
 	public int priority () {
 	    switch (this.operatorToken) {
-	        case Plus:
+	        case PLUS:
 	            return 0;
-	        case Minus:
+	        case MINUS:
 	            return 0;
-	        case Mult:
+	        case MULT:
 	            return 1;
-	        case Div:
+	        case DIV:
 	            return 1;
-	        case LeftParen:
+	        case LT_PAREN:
 	            return 2;
 
 	        default:

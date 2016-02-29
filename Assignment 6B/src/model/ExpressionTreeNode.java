@@ -3,7 +3,7 @@ package model;
 public class ExpressionTreeNode {
 
 	/** The token for this node. */
-	private Token token;
+	protected Token token;
 	
 	/** References the left node to this node. */
 	protected ExpressionTreeNode left;
