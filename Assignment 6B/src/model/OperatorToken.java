@@ -103,4 +103,8 @@ public class OperatorToken implements Token{
 	    }
 	    return -1;
 	}
+	
+	public String toString() {
+		return operatorToken + "";
+	}
 }

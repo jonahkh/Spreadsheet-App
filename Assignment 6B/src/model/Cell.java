@@ -51,7 +51,6 @@ public class Cell {
 				value = 1;
 			}
 		}
-		System.out.println(Spreadsheet.CELLS[0][0]);
 	}
 	
 	/**

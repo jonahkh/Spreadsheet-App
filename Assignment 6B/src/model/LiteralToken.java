@@ -30,4 +30,8 @@ public class LiteralToken implements Token {
 	public int getValue() {
 		return value;
 	}
+	
+	public String toString() {
+		return value + "";
+	}
 }

@@ -123,4 +123,8 @@ public class CellToken implements Token {
 	public void setRow(final int theRow) {
 		row = theRow;
 	}
+	
+	public String toString() {
+		return Spreadsheet.convertToString(column);
+	}
 }
