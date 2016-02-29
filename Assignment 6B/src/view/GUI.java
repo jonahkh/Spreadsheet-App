@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -10,12 +11,16 @@ import model.Spreadsheet;
 
 public class GUI {
 	private final JFrame myFrame;
+	private final JScrollPane myJScrollPane;
 	private final Spreadsheet mySpreadsheet;
 
 	public GUI() {
 		myFrame = new JFrame();
 		mySpreadsheet = new Spreadsheet();
-		myFrame.add(new JScrollPane(mySpreadsheet.getTable()), BorderLayout.CENTER);
+		myJScrollPane = new JScrollPane(mySpreadsheet.getTable(), 
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		myFrame.add(myJScrollPane, BorderLayout.CENTER);
 		myFrame.pack();
 	}
 	

@@ -47,6 +47,7 @@ public class Spreadsheet implements TableModelListener {
 		fillColumnNames();
 		myTable = new JTable(spreadsheet, columnNames);
 		TableModel model = null;
+		myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		myTable.getModel().addTableModelListener(this);
 		myTable.getTableHeader().setReorderingAllowed(false);
 	}

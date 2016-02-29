@@ -11,6 +11,13 @@ public class CellToken implements Token {
 	/** The row for this cell token. */
 	private int row;
 
+	/** The formula of this cell token. */
+	private String formula;
+	
+	/** The cell that this cell token represents. */
+	private Cell myCell;
+
+	
 	/**
 	 * Returns the column for this cell token.
 	 * 
@@ -28,7 +35,23 @@ public class CellToken implements Token {
 	public int getRow() {
 		return row;
 	}
-
+	
+	/**
+	 * Returns the formula for this cell token.
+	 * 
+	 * @return Return the formula for this cell token.
+	 */
+	public String getFormula() {
+		return formula;
+	}
+	
+	/**
+	 * 
+	 * @param inputString
+	 * @param startIndex
+	 * @param cellToken
+	 * @return
+	 */
 	public int getCellToken(String inputString, int startIndex, CellToken cellToken) {
 		char ch;
 		int column = 0;
