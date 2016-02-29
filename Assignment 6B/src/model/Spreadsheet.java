@@ -3,6 +3,7 @@ package model;
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -47,8 +48,18 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 //		CELLS = new Cell[ROWS][COLUMNS + 1];
 //		initializeCells();
 		fillColumnNames();
-		myTable = new JTable(spreadsheet, columnNames);
+		myTable = new JTable(spreadsheet, columnNames) {
+			// This anonymous inner class disables the row numbers from 
+			// being editable.
+			@Override
+			public boolean isCellEditable(int row, int column){
+				return column != 0;
+			}
+		};
+		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
+		dtcr.setHorizontalTextPosition(DefaultTableCellRenderer.CENTER);
 		TableModel model = null;
+		myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		myTable.getModel().addTableModelListener(this);
 		myTable.getTableHeader().setReorderingAllowed(false);
 	}
