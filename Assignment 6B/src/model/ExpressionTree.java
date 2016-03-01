@@ -50,7 +50,6 @@ public class ExpressionTree {
         if(t != null) {
             printTree(t.left);
             printTree(t.right);
-//            System.out.println(t.token.toString());
         }
     }
     
@@ -60,8 +59,6 @@ public class ExpressionTree {
      * @return the result of the evaluated tree
      */
     public int evaluate() {
-//    	System.out.println("After evaluate: " + evaluate(root));
-//    	System.out.println("Root = " + root.toString());
     	return evaluate(root);
     }
     
@@ -92,27 +89,16 @@ public class ExpressionTree {
             } else if (t.right.token instanceof CellToken)
                 value2 = Spreadsheet.CELLS[((CellToken) t.right.token).getRow()][((CellToken) t.right.token).getColumn()].getValue();;
             //calculate total using the values from the two subtrees
-            switch(((OperatorToken) t.token).getOperatorToken()) {
-                case OperatorToken.PLUS:
-                    return value1 + value2;
-                case OperatorToken.MINUS:
-                    return value1 - value2;
-                case OperatorToken.MULT: {
-                    return value1 * value2;
-                } case OperatorToken.DIV:
-                    return value1 / value2;
-                case OperatorToken.POW:
-                	return (int) Math.pow(value1, value2);
-            }
+            total = ((OperatorToken) t.token).evaluate(value1, value2);
         } else {// if (t != null){
         	if (t.token instanceof LiteralToken) {
-        		return ((LiteralToken) t.token).getValue();
+        		total = ((LiteralToken) t.token).getValue();
         	} else {
         		CellToken temp = ((CellToken) t.token);
-        		return Spreadsheet.CELLS[temp.getRow()][temp.getColumn()].getValue();
+        		total = Spreadsheet.CELLS[temp.getRow()][temp.getColumn()].getValue();
         	}
         }
-        return -1; // Means there's an issue
+        return total;
     }
     
  // Build an expression tree from a stack of ExpressionTreeTokens

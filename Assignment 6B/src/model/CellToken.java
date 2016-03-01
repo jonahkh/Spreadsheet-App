@@ -1,7 +1,11 @@
 package model;
 
-import javax.swing.table.DefaultTableModel;
-
+/**
+ * This class represents a Cell Token.
+ * 
+ * @author Jonah Howard
+ * @version 28 Feb 2016
+ */
 public class CellToken implements Token {
 
 	/** Represents a bad cell. */
@@ -119,18 +123,28 @@ public class CellToken implements Token {
 		// successfully parsed a cell reference
 		setColumn(column);
 		setRow(row);
-//		System.out.println("Row = " + row + "Column = " + column);
 		return index;
 	}
 	
+	/**
+	 * Set the column of this cell token.
+	 * 
+	 * @param theColumn the column this cell token is to be set to
+	 */
 	public void setColumn(final int theColumn) {
 		column = theColumn;
 	}
 	
+	/**
+	 * Set the row of this cell token.
+	 * 
+	 * @param theRow the row this cell token is to be set to
+	 */
 	public void setRow(final int theRow) {
 		row = theRow;
 	}
 	
+	@Override
 	public String toString() {
 		return Spreadsheet.convertToString(column) + Integer.toString(row);
 	}

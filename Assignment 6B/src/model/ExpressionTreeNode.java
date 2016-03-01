@@ -1,5 +1,11 @@
 package model;
 
+/**
+ * This class represents an individual Expression Tree Node.
+ * 
+ * @author Jonah Howard
+ * @version 28 Feb 2016
+ */
 public class ExpressionTreeNode {
 
 	/** The token for this node. */

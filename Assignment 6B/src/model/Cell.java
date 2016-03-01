@@ -66,10 +66,7 @@ public class Cell {
 	 * Notifies each cell in the list of dependents that a change was made to this cell.
 	 */
 	public void updateDependents() {
-//		System.out.println("Updating dependents");
 		for (Cell cell : myDependents) {
-//			System.out.println("Row = " + cell.getRow() + ", Column = " + cell.getColumn());
-//			System.out.println(Spreadsheet.CELLS[cell.getRow()][cell.getColumn()].getValue());
 			Spreadsheet.CELLS[cell.getRow()][cell.getColumn()].reEvaluate();
 			
 		}
@@ -83,17 +80,12 @@ public class Cell {
 	public void parseInput(final String input) {
 		final Stack<Token> formula = getFormula(input);
 		myFormula = input;
-//		System.out.println("Formula: " + input);
 		expressionTree.BuildExpressionTree(formula, myDependencies);
-//    	System.out.println("My Tree:");
-//		expressionTree.printTree();
 		myValue = expressionTree.evaluate();
 		if (!myDependents.isEmpty()) {
 			updateDependents();
 		}
 		Spreadsheet.updateSpreadsheet(myRow, myColumn);
-//		System.out.println("My value is: " + myValue);
-//		System.out.println();
 	}
 	
 	/**
@@ -101,8 +93,6 @@ public class Cell {
 	 */
 	public void reEvaluate() {
 		myValue = expressionTree.evaluate();
-//		System.out.println("Value = " + myValue);
-//		System.out.println(myRow + ", " + myColumn);
 		Spreadsheet.updateSpreadsheet(myRow, myColumn);
 		Spreadsheet.SPREADSHEET[myRow][myColumn] = myValue;
 		
@@ -140,8 +130,8 @@ public class Cell {
 																// methods
 																// inside
 																// OperatorToken
-		int column = 0;
-		int row = 0;
+//		int column = 0;
+//		int row = 0;
 
 		int index = 0; // index into myFormula
 		Stack<Token> operatorStack = new Stack<Token>(); // stack of operators
@@ -280,10 +270,20 @@ public class Cell {
 		return "[" + "Value: " + myValue + "]";
 	}
 	
+	/**
+	 * Return the current row for this cell. 
+	 * 
+	 * @return the current row for this cell
+	 */
 	public int getRow() {
 		return myRow;
 	}
 	
+	/**
+	 * Return the current column for this cell.
+	 * 
+	 * @return the current column for this cell
+	 */
 	public int getColumn() {
 		return myColumn;
 	}

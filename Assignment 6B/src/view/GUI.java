@@ -61,6 +61,7 @@ public class GUI extends Observable {
 		// Sets the minimum size for the window.
 		myFrame.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
 		
+		// Add buttons to the frame
 		JButton formulas = new JButton("Display Formulas");
 		JButton values = new JButton("Display Values");
 		
@@ -91,6 +92,7 @@ public class GUI extends Observable {
 				valuesButton.setEnabled(true);
 				formulaButton.setEnabled(false);
 				notifyObservers(true);
+				// Fill each active cell with its corresponding formula
 				for (int i = 0; i < Spreadsheet.ROWS; i++) {
 					for (int j = 1; j < Spreadsheet.COLUMNS + 1; j++) {
 						Spreadsheet.SPREADSHEET[i][j] = Spreadsheet.CELLS[i][j].getFormula(); 
@@ -106,6 +108,7 @@ public class GUI extends Observable {
 				formulaButton.setEnabled(true);
 				valuesButton.setEnabled(false);
 				notifyObservers(false);
+				// Fill each active cell with its corresponding value
 				for (int i = 0; i < Spreadsheet.ROWS; i++) {
 					for (int j = 1; j < Spreadsheet.COLUMNS + 1; j++) {
 						if (Spreadsheet.CELLS[i][j].getValue() != 0) {

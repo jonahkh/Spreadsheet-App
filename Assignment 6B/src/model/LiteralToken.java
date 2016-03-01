@@ -1,8 +1,14 @@
 package model;
 
+/**
+ * This class represents an individual Literal Token.
+ * 
+ * @author Jonah Howard
+ * @version 28 Feb 2016
+ */
 public class LiteralToken implements Token {
 	/** The value of this Literal Token. */
-	private int value;
+	private int myValue;
 	
 	/**
 	 * Initialize a new Literal Token.
@@ -10,16 +16,16 @@ public class LiteralToken implements Token {
 	 * @param literal the value for this Token
 	 */
 	public LiteralToken(final int literal) {
-		value = literal;
+		myValue = literal;
 	}
 	
 	/**
-	 * Set the value of this token to the passed value.
+	 * Set the value of this token to the passed myValue.
 	 * 
-	 * @param theValue The value to set this token to
+	 * @param theValue The myValue to set this token to
 	 */
 	public void setValue(final int theValue) {
-		value = theValue;
+		myValue = theValue;
 	}
 	
 	/**
@@ -28,10 +34,11 @@ public class LiteralToken implements Token {
 	 * @return the value associated with this Literal Token
 	 */
 	public int getValue() {
-		return value;
+		return myValue;
 	}
 	
+	@Override
 	public String toString() {
-		return value + "";
+		return Integer.toString(myValue);
 	}
 }

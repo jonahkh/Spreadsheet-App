@@ -8,13 +8,13 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  * This class represents a spreadsheet. It stores the information for all of the
  * cells of the spreadsheet.
  * 
  * @author Jonah Howard
+ * @vesion 1 March 2016
  */
 public class Spreadsheet extends DefaultTableModel implements TableModelListener, Observer {
 
@@ -45,6 +45,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	/** Represents the current JTable. */
 	private final JTable myTable;
 	
+	/** True if the Display Formulas button is pressed, false otherwise. */
 	protected static boolean displayFormulas = true;
 
 	/**
@@ -57,6 +58,8 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 		// initializeCells();
 		fillColumnNames();
 		myTable = new JTable(SPREADSHEET, columnNames) {
+			/** A generated serial version UID. */
+			private static final long serialVersionUID = -8427343693180623327L;
 			// This anonymous inner class disables the row numbers from
 			// being editable.
 			@Override
@@ -66,7 +69,6 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 		};
 		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
 		dtcr.setHorizontalTextPosition(DefaultTableCellRenderer.CENTER);
-		TableModel model = null;
 		myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		myTable.getModel().addTableModelListener(this);
 		myTable.getTableHeader().setReorderingAllowed(false);
@@ -112,9 +114,6 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * @param theColumn the column of the spreadsheet to be updated
 	 */
 	public static void updateSpreadsheet(final int theRow, final int theColumn) {
-//		System.out.println(CELLS[theRow][theColumn].getValue());
-//		System.out.println(CELLS[theRow][theColumn].getFormula());
-//		System.out.println();
 		if (displayFormulas) {
 			SPREADSHEET[theRow][theColumn] = CELLS[theRow][theColumn].getFormula();
 		} else {
