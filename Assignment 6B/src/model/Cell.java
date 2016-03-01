@@ -7,7 +7,7 @@ import java.util.Stack;
 
 /**
  * This class represents a single cell in a spreadsheet. It contains data
- * specific to this cell and can depend on the value of other cells for
+ * specific to this cell and can depend on the myValue of other cells for
  * mathematical computations.
  * 
  * @author Jonah Howard
@@ -15,17 +15,23 @@ import java.util.Stack;
  */
 public class Cell {
 
-	/** Represents the formula corresponding to this cell. */
-	private String formula;
+	/** Represents the myFormula corresponding to this cell. */
+	private String myFormula;
 
-	/** The value contained in this cell. */
-	private int value;
+	/** The myValue contained in this cell. */
+	private int myValue;
 
 	/** The expression tree for this cell. */
 	private ExpressionTree expressionTree;
 
 	/** The list of dependencies for this cell. */
 	private List<Cell> myDependencies;
+	
+	/** The current row for this cell. */
+	private final int myRow;
+	
+	/** The current column for this cell. */
+	private final int myColumn;
 
 	/**
 	 * Initializes a new cell.
@@ -35,10 +41,12 @@ public class Cell {
 	 * @param theRow
 	 *            The row where this cell is located.
 	 */
-	public Cell() {
+	public Cell(final int theColumn, final int theRow) {
 		expressionTree = new ExpressionTree();
-		value = 0;
+		myValue = 0;
 		myDependencies = new ArrayList<Cell>();
+		myColumn = theColumn;
+		myRow = theRow;
 	}
 
 	/**
@@ -47,16 +55,23 @@ public class Cell {
 	 * @param input The new input for this cell
 	 */
 	public void parseInput(final String input) {
-		System.out.println(Spreadsheet.CELLS[1][1]);
+		final Stack<Token> formula = getFormula(input);
+		myFormula = input;
+		System.out.println(input);
+		expressionTree.BuildExpressionTree(formula);
+		myValue = expressionTree.evaluate();
+		Spreadsheet.updateSpreadsheet(myRow, myColumn);
+		System.out.println("My value is: " + myValue);
+		
 	}
 
 	/**
-	 * Return the value for this cell.
+	 * Return the myValue for this cell.
 	 * 
-	 * @return the value for this cell
+	 * @return the myValue for this cell
 	 */
 	public int getValue() {
-		return value;
+		return myValue;
 	}
 
 	/**
@@ -70,12 +85,12 @@ public class Cell {
 	}
 
 	/**
-	 * Returns a stack representing the passed formula.
+	 * Returns a stack representing the passed myFormula.
 	 * 
-	 * @param formula the current formula being considered
-	 * @return A stack representing the passed formula
+	 * @param myFormula the current myFormula being considered
+	 * @return A stack representing the passed myFormula
 	 */
-	public Stack<Token> getFormula(String formula) {
+	public Stack<Token> getFormula(String myFormula) {
 		Stack<Token> returnStack = new Stack<Token>(); // stack of Tokens
 														// (representing a
 														// postfix expression)
@@ -95,20 +110,20 @@ public class Cell {
 		int column = 0;
 		int row = 0;
 
-		int index = 0; // index into formula
+		int index = 0; // index into myFormula
 		Stack<Token> operatorStack = new Stack<Token>(); // stack of operators
 
-		while (index < formula.length()) {
+		while (index < myFormula.length()) {
 			// get rid of leading whitespace characters
-			while (index < formula.length()) {
-				ch = formula.charAt(index);
+			while (index < myFormula.length()) {
+				ch = myFormula.charAt(index);
 				if (!Character.isWhitespace(ch)) {
 					break;
 				}
 				index++;
 			}
 
-			if (index == formula.length()) {
+			if (index == myFormula.length()) {
 				error = true;
 				break;
 			}
@@ -167,8 +182,8 @@ public class Cell {
 				// We found a literal token
 				literalValue = ch - '0';
 				index++;
-				while (index < formula.length()) {
-					ch = formula.charAt(index);
+				while (index < myFormula.length()) {
+					ch = myFormula.charAt(index);
 					if (Character.isDigit(ch)) {
 						literalValue = (literalValue * 10) + (ch - '0');
 						index++;
@@ -182,7 +197,7 @@ public class Cell {
 			} else if (Character.isUpperCase(ch)) {
 				// We found a cell reference token
 				cellToken = new CellToken();
-				index = cellToken.getCellToken(formula, index, cellToken);
+				index = cellToken.getCellToken(myFormula, index, cellToken);
 				if (cellToken.getRow() == CellToken.BadCell) {
 					error = true;
 					break;
@@ -211,12 +226,12 @@ public class Cell {
 	}
 
 	/**
-	 * Returns the formula for this cell.
+	 * Returns the myFormula for this cell.
 	 * 
-	 * @return Returns a string that represents this cell's formula.
+	 * @return Returns a string that represents this cell's myFormula.
 	 */
 	public String getFormula() {
-		return formula;
+		return myFormula;
 	}
 
 	/**
@@ -227,6 +242,6 @@ public class Cell {
 	 */
 	public String toString() {
 		// We can also print out the dependencies later if needed.
-		return "[" + "Value: " + value + "]";
+		return "[" + "Value: " + myValue + "]";
 	}
 }

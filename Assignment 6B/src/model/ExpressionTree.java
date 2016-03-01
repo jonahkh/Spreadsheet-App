@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Stack;
+
 /**
  * This class represents an expression tree for calculating formulas
  * entered into a cell.
@@ -51,12 +53,21 @@ public class ExpressionTree {
     }
     
     /**
+     * Evaluates this tree and returns the result.
+     * 
+     * @return the result of the evaluated tree
+     */
+    public int evaluate() {
+    	return evaluate(root);
+    }
+    
+    /**
      * Evaluates this tree in post-order traversal.
      * 
      * @param t the node that roots the (sub)tree
      * @param value the 
      */
-    public int evaluate(ExpressionTreeNode t) {
+    private int evaluate(ExpressionTreeNode t) {
         int total = 0;
         int value1 = 0;
         int value2 = 0;
@@ -65,7 +76,7 @@ public class ExpressionTree {
             //evaluate left subtree and store value as value1
             if (t.left.token instanceof OperatorToken)
                 value1 = evaluate(t.left);
-            else if(t.left.token instanceof LiteralToken)
+            else if(t.left.token instanceof LiteralToken) 
                 value1 = ((LiteralToken) t.left.token).getValue();
             else if (t.left.token instanceof CellToken)
                 value1 = Spreadsheet.CELLS[((CellToken) t.left.token).getRow()][((CellToken) t.left.token).getColumn()].getValue();
@@ -90,4 +101,32 @@ public class ExpressionTree {
         }
         return total;
     }
+    
+ // Build an expression tree from a stack of ExpressionTreeTokens
+    public void BuildExpressionTree (Stack<Token> s) {
+    	root =getExpressionTree(s);
+    	if (!s.isEmpty()) {
+    		System.out.println("Error in BuildExpressionTree.");
+    	}
+ 	}
+
+    private ExpressionTreeNode getExpressionTree(Stack<Token> s) {
+    	ExpressionTreeNode returnTree;
+    	Token token;
+    	if (s.isEmpty())
+    		return null;
+    	token = s.pop(); // need to handle stack underflow
+    	if ((token instanceof LiteralToken) || (token instanceof CellToken) ) {
+    		// Literals and Cells are leaves in the expression tree
+    		returnTree = new ExpressionTreeNode(token, null, null);
+    		return returnTree;
+    	} else { // if (token instanceof OperatorToken) {
+    		// Continue finding tokens that will form the
+    		// right subtree and left subtree.
+    		ExpressionTreeNode rightSubtree = getExpressionTree (s);
+    		ExpressionTreeNode leftSubtree = getExpressionTree (s);
+    		returnTree = new ExpressionTreeNode(token, leftSubtree, rightSubtree);
+    		return returnTree;
+    	}
+     }
 }
