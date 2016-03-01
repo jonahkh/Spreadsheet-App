@@ -6,6 +6,7 @@ public class OperatorToken implements Token{
 	public static final char MULT = '*';
 	public static final char DIV = '/';
 	public static final char LT_PAREN = '(';
+	public static final char POW = '^';
 	private char operatorToken;
 
 	public OperatorToken(final char theOperator) {
@@ -31,7 +32,8 @@ public class OperatorToken implements Token{
 	            (ch == MINUS) ||
 	            (ch == MULT) ||
 	            (ch == DIV) ||
-	            (ch == LT_PAREN) );
+	            (ch == LT_PAREN) ||
+	            (ch == POW));
 	}
 	
 	/**
@@ -61,7 +63,9 @@ public class OperatorToken implements Token{
 	        case DIV:
 	            return 1;
 	        case LT_PAREN:
-	            return 2;
+	            return 3;
+	        case POW:
+        		return 2;
 
 	        default:
 	            // This case should NEVER happen
@@ -93,6 +97,8 @@ public class OperatorToken implements Token{
 	        case DIV:
 	            return 1;
 	        case LT_PAREN:
+	            return 3;
+	        case POW:
 	            return 2;
 
 	        default:

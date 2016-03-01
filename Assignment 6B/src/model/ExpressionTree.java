@@ -101,6 +101,8 @@ public class ExpressionTree {
                     return value1 * value2;
                 } case OperatorToken.DIV:
                     return value1 / value2;
+                case OperatorToken.POW:
+                	return (int) Math.pow(value1, value2);
             }
         } else {// if (t != null){
         	if (t.token instanceof LiteralToken) {

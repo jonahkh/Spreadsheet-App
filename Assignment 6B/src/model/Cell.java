@@ -165,6 +165,7 @@ public class Cell {
 			if (operatorToken.isOperator(ch)) {
 				// We found an operator token
 				switch (ch) {
+				case OperatorToken.POW:
 				case OperatorToken.PLUS:
 				case OperatorToken.MINUS:
 				case OperatorToken.MULT:
