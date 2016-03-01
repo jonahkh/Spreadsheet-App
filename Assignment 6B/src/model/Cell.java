@@ -57,8 +57,10 @@ public class Cell {
 	public void parseInput(final String input) {
 		final Stack<Token> formula = getFormula(input);
 		myFormula = input;
-		System.out.println(input);
+		System.out.println("Formula: " + input);
 		expressionTree.BuildExpressionTree(formula);
+    	System.out.println("My Tree:");
+		expressionTree.printTree();
 		myValue = expressionTree.evaluate();
 		Spreadsheet.updateSpreadsheet(myRow, myColumn);
 		System.out.println("My value is: " + myValue);

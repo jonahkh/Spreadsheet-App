@@ -112,9 +112,9 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * @param theColumn the column of the spreadsheet to be updated
 	 */
 	public static void updateSpreadsheet(final int theRow, final int theColumn) {
-		System.out.println(CELLS[theRow][theColumn].getValue());
-		System.out.println(CELLS[theRow][theColumn].getFormula());
-		System.out.println();
+//		System.out.println(CELLS[theRow][theColumn].getValue());
+//		System.out.println(CELLS[theRow][theColumn].getFormula());
+//		System.out.println();
 		if(CELLS[theRow][theColumn].getValue() == 0) {
 			SPREADSHEET[theRow][theColumn] = "";
 		}

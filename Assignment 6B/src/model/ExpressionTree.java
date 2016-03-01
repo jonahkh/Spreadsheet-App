@@ -58,6 +58,7 @@ public class ExpressionTree {
      * @return the result of the evaluated tree
      */
     public int evaluate() {
+    	System.out.println("After evaluate: " + evaluate(root));
     	return evaluate(root);
     }
     
@@ -104,7 +105,7 @@ public class ExpressionTree {
     
  // Build an expression tree from a stack of ExpressionTreeTokens
     public void BuildExpressionTree (Stack<Token> s) {
-    	root =getExpressionTree(s);
+    	root = getExpressionTree(s);
     	if (!s.isEmpty()) {
     		System.out.println("Error in BuildExpressionTree.");
     	}
