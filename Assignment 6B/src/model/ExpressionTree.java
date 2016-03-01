@@ -20,6 +20,11 @@ public class ExpressionTree {
         this(null);
     }
     
+    /**
+     * Initializes a new ExpressionTree with the given node as the root.
+     * 
+     * @param theNode the root of this expression tree
+     */
     public ExpressionTree(final ExpressionTreeNode theNode) {
     	root = theNode;
     }
@@ -75,18 +80,20 @@ public class ExpressionTree {
         
         if (t != null && t.token instanceof OperatorToken) {
             //evaluate left subtree and store value as value1
+        	
             if (t.left.token instanceof OperatorToken)
                 value1 = evaluate(t.left);
-            else if(t.left.token instanceof LiteralToken) {
+            else if(t.left.token instanceof LiteralToken)
                 value1 = ((LiteralToken) t.left.token).getValue();
-            } else if (t.left.token instanceof CellToken)
+            else if (t.left.token instanceof CellToken)
                 value1 = Spreadsheet.CELLS[((CellToken) t.left.token).getRow()][((CellToken) t.left.token).getColumn()].getValue();
             //evaluate right subtree and store value as value2
+            
             if (t.right.token instanceof OperatorToken)
                 value2 = evaluate(t.right);
-            else if(t.right.token instanceof LiteralToken) {
+            else if(t.right.token instanceof LiteralToken)
                 value2 = ((LiteralToken) t.right.token).getValue();
-            } else if (t.right.token instanceof CellToken)
+            else if (t.right.token instanceof CellToken)
                 value2 = Spreadsheet.CELLS[((CellToken) t.right.token).getRow()][((CellToken) t.right.token).getColumn()].getValue();;
             //calculate total using the values from the two subtrees
             total = ((OperatorToken) t.token).evaluate(value1, value2);
@@ -101,7 +108,12 @@ public class ExpressionTree {
         return total;
     }
     
- // Build an expression tree from a stack of ExpressionTreeTokens
+    /**
+     * Build an expression tree from a stack of ExpressionTreeTokens.
+     * 
+     * @param s the stack of tokens being used
+     * @param theDependants the list of dependents for the current cell
+     */
     public void BuildExpressionTree (Stack<Token> s, final List<Cell> theDependants) {
     	root = getExpressionTree(s, theDependants);
     	if (!s.isEmpty()) {
@@ -109,6 +121,13 @@ public class ExpressionTree {
     	}
  	}
 
+    /**
+     * Builds the Expression Tree with the passed stack of tokens.
+     * 
+     * @param s the stack of tokens being used
+     * @param theDependants the list of dependents for the current cell
+     * @return an ExpressionTree with a completed Expression Tree built
+     */
     private ExpressionTreeNode getExpressionTree(Stack<Token> s, final List<Cell> theDependants) {
     	ExpressionTreeNode returnTree;
     	Token token;

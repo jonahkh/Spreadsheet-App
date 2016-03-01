@@ -138,7 +138,8 @@ public class OperatorToken implements Token{
 	 * priorities:
 	 *   +, - : 0
 	 *   *, / : 1
-	 *   (    : 2
+	 *   ^	  : 2
+	 *   (    : 3
 	 *
 	 * @return  the priority of operatorToken
 	 */
