@@ -57,14 +57,14 @@ public class Cell {
 	public void parseInput(final String input) {
 		final Stack<Token> formula = getFormula(input);
 		myFormula = input;
-		System.out.println("Formula: " + input);
-		expressionTree.BuildExpressionTree(formula);
-    	System.out.println("My Tree:");
+//		System.out.println("Formula: " + input);
+		expressionTree.BuildExpressionTree(formula, myDependencies);
+//    	System.out.println("My Tree:");
 		expressionTree.printTree();
 		myValue = expressionTree.evaluate();
 		Spreadsheet.updateSpreadsheet(myRow, myColumn);
-		System.out.println("My value is: " + myValue);
-		
+//		System.out.println("My value is: " + myValue);
+//		System.out.println();
 	}
 
 	/**
@@ -198,8 +198,8 @@ public class Cell {
 
 			} else if (Character.isUpperCase(ch)) {
 				// We found a cell reference token
-				cellToken = new CellToken();
-				index = cellToken.getCellToken(myFormula, index, cellToken);
+				cellToken = new CellToken(myFormula, index);
+				index = cellToken.getCellToken(myFormula, index);
 				if (cellToken.getRow() == CellToken.BadCell) {
 					error = true;
 					break;

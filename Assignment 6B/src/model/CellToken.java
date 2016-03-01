@@ -13,6 +13,10 @@ public class CellToken implements Token {
 	/** The row for this cell token. */
 	private int row;
 
+	
+	public CellToken(final String theFormula, final int theIndex) {
+		getCellToken(theFormula, theIndex);
+	}
 	/**
 	 * Returns the column for this cell token.
 	 * 
@@ -31,7 +35,7 @@ public class CellToken implements Token {
 		return row;
 	}
 
-	public int getCellToken(String inputString, int startIndex, CellToken cellToken) {
+	public int getCellToken(String inputString, int startIndex) {
 		char ch;
 		int column = 0;
 		int row = 0;
@@ -39,8 +43,8 @@ public class CellToken implements Token {
 
 		// handle a bad startIndex
 		if ((startIndex < 0) || (startIndex >= inputString.length())) {
-			cellToken.setColumn(BadCell);
-			cellToken.setRow(BadCell);
+			setColumn(BadCell);
+			setRow(BadCell);
 			return index;
 		}
 
@@ -54,8 +58,8 @@ public class CellToken implements Token {
 		}
 		if (index == inputString.length()) {
 			// reached the end of the string before finding a capital letter
-			cellToken.setColumn(BadCell);
-			cellToken.setRow(BadCell);
+			setColumn(BadCell);
+			setRow(BadCell);
 			return index;
 		}
 
@@ -64,18 +68,18 @@ public class CellToken implements Token {
 		ch = inputString.charAt(index);
 		// process CAPITAL alphabetic characters to calculate the column
 		if (!Character.isUpperCase(ch)) {
-			cellToken.setColumn(BadCell);
-			cellToken.setRow(BadCell);
+			setColumn(BadCell);
+			setRow(BadCell);
 			return index;
 		} else {
-			column = ch - 'A';
+			column = ch - 'A' + 1;
 			index++;
 		}
 
 		while (index < inputString.length()) {
 			ch = inputString.charAt(index);
 			if (Character.isUpperCase(ch)) {
-				column = ((column + 1) * 26) + (ch - 'A');
+				column = ((column + 1) * 26) + (ch - 'A') + 1;
 				index++;
 			} else {
 				break;
@@ -84,8 +88,8 @@ public class CellToken implements Token {
 		if (index == inputString.length()) {
 			// reached the end of the string before fully parsing the cell
 			// reference
-			cellToken.setColumn(BadCell);
-			cellToken.setRow(BadCell);
+			setColumn(BadCell);
+			setRow(BadCell);
 			return index;
 		}
 
@@ -97,8 +101,8 @@ public class CellToken implements Token {
 			row = ch - '0';
 			index++;
 		} else {
-			cellToken.setColumn(BadCell);
-			cellToken.setRow(BadCell);
+			setColumn(BadCell);
+			setRow(BadCell);
 			return index;
 		}
 
@@ -113,8 +117,9 @@ public class CellToken implements Token {
 		}
 
 		// successfully parsed a cell reference
-		cellToken.setColumn(column);
-		cellToken.setRow(row);
+		setColumn(column);
+		setRow(row);
+//		System.out.println("Row = " + row + "Column = " + column);
 		return index;
 	}
 	
@@ -127,6 +132,6 @@ public class CellToken implements Token {
 	}
 	
 	public String toString() {
-		return Spreadsheet.convertToString(column);
+		return Spreadsheet.convertToString(column) + Integer.toString(row);
 	}
 }

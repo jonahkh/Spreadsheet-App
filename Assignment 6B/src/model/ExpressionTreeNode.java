@@ -33,4 +33,9 @@ public class ExpressionTreeNode {
 	public ExpressionTreeNode(final Token theToken) {
 		this(theToken, null, null);
 	}
+	
+	@Override
+	public String toString() {
+		return token.toString();
+	}
 }

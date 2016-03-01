@@ -68,7 +68,7 @@ public class GUI extends Observable {
 		JButton formulas = new JButton("Display Formulas");
 		JButton values = new JButton("Display Values");
 		
-//		formulas.setEnabled(false);
+		formulas.setEnabled(false);
 		formulas.doClick();
 		addListeners(formulas, values);
 
