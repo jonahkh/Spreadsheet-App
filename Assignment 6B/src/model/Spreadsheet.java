@@ -115,13 +115,15 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 //		System.out.println(CELLS[theRow][theColumn].getValue());
 //		System.out.println(CELLS[theRow][theColumn].getFormula());
 //		System.out.println();
-		if(CELLS[theRow][theColumn].getValue() == 0) {
-			SPREADSHEET[theRow][theColumn] = "";
-		}
 		if (displayFormulas) {
 			SPREADSHEET[theRow][theColumn] = CELLS[theRow][theColumn].getFormula();
 		} else {
-			SPREADSHEET[theRow][theColumn] = CELLS[theRow][theColumn].getValue();
+			System.out.println(CELLS[theRow][theColumn].getValue());
+			if(CELLS[theRow][theColumn].getValue() == 0) {
+				SPREADSHEET[theRow][theColumn] = "";
+			} else {
+				SPREADSHEET[theRow][theColumn] = CELLS[theRow][theColumn].getValue();
+			}
 		}
 	}
 

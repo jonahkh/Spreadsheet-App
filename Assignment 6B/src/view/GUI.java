@@ -93,9 +93,7 @@ public class GUI extends Observable {
 				notifyObservers(true);
 				for (int i = 0; i < Spreadsheet.ROWS; i++) {
 					for (int j = 1; j < Spreadsheet.COLUMNS + 1; j++) {
-						if (Spreadsheet.CELLS[i][j].getValue() != 0) {
-							Spreadsheet.SPREADSHEET[i][j] = Spreadsheet.CELLS[i][j].getFormula(); 
-						}
+						Spreadsheet.SPREADSHEET[i][j] = Spreadsheet.CELLS[i][j].getFormula(); 
 					}
 				}
 				myFrame.repaint();
@@ -112,6 +110,8 @@ public class GUI extends Observable {
 					for (int j = 1; j < Spreadsheet.COLUMNS + 1; j++) {
 						if (Spreadsheet.CELLS[i][j].getValue() != 0) {
 							Spreadsheet.SPREADSHEET[i][j] = Spreadsheet.CELLS[i][j].getValue(); 
+						} else {
+							Spreadsheet.SPREADSHEET[i][j] = "";
 						}
 					}
 				}
