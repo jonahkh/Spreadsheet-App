@@ -8,6 +8,7 @@ import java.util.Stack;
  * entered into a cell.
  * 
  * @author Lisa Taylor
+ * @author Jonah Howard
  */
 public class ExpressionTree {
     
@@ -81,7 +82,6 @@ public class ExpressionTree {
                 value1 = evaluate(t.left);
             else if(t.left.token instanceof LiteralToken) {
                 value1 = ((LiteralToken) t.left.token).getValue();
-                System.out.println("Left: " + value1);
             } else if (t.left.token instanceof CellToken)
                 value1 = Spreadsheet.CELLS[((CellToken) t.left.token).getRow()][((CellToken) t.left.token).getColumn()].getValue();
             //evaluate right subtree and store value as value2
@@ -89,23 +89,19 @@ public class ExpressionTree {
                 value2 = evaluate(t.right);
             else if(t.right.token instanceof LiteralToken) {
                 value2 = ((LiteralToken) t.right.token).getValue();
-                System.out.println("Right: " + value2);
             } else if (t.right.token instanceof CellToken)
                 value2 = Spreadsheet.CELLS[((CellToken) t.right.token).getRow()][((CellToken) t.right.token).getColumn()].getValue();;
             //calculate total using the values from the two subtrees
-                System.out.println("Token: " + t.token);
             switch(((OperatorToken) t.token).getOperatorToken()) {
                 case OperatorToken.PLUS:
                     return value1 + value2;
                 case OperatorToken.MINUS:
                     return value1 - value2;
                 case OperatorToken.MULT: {
-                	System.out.println("New Total" + total);
                     return value1 * value2;
                 } case OperatorToken.DIV:
                     return value1 / value2;
             }
-            System.out.println("Total: " + total);
         } else {// if (t != null){
         	if (t.token instanceof LiteralToken) {
         		return ((LiteralToken) t.token).getValue();

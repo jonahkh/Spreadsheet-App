@@ -119,9 +119,9 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			SPREADSHEET[theRow][theColumn] = "";
 		}
 		if (displayFormulas) {
-			SPREADSHEET[theRow][theColumn] = CELLS[theRow][theColumn].getValue();
-		} else {
 			SPREADSHEET[theRow][theColumn] = CELLS[theRow][theColumn].getFormula();
+		} else {
+			SPREADSHEET[theRow][theColumn] = CELLS[theRow][theColumn].getValue();
 		}
 	}
 
@@ -255,6 +255,5 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 		if (theObject instanceof Boolean) {
 			displayFormulas = (boolean) theObject;
 		}
-		
 	}
 }

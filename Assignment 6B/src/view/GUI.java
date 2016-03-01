@@ -36,9 +36,6 @@ public class GUI extends Observable {
 	
 	/** The spreadsheet that contains all the data. */
 	private final Spreadsheet mySpreadsheet;
-	
-	/** Represents the spreadsheet. */
-	private final Object[][] mySpreadsheetCells;
 
 	/**
 	 * This constructor initializes the GUI interface.
@@ -51,7 +48,6 @@ public class GUI extends Observable {
 		myJScrollPane = new JScrollPane(mySpreadsheet.getTable(), 
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		mySpreadsheetCells = mySpreadsheet.getSpreadsheet();
 	}
 
 	/**
@@ -102,6 +98,7 @@ public class GUI extends Observable {
 						}
 					}
 				}
+				myFrame.repaint();
 			}
 		});
 		
@@ -118,6 +115,7 @@ public class GUI extends Observable {
 						}
 					}
 				}
+				myFrame.repaint();
 			}
 		});
 	}

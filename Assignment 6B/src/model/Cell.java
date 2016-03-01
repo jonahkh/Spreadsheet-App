@@ -27,6 +27,8 @@ public class Cell {
 	/** The list of dependencies for this cell. */
 	private List<Cell> myDependencies;
 	
+	private List<Cell> myDependents;
+	
 	/** The current row for this cell. */
 	private final int myRow;
 	
@@ -45,8 +47,32 @@ public class Cell {
 		expressionTree = new ExpressionTree();
 		myValue = 0;
 		myDependencies = new ArrayList<Cell>();
+		myDependents = new ArrayList<Cell>();
 		myColumn = theColumn;
 		myRow = theRow;
+	}
+	
+	/**
+	 * Add the passed token to the list of dependents.
+	 * 
+	 * @param theToken the token that depends on this cell
+	 */
+	public void addDependent(final Cell theCell) {
+//		System.out.println("dependent added");
+		myDependents.add(theCell);
+	}
+	
+	/**
+	 * Notifies each cell in the list of dependents that a change was made to this cell.
+	 */
+	public void updateDependents() {
+//		System.out.println("Updating dependents");
+		for (Cell cell : myDependents) {
+//			System.out.println("Row = " + cell.getRow() + ", Column = " + cell.getColumn());
+//			System.out.println(Spreadsheet.CELLS[cell.getRow()][cell.getColumn()].getValue());
+			Spreadsheet.CELLS[cell.getRow()][cell.getColumn()].reEvaluate();
+			
+		}
 	}
 
 	/**
@@ -60,11 +86,26 @@ public class Cell {
 //		System.out.println("Formula: " + input);
 		expressionTree.BuildExpressionTree(formula, myDependencies);
 //    	System.out.println("My Tree:");
-		expressionTree.printTree();
+//		expressionTree.printTree();
 		myValue = expressionTree.evaluate();
+		if (!myDependents.isEmpty()) {
+			updateDependents();
+		}
 		Spreadsheet.updateSpreadsheet(myRow, myColumn);
 //		System.out.println("My value is: " + myValue);
 //		System.out.println();
+	}
+	
+	/**
+	 * Evaluates this cell if a change is made to one of its dependencies.
+	 */
+	public void reEvaluate() {
+		myValue = expressionTree.evaluate();
+//		System.out.println("Value = " + myValue);
+//		System.out.println(myRow + ", " + myColumn);
+		Spreadsheet.updateSpreadsheet(myRow, myColumn);
+		Spreadsheet.SPREADSHEET[myRow][myColumn] = myValue;
+		
 	}
 
 	/**
@@ -74,16 +115,6 @@ public class Cell {
 	 */
 	public int getValue() {
 		return myValue;
-	}
-
-	/**
-	 * evaluates this cell.
-	 * 
-	 * @param theSpreadsheet
-	 *            the current spreadsheet
-	 */
-	public void evaluate(final Spreadsheet theSpreadsheet) {
-		// Stub
 	}
 
 	/**
@@ -199,6 +230,7 @@ public class Cell {
 			} else if (Character.isUpperCase(ch)) {
 				// We found a cell reference token
 				cellToken = new CellToken(myFormula, index);
+				Spreadsheet.CELLS[cellToken.getRow()][cellToken.getColumn()].addDependent(this);
 				index = cellToken.getCellToken(myFormula, index);
 				if (cellToken.getRow() == CellToken.BadCell) {
 					error = true;
@@ -245,5 +277,13 @@ public class Cell {
 	public String toString() {
 		// We can also print out the dependencies later if needed.
 		return "[" + "Value: " + myValue + "]";
+	}
+	
+	public int getRow() {
+		return myRow;
+	}
+	
+	public int getColumn() {
+		return myColumn;
 	}
 }
