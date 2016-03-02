@@ -123,7 +123,7 @@ public class Cell {
 	 */
 	public void parseInput(final String input) {
 
-		if (isvalid(input)) {
+		//if (isvalid(input)) {
 			final Stack<Token> formula = getFormula(input);
 			myFormula = input;
 			expressionTree.BuildExpressionTree(formula, myDependents);
@@ -132,10 +132,10 @@ public class Cell {
 				updateDependents();
 			}
 			Spreadsheet.updateSpreadsheet(myRow, myColumn);
-		} else {
-			System.out.println("Wrong");
-			throw new IllegalArgumentException("Invalid Input");
-		}
+		//} else {
+		//	System.out.println("Wrong");
+		//	throw new IllegalArgumentException("Invalid Input");
+		//}
 	}
 
 	/**

@@ -1,8 +1,11 @@
 package model;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -10,6 +13,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  * This class represents a spreadsheet. It stores the information for all of the
@@ -28,10 +32,10 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 
 	/** How many rows are in this spreadsheet. */
 	public static final int ROWS = 20;
-	
+
 	/** Count of letters. */
 	public static final int LETTERS = 26;
-	
+
 	/** Represents each cell of the spreadsheet. */
 	protected static final Cell[][] CELLS = initializeCells();
 
@@ -46,7 +50,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 
 	/** Represents the current JTable. */
 	private final JTable myTable;
-	
+
 	/** True if the Display Formulas button is pressed, false otherwise. */
 	protected static boolean displayFormulas = true;
 
@@ -62,6 +66,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 		myTable = new JTable(SPREADSHEET, columnNames) {
 			/** A generated serial version UID. */
 			private static final long serialVersionUID = -8427343693180623327L;
+
 			// This anonymous inner class disables the row numbers from
 			// being editable.
 			@Override
@@ -69,8 +74,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 				return column != 0;
 			}
 		};
-		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
-		dtcr.setHorizontalTextPosition(DefaultTableCellRenderer.CENTER);
+		setupAllCells();
 		myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		myTable.getModel().addTableModelListener(this);
 		myTable.getTableHeader().setReorderingAllowed(false);
@@ -83,13 +87,12 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 		try {
 			// Tries to parse the expression entered by the user.
 			((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()])
-				.parseInput((String) SPREADSHEET[theEvent.getFirstRow()][theEvent
-						.getColumn()]);
-		} catch (NullPointerException|IllegalArgumentException e){
+					.parseInput((String) SPREADSHEET[theEvent.getFirstRow()][theEvent.getColumn()]);
+		} catch (NullPointerException | IllegalArgumentException e) {
 			// Display an error and revert to old formula if invalid input.
-			 JOptionPane.showMessageDialog(null, "Invalid expression entered.", 
-                     "Error", JOptionPane.INFORMATION_MESSAGE);
-			 SPREADSHEET[theEvent.getFirstRow()][theEvent.getColumn()] = oldformula;
+			JOptionPane.showMessageDialog(null, "Invalid expression entered.", "Error",
+					JOptionPane.INFORMATION_MESSAGE);
+			SPREADSHEET[theEvent.getFirstRow()][theEvent.getColumn()] = oldformula;
 		}
 	}
 
@@ -117,19 +120,22 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 		}
 		return newcells;
 	}
-	
+
 	/**
-	 * updates the spreadsheet at the location with respect to the passed row and column.
+	 * updates the spreadsheet at the location with respect to the passed row
+	 * and column.
 	 * 
-	 * @param theRow the row of the spreadsheet to be updated
-	 * @param theColumn the column of the spreadsheet to be updated
+	 * @param theRow
+	 *            the row of the spreadsheet to be updated
+	 * @param theColumn
+	 *            the column of the spreadsheet to be updated
 	 */
 	public static void updateSpreadsheet(final int theRow, final int theColumn) {
 		if (displayFormulas) {
 			SPREADSHEET[theRow][theColumn] = CELLS[theRow][theColumn].getFormula();
 		} else {
 			System.out.println(CELLS[theRow][theColumn].getValue());
-			if(CELLS[theRow][theColumn].getValue() == 0) {
+			if (CELLS[theRow][theColumn].getValue() == 0) {
 				SPREADSHEET[theRow][theColumn] = "";
 			} else {
 				SPREADSHEET[theRow][theColumn] = CELLS[theRow][theColumn].getValue();
@@ -176,6 +182,34 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	}
 
 	/**
+	 * This method centers all the cells be setting each columns default cell
+	 * render to center the cell's data. It also colors the background of the
+	 * row numbers to indicate that they are part of the UI and is uneditable.
+	 */
+	private void setupAllCells() {
+		for (int i = 0; i < COLUMNS; i++) {
+			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+			myTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}
+		TableColumn rowNums = myTable.getColumnModel().getColumn(0);
+		rowNums.setCellRenderer(new DefaultTableCellRenderer() {
+			
+			/** A generated serial version UID. */
+			private static final long serialVersionUID = 3565976393614019090L;
+			
+			public Component getTableCellRendererComponent(final JTable table, final Object value, 
+					final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+				final Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				final Color lightGray = new Color(238, 238, 238);
+				cell.setBackground(lightGray);
+				setHorizontalAlignment(JLabel.CENTER);
+				return cell;
+			}
+		});
+	}
+
+	/**
 	 * Return the column names.
 	 * 
 	 * @return the column names
@@ -196,8 +230,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	/**
 	 * Returns the String representation of the passed column.
 	 * 
-	 * @param theColumn
-	 *            the current column being converted
+	 * @param theColumn the current column being converted
 	 * @return the String representation of the passed column
 	 */
 	public static String convertToString(int theColumn) {
