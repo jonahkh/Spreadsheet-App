@@ -3,6 +3,7 @@ package model;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
@@ -82,10 +83,19 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 
 	@Override
 	public void tableChanged(final TableModelEvent theEvent) {
-		// Prints the contents of the cell
-		((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()])
+		// Save contents of cell before changing.
+		String oldformula = CELLS[theEvent.getFirstRow()][theEvent.getColumn()].getFormula();
+		try {
+			// Tries to parse the expression entered by the user.
+			((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()])
 				.parseInput((String) SPREADSHEET[theEvent.getFirstRow()][theEvent
 						.getColumn()]);
+		} catch (NullPointerException e){
+			// Display an error and revert to old formula if invalid input.
+			 JOptionPane.showMessageDialog(null, "Invalid expression entered.", 
+                     "Error", JOptionPane.INFORMATION_MESSAGE);
+			 SPREADSHEET[theEvent.getFirstRow()][theEvent.getColumn()] = oldformula;
+		}
 	}
 
 	/**
