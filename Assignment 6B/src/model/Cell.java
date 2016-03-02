@@ -63,6 +63,21 @@ public class Cell {
 	}
 	
 	/**
+	 * Removes a dependent from the list of dependents.
+	 * 
+	 * @param theCell the dependent to be removed
+	 */
+	public void removeDependent(final Cell theCell) {
+		if (!myDependents.isEmpty()) {
+			for (Cell cell : myDependents) {
+				if (theCell == cell) {
+					myDependents.remove(cell);
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Notifies each cell in the list of dependents that a change was made to this cell.
 	 */
 	public void updateDependents() {
@@ -80,7 +95,7 @@ public class Cell {
 	public void parseInput(final String input) {
 		final Stack<Token> formula = getFormula(input);
 		myFormula = input;
-		expressionTree.BuildExpressionTree(formula, myDependencies);
+		expressionTree.BuildExpressionTree(formula, myDependents);
 		myValue = expressionTree.evaluate();
 		if (!myDependents.isEmpty()) {
 			updateDependents();
@@ -94,7 +109,7 @@ public class Cell {
 	public void reEvaluate() {
 		myValue = expressionTree.evaluate();
 		Spreadsheet.updateSpreadsheet(myRow, myColumn);
-		Spreadsheet.SPREADSHEET[myRow][myColumn] = myValue;
+//		Spreadsheet.SPREADSHEET[myRow][myColumn] = myValue;
 		
 	}
 
@@ -106,6 +121,12 @@ public class Cell {
 	public int getValue() {
 		return myValue;
 	}
+	
+	public void removeAllDependencies() {
+		for (final Cell cell : myDependencies) {
+			cell.removeDependent(this);
+		}
+	}
 
 	/**
 	 * Returns a stack representing the passed myFormula.
@@ -114,6 +135,8 @@ public class Cell {
 	 * @return A stack representing the passed myFormula
 	 */
 	public Stack<Token> getFormula(String myFormula) {
+//		removeAllDependencies();
+//		myDependencies.clear();
 		Stack<Token> returnStack = new Stack<Token>(); // stack of Tokens
 														// (representing a
 														// postfix expression)
@@ -222,8 +245,9 @@ public class Cell {
 				// We found a cell reference token
 				cellToken = new CellToken(myFormula, index);
 				Spreadsheet.CELLS[cellToken.getRow()][cellToken.getColumn()].addDependent(this);
+//				myDependencies.add(Spreadsheet.CELLS[cellToken.getRow()][cellToken.getColumn()]);
 				index = cellToken.getCellToken(myFormula, index);
-				if (cellToken.getRow() == CellToken.BadCell) {
+				if (cellToken.getRow() == CellToken.BAD_CELL) {
 					error = true;
 					break;
 				} else {

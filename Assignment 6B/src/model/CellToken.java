@@ -9,7 +9,7 @@ package model;
 public class CellToken implements Token {
 
 	/** Represents a bad cell. */
-	public static final int BadCell = -1;
+	public static final int BAD_CELL = -1;
 	
 	/** The column for this cell token. */
 	private int column;
@@ -17,7 +17,12 @@ public class CellToken implements Token {
 	/** The row for this cell token. */
 	private int row;
 
-	
+	/**
+	 * Initialize a new Cell Token.
+	 * 
+	 * @param theFormula the formula for this cell token
+	 * @param theIndex the starting index to translate the formula
+	 */
 	public CellToken(final String theFormula, final int theIndex) {
 		getCellToken(theFormula, theIndex);
 	}
@@ -47,8 +52,8 @@ public class CellToken implements Token {
 
 		// handle a bad startIndex
 		if ((startIndex < 0) || (startIndex >= inputString.length())) {
-			setColumn(BadCell);
-			setRow(BadCell);
+			setColumn(BAD_CELL);
+			setRow(BAD_CELL);
 			return index;
 		}
 
@@ -62,8 +67,8 @@ public class CellToken implements Token {
 		}
 		if (index == inputString.length()) {
 			// reached the end of the string before finding a capital letter
-			setColumn(BadCell);
-			setRow(BadCell);
+			setColumn(BAD_CELL);
+			setRow(BAD_CELL);
 			return index;
 		}
 
@@ -72,8 +77,8 @@ public class CellToken implements Token {
 		ch = inputString.charAt(index);
 		// process CAPITAL alphabetic characters to calculate the column
 		if (!Character.isUpperCase(ch)) {
-			setColumn(BadCell);
-			setRow(BadCell);
+			setColumn(BAD_CELL);
+			setRow(BAD_CELL);
 			return index;
 		} else {
 			column = ch - 'A' + 1;
@@ -92,8 +97,8 @@ public class CellToken implements Token {
 		if (index == inputString.length()) {
 			// reached the end of the string before fully parsing the cell
 			// reference
-			setColumn(BadCell);
-			setRow(BadCell);
+			setColumn(BAD_CELL);
+			setRow(BAD_CELL);
 			return index;
 		}
 
@@ -105,8 +110,8 @@ public class CellToken implements Token {
 			row = ch - '0';
 			index++;
 		} else {
-			setColumn(BadCell);
-			setRow(BadCell);
+			setColumn(BAD_CELL);
+			setRow(BAD_CELL);
 			return index;
 		}
 
