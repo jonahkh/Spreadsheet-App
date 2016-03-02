@@ -63,14 +63,10 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			/** A generated serial version UID. */
 			private static final long serialVersionUID = -8427343693180623327L;
 			// This anonymous inner class disables the row numbers from
-			// being editable. Also disables if viewing values.
+			// being editable.
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				if (!displayFormulas) {
-					return false;
-				} else {
-					return column != 0;
-				}
+				return column != 0;
 			}
 		};
 		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
