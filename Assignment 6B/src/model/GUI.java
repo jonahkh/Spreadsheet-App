@@ -42,6 +42,7 @@ public class GUI extends Observable {
 		// Sets the title of the program in the title bar.
 		myFrame = new JFrame("TCSS 342 Spreadsheet - Group 8");
 		mySpreadsheet = new Spreadsheet();
+		addObserver(mySpreadsheet);
 		// Adds the spreadsheet table to a JScrollPane that allows for resizing.
 		myJScrollPane = new JScrollPane(mySpreadsheet.getTable(), 
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
@@ -89,7 +90,9 @@ public class GUI extends Observable {
 			public void actionPerformed(final ActionEvent theEvent) {
 				valuesButton.setEnabled(true);
 				formulaButton.setEnabled(false);
+				setChanged();
 				notifyObservers(true);
+				clearChanged();
 				Spreadsheet.displayFormulas = true;
 				// Fill each active cell with its corresponding formula
 				for (int i = 0; i < Spreadsheet.ROWS; i++) {
@@ -106,7 +109,9 @@ public class GUI extends Observable {
 			public void actionPerformed(final ActionEvent theEvent) {
 				formulaButton.setEnabled(true);
 				valuesButton.setEnabled(false);
+				setChanged();
 				notifyObservers(false);
+				clearChanged();
 				Spreadsheet.displayFormulas = false;
 				// Fill each active cell with its corresponding value
 				for (int i = 0; i < Spreadsheet.ROWS; i++) {

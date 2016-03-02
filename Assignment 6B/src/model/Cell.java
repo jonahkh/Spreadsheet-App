@@ -76,13 +76,6 @@ public class Cell {
 	 */
 	public void removeDependent(final int inDegree, final Cell theCell) {
 		dependents.get(inDegree).remove(theCell);
-//		if (!myDependents.isEmpty()) {
-//			for (final Cell cell : myDependents) {
-//				if (theCell == cell) {
-//					myDependents.remove(cell);
-//				}
-//			}
-//		}
 		for (Iterator<Cell> iterator = myDependents.iterator(); iterator.hasNext();) {
 			Cell cell = iterator.next();
 			if (cell == theCell) {
@@ -138,9 +131,8 @@ public class Cell {
 	 */
 	public void reEvaluate() {
 		myValue = expressionTree.evaluate();
+		updateDependents();
 		Spreadsheet.updateSpreadsheet(myRow, myColumn);
-//		Spreadsheet.SPREADSHEET[myRow][myColumn] = myValue;
-		
 	}
 
 	/**
