@@ -90,8 +90,8 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 					.parseInput((String) SPREADSHEET[theEvent.getFirstRow()][theEvent.getColumn()]);
 		} catch (NullPointerException | IllegalArgumentException e) {
 			// Display an error and revert to old formula if invalid input.
-			JOptionPane.showMessageDialog(null, "Invalid expression entered.", "Error",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Invalid expression entered. Please try again.", "Error!",
+					JOptionPane.ERROR_MESSAGE);
 			SPREADSHEET[theEvent.getFirstRow()][theEvent.getColumn()] = oldformula;
 		}
 	}
@@ -114,7 +114,6 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 		final Cell[][] newcells = new Cell[ROWS][COLUMNS + 1];
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 1; j < COLUMNS + 1; j++) {
-				// cells[i][j] = new Cell();
 				newcells[i][j] = new Cell(j, i);
 			}
 		}
@@ -151,15 +150,6 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 		for (int i = 1; i < COLUMNS + 1; i++) {
 			columnNames[i] = convertToString(i - 1);
 		}
-		// for (int i = 0; i < ROWS; i++) {
-		// for (int j = 0; j < COLUMNS + 1; j++) {
-		// if (j == 0) {
-		// spreadsheet[i][j] = i;
-		// } else {
-		// spreadsheet[i][j] = "";
-		// }
-		// }
-		// }
 	}
 
 	/**
@@ -187,11 +177,14 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * row numbers to indicate that they are part of the UI and is uneditable.
 	 */
 	private void setupAllCells() {
-		for (int i = 0; i < COLUMNS; i++) {
+		// For all data columns in the table, center their cell's alignment. 
+		for (int i = 1; i < COLUMNS; i++) {
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 			myTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
+		// Special case for first column, set the background color to match the column headers in
+		// addition to centering each cell. 
 		TableColumn rowNums = myTable.getColumnModel().getColumn(0);
 		rowNums.setCellRenderer(new DefaultTableCellRenderer() {
 			
