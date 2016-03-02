@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -71,13 +72,21 @@ public class Cell {
 	 * Removes a dependent from the list of dependents.
 	 * 
 	 * @param theCell the dependent to be removed
+	 * @param inDegree the inDegree of the passed cell
 	 */
-	public void removeDependent(final Cell theCell) {
-		if (!myDependents.isEmpty()) {
-			for (final Cell cell : myDependents) {
-				if (theCell == cell) {
-					myDependents.remove(cell);
-				}
+	public void removeDependent(final int inDegree, final Cell theCell) {
+		dependents.get(inDegree).remove(theCell);
+//		if (!myDependents.isEmpty()) {
+//			for (final Cell cell : myDependents) {
+//				if (theCell == cell) {
+//					myDependents.remove(cell);
+//				}
+//			}
+//		}
+		for (Iterator<Cell> iterator = myDependents.iterator(); iterator.hasNext();) {
+			Cell cell = iterator.next();
+			if (cell == theCell) {
+				iterator.remove();
 			}
 		}
 	}
@@ -145,7 +154,7 @@ public class Cell {
 	
 	public void removeAllDependencies() {
 		for (final Cell cell : myDependencies) {
-			cell.removeDependent(this);
+			cell.removeDependent(myDependencies.size(), this);
 		}
 		myDependencies.clear();
 	}
