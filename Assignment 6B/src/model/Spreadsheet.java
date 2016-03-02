@@ -62,10 +62,15 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			/** A generated serial version UID. */
 			private static final long serialVersionUID = -8427343693180623327L;
 			// This anonymous inner class disables the row numbers from
-			// being editable.
+			// being editable. Also disables if viewing values.
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				return column != 0;
+				System.out.println("displayFormula: " + displayFormulas);
+				if (!displayFormulas) {
+					return false;
+				} else {
+					return column != 0;
+				}
 			}
 		};
 		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
@@ -111,7 +116,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	/**
 	 * updates the spreadsheet at the location with respect to the passed row and column.
 	 * 
-	 * @param theRow the row of the spreadsheeet to be updated
+	 * @param theRow the row of the spreadsheet to be updated
 	 * @param theColumn the column of the spreadsheet to be updated
 	 */
 	public static void updateSpreadsheet(final int theRow, final int theColumn) {

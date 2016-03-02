@@ -90,6 +90,7 @@ public class GUI extends Observable {
 				valuesButton.setEnabled(true);
 				formulaButton.setEnabled(false);
 				notifyObservers(true);
+				Spreadsheet.displayFormulas = true;
 				// Fill each active cell with its corresponding formula
 				for (int i = 0; i < Spreadsheet.ROWS; i++) {
 					for (int j = 1; j < Spreadsheet.COLUMNS + 1; j++) {
@@ -106,6 +107,7 @@ public class GUI extends Observable {
 				formulaButton.setEnabled(true);
 				valuesButton.setEnabled(false);
 				notifyObservers(false);
+				Spreadsheet.displayFormulas = false;
 				// Fill each active cell with its corresponding value
 				for (int i = 0; i < Spreadsheet.ROWS; i++) {
 					for (int j = 1; j < Spreadsheet.COLUMNS + 1; j++) {
