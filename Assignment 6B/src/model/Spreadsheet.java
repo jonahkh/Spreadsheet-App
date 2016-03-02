@@ -32,6 +32,9 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 
 	/** How many rows are in this spreadsheet. */
 	public static final int ROWS = 20;
+	
+	/** The width of the column of row numbers in pixels. */
+	public static final int ROW_NUMBER_WIDTH = 30;
 
 	/** Count of letters. */
 	public static final int LETTERS = 26;
@@ -200,6 +203,8 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 				return cell;
 			}
 		});
+		
+		myTable.getColumnModel().getColumn(0).setPreferredWidth(ROW_NUMBER_WIDTH);
 	}
 
 	/**
