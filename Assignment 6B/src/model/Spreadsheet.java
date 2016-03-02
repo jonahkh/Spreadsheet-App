@@ -66,7 +66,6 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			// being editable. Also disables if viewing values.
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				System.out.println("displayFormula: " + displayFormulas);
 				if (!displayFormulas) {
 					return false;
 				} else {
@@ -90,7 +89,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()])
 				.parseInput((String) SPREADSHEET[theEvent.getFirstRow()][theEvent
 						.getColumn()]);
-		} catch (NullPointerException e){
+		} catch (NullPointerException|IllegalArgumentException e){
 			// Display an error and revert to old formula if invalid input.
 			 JOptionPane.showMessageDialog(null, "Invalid expression entered.", 
                      "Error", JOptionPane.INFORMATION_MESSAGE);
