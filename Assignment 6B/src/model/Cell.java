@@ -158,8 +158,7 @@ public class Cell {
 	/**
 	 * This method will return if the operands are corrected
 	 * 
-	 * @param String
-	 *            input
+	 * @param String input
 	 * @return true:valid false:invalid
 	 */
 	private boolean checkoperands(final String input) {
@@ -177,26 +176,12 @@ public class Cell {
 		if (function(input)) {
 			char temp;
 
-			if (first == '-' || first >= 65 && first <= 90 || first >= 48 && first <= 57) {// This
-																							// for
-																							// loop
-																							// is
-																							// also
-																							// checking
-																							// for
-																							// first
-																							// char
-																							// to
-																							// see
-																							// if
-																							// it
-																							// between(A-Z
-																							// or
-																							// a-z)
+			if (first == '-' || first >= 'A' && first <= 'Z' || first >= '0' && first <= '9') {
+				// This for loop is also checking for first char to see if it between(A-Z or a-z)
 				for (int i = 0; i < upper.length(); i++) {
 					temp = upper.charAt(i);
 
-					if (temp >= 65 && temp <= 90) {
+					if (temp >= 'A' && temp <= 'Z') {
 						int j = 1;
 						while (j < upper.length()) {
 							if (upper.charAt(j) > '0' && upper.charAt(j) < '9') {
@@ -209,14 +194,14 @@ public class Cell {
 						if (i + 1 >= upper.length()) {
 							return false;
 
-						} else if (upper.charAt(i + 1) >= 65 && upper.charAt(i + 1) <= 90) {
+						} else if (upper.charAt(i + 1) >= 'A' && upper.charAt(i + 1) <= 'Z') {
 							if (i + 2 >= upper.length()) {
 								return false;
 
-							} else if (upper.charAt(i + 2) >= 48 || upper.charAt(i + 2) <= 57) {
+							} else if (upper.charAt(i + 2) >= '0' || upper.charAt(i + 2) <= '9') {
 								if (i + 3 >= upper.length()) {
 									return false;
-								} else if (upper.charAt(i + 3) >= 48 || upper.charAt(i + 3) <= 57) {
+								} else if (upper.charAt(i + 3) >= '0' || upper.charAt(i + 3) <= '9') {
 									return true;
 								}
 							}
