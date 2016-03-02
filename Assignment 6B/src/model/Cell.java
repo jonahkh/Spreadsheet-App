@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
 
-
 /**
  * This class represents a single cell in a spreadsheet. It contains data
  * specific to this cell and can depend on the myValue of other cells for
@@ -15,6 +14,7 @@ import java.util.TreeMap;
  * 
  * @author Jonah Howard
  * @author Henry Lai
+ * @author John Bui
  */
 public class Cell {
 
@@ -29,23 +29,25 @@ public class Cell {
 
 	/** The list of dependencies for this cell. */
 	private final List<Cell> myDependencies;
-	
+
 	private final List<Cell> myDependents;
-	
+
 	/** The current row for this cell. */
 	private final int myRow;
-	
+
 	/** The current column for this cell. */
 	private final int myColumn;
-	
+
 	/** Maps an indegree to a list of cells that are dependent on this cell. */
 	private final Map<Integer, List<Cell>> dependents;
 
 	/**
 	 * Initializes a new cell.
 	 * 
-	 * @param theColumn The column where this cell is located.
-	 * @param theRow The row where this cell is located.
+	 * @param theColumn
+	 *            The column where this cell is located.
+	 * @param theRow
+	 *            The row where this cell is located.
 	 */
 	public Cell(final int theColumn, final int theRow) {
 		expressionTree = new ExpressionTree();
@@ -56,23 +58,26 @@ public class Cell {
 		myRow = theRow;
 		dependents = new TreeMap<Integer, List<Cell>>();
 	}
-	
+
 	/**
 	 * Add the passed token to the list of dependents.
 	 * 
-	 * @param theToken the token that depends on this cell
+	 * @param theToken
+	 *            the token that depends on this cell
 	 */
 	public void addDependent(final Cell theCell) {
-//		System.out.println("dependent added");
-//		System.out.println(toString());
+		// System.out.println("dependent added");
+		// System.out.println(toString());
 		myDependents.add(theCell);
 	}
-	
+
 	/**
 	 * Removes a dependent from the list of dependents.
 	 * 
-	 * @param theCell the dependent to be removed
-	 * @param inDegree the inDegree of the passed cell
+	 * @param theCell
+	 *            the dependent to be removed
+	 * @param inDegree
+	 *            the inDegree of the passed cell
 	 */
 	public void removeDependent(final int inDegree, final Cell theCell) {
 		dependents.get(inDegree).remove(theCell);
@@ -83,7 +88,7 @@ public class Cell {
 			}
 		}
 	}
-	
+
 	public void addDependentVertice(final int inDegree, final Cell theCell) {
 		if (dependents.containsKey(inDegree)) {
 			dependents.get(inDegree).add(theCell);
@@ -92,20 +97,20 @@ public class Cell {
 			dependents.get(inDegree).add(theCell);
 		}
 	}
-	
+
 	public int getDependencyCount() {
 		return myDependencies.size();
 	}
-	
+
 	/**
-	 * Notifies each cell in the list of dependents that a change was made to this cell.
-	 * Evaluates in topological sorting order.
+	 * Notifies each cell in the list of dependents that a change was made to
+	 * this cell. Evaluates in topological sorting order.
 	 */
 	public void updateDependents() {
 		for (final int current : dependents.keySet()) {
 			for (Cell cell : dependents.get(current)) {
 				Spreadsheet.CELLS[cell.getRow()][cell.getColumn()].reEvaluate();
-				
+
 			}
 		}
 	}
@@ -113,19 +118,187 @@ public class Cell {
 	/**
 	 * Parse and evaluate input for this cell.
 	 * 
-	 * @param input The new input for this cell
+	 * @param input
+	 *            The new input for this cell
 	 */
 	public void parseInput(final String input) {
-		final Stack<Token> formula = getFormula(input);
-		myFormula = input;
-		expressionTree.BuildExpressionTree(formula, myDependents);
-		myValue = expressionTree.evaluate();
-		if (!myDependents.isEmpty()) {
-			updateDependents();
+
+		if (isvalid(input)) {
+			final Stack<Token> formula = getFormula(input);
+			myFormula = input;
+			expressionTree.BuildExpressionTree(formula, myDependents);
+			myValue = expressionTree.evaluate();
+			if (!myDependents.isEmpty()) {
+				updateDependents();
+			}
+			Spreadsheet.updateSpreadsheet(myRow, myColumn);
+		} else {
+			System.out.println("Wrong");
+			throw new IllegalArgumentException("Invalid Input");
 		}
-		Spreadsheet.updateSpreadsheet(myRow, myColumn);
 	}
-	
+
+	/**
+	 * Method will being the check of input (parenthesis, operator...);
+	 * 
+	 * @param String
+	 *            input
+	 * @return true: valid , false:invalid
+	 */
+	private boolean isvalid(final String input) {
+		int isvalid = checkparenthesis(input);
+		// checkoperands(input);
+		if (isvalid == 0 && checkoperands(input) && checkoperator(input)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * This method will return if the operands are corrected
+	 * 
+	 * @param String
+	 *            input
+	 * @return true:valid false:invalid
+	 */
+	private boolean checkoperands(final String input) {
+		String upper = input.toUpperCase();
+		char first = upper.charAt(0);
+		if (first == '-') {
+			if (upper.length() == 1) {
+				return false;
+			}
+		} else if (first == '*' || first == '+' || first == '/') {
+			return false;
+		}
+
+		// The above is checking the first character.
+		if (function(input)) {
+			char temp;
+
+			if (first == '-' || first >= 65 && first <= 90 || first >= 48 && first <= 57) {// This
+																							// for
+																							// loop
+																							// is
+																							// also
+																							// checking
+																							// for
+																							// first
+																							// char
+																							// to
+																							// see
+																							// if
+																							// it
+																							// between(A-Z
+																							// or
+																							// a-z)
+				for (int i = 0; i < upper.length(); i++) {
+					temp = upper.charAt(i);
+
+					if (temp >= 65 && temp <= 90) {
+						int j = 1;
+						while (j < upper.length()) {
+							if (upper.charAt(j) > '0' && upper.charAt(j) < '9') {
+								break;
+							} else {
+								return false;
+							}
+
+						}
+						if (i + 1 >= upper.length()) {
+							return false;
+
+						} else if (upper.charAt(i + 1) >= 65 && upper.charAt(i + 1) <= 90) {
+							if (i + 2 >= upper.length()) {
+								return false;
+
+							} else if (upper.charAt(i + 2) >= 48 || upper.charAt(i + 2) <= 57) {
+								if (i + 3 >= upper.length()) {
+									return false;
+								} else if (upper.charAt(i + 3) >= 48 || upper.charAt(i + 3) <= 57) {
+									return true;
+								}
+							}
+						}
+						return true;
+					}
+				}
+
+			} else {
+				return false;
+			}
+		}
+		return true;
+
+	}
+
+	private boolean function(String input) {
+		String temp = input.replaceAll("\\s", "");
+
+		char[] operator = { '*', '+', '-', '/' };
+		for (int i = 0; i < temp.length(); i++) {
+			for (int j = 0; j < operator.length; j++) {
+				if (operator[j] == temp.charAt(i)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/*
+	 * checking what follow after operator; input String input return true:valid
+	 * false:invalid
+	 */
+	private boolean checkoperator(String input) {
+		String temp = input.replaceAll("\\s", "").toUpperCase();
+		char[] operator = { '*', '+', '-', '/' };
+		for (int i = 0; i < operator.length; i++) { // This loop will check if
+													// the last index is an
+													// operator.
+			if (operator[i] == temp.charAt(temp.length() - 1)) {
+				System.out.println("Operator at the end");
+				return false;
+
+			}
+		}
+
+		for (int i = 0; i < temp.length(); i++) {// after the first loop, this
+													// will check to see what is
+													// after the operator.
+			if (temp.charAt(i) == '+' || temp.charAt(i) == '-' || temp.charAt(i) == '*' || temp.charAt(i) == '/') {
+				if (temp.charAt(i + 1) < '0' || temp.charAt(i + 1) > '9' && temp.charAt(i + 1) < 'A'
+						|| temp.charAt(i + 1) > 'Z') {
+					System.out.println("Operator wrong");
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * This method will return if the parenhesises are correct.
+	 * 
+	 * @param String
+	 *            input
+	 * @return 0: valid, otherwise is invalid
+	 */
+	private int checkparenthesis(final String input) {
+		int temp = 0;
+		for (int i = 0; i < input.length(); i++) {
+			char c = input.charAt(i);
+			if (c == '(') {
+				temp++;
+			} else if (c == ')') {
+				temp--;
+			}
+		}
+		return temp;
+	}
+
 	/**
 	 * Evaluates this cell if a change is made to one of its dependencies.
 	 */
@@ -143,7 +316,7 @@ public class Cell {
 	public int getValue() {
 		return myValue;
 	}
-	
+
 	public void removeAllDependencies() {
 		for (final Cell cell : myDependencies) {
 			cell.removeDependent(myDependencies.size(), this);
@@ -154,7 +327,8 @@ public class Cell {
 	/**
 	 * Returns a stack representing the passed myFormula.
 	 * 
-	 * @param myFormula the current myFormula being considered
+	 * @param myFormula
+	 *            the current myFormula being considered
 	 * @return A stack representing the passed myFormula
 	 */
 	public Stack<Token> getFormula(String myFormula) {
@@ -169,7 +343,7 @@ public class Cell {
 
 		CellToken cellToken;
 		// Temporary holder variable to access methods inside OperatorToken
-		OperatorToken operatorToken = new OperatorToken('a');   
+		OperatorToken operatorToken = new OperatorToken('a');
 
 		int index = 0; // index into myFormula
 		Stack<Token> operatorStack = new Stack<Token>(); // stack of operators
@@ -309,19 +483,18 @@ public class Cell {
 	 */
 	public String toString() {
 		// We can also print out the dependencies later if needed.
-		return "Cell: (" + myRow + ", " + myColumn + ")\nValue = " + myValue + "\nFormula = " +
-				myFormula + "\n";
+		return "Cell: (" + myRow + ", " + myColumn + ")\nValue = " + myValue + "\nFormula = " + myFormula + "\n";
 	}
-	
+
 	/**
-	 * Return the current row for this cell. 
+	 * Return the current row for this cell.
 	 * 
 	 * @return the current row for this cell
 	 */
 	public int getRow() {
 		return myRow;
 	}
-	
+
 	/**
 	 * Return the current column for this cell.
 	 * 
