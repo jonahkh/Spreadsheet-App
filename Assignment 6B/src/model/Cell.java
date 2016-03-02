@@ -2,7 +2,9 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
+import java.util.TreeMap;
 
 
 /**
@@ -22,26 +24,27 @@ public class Cell {
 	private int myValue;
 
 	/** The expression tree for this cell. */
-	private ExpressionTree expressionTree;
+	private final ExpressionTree expressionTree;
 
 	/** The list of dependencies for this cell. */
-	private List<Cell> myDependencies;
+	private final List<Cell> myDependencies;
 	
-	private List<Cell> myDependents;
+	private final List<Cell> myDependents;
 	
 	/** The current row for this cell. */
 	private final int myRow;
 	
 	/** The current column for this cell. */
 	private final int myColumn;
+	
+	/** Maps an indegree to a list of cells that are dependent on this cell. */
+	private final Map<Integer, List<Cell>> dependents;
 
 	/**
 	 * Initializes a new cell.
 	 * 
-	 * @param theColumn
-	 *            The column where this cell is located.
-	 * @param theRow
-	 *            The row where this cell is located.
+	 * @param theColumn The column where this cell is located.
+	 * @param theRow The row where this cell is located.
 	 */
 	public Cell(final int theColumn, final int theRow) {
 		expressionTree = new ExpressionTree();
@@ -50,6 +53,7 @@ public class Cell {
 		myDependents = new ArrayList<Cell>();
 		myColumn = theColumn;
 		myRow = theRow;
+		dependents = new TreeMap<Integer, List<Cell>>();
 	}
 	
 	/**
@@ -59,6 +63,7 @@ public class Cell {
 	 */
 	public void addDependent(final Cell theCell) {
 //		System.out.println("dependent added");
+//		System.out.println(toString());
 		myDependents.add(theCell);
 	}
 	
@@ -69,7 +74,7 @@ public class Cell {
 	 */
 	public void removeDependent(final Cell theCell) {
 		if (!myDependents.isEmpty()) {
-			for (Cell cell : myDependents) {
+			for (final Cell cell : myDependents) {
 				if (theCell == cell) {
 					myDependents.remove(cell);
 				}
@@ -77,13 +82,29 @@ public class Cell {
 		}
 	}
 	
+	public void addDependentVertice(final int inDegree, final Cell theCell) {
+		if (dependents.containsKey(inDegree)) {
+			dependents.get(inDegree).add(theCell);
+		} else {
+			dependents.put(inDegree, new ArrayList<Cell>());
+			dependents.get(inDegree).add(theCell);
+		}
+	}
+	
+	public int getDependencyCount() {
+		return myDependencies.size();
+	}
+	
 	/**
 	 * Notifies each cell in the list of dependents that a change was made to this cell.
+	 * Evaluates in topological sorting order.
 	 */
 	public void updateDependents() {
-		for (Cell cell : myDependents) {
-			Spreadsheet.CELLS[cell.getRow()][cell.getColumn()].reEvaluate();
-			
+		for (final int current : dependents.keySet()) {
+			for (Cell cell : dependents.get(current)) {
+				Spreadsheet.CELLS[cell.getRow()][cell.getColumn()].reEvaluate();
+				
+			}
 		}
 	}
 
@@ -126,6 +147,7 @@ public class Cell {
 		for (final Cell cell : myDependencies) {
 			cell.removeDependent(this);
 		}
+		myDependencies.clear();
 	}
 
 	/**
@@ -135,8 +157,7 @@ public class Cell {
 	 * @return A stack representing the passed myFormula
 	 */
 	public Stack<Token> getFormula(String myFormula) {
-//		removeAllDependencies();
-//		myDependencies.clear();
+		removeAllDependencies();
 		Stack<Token> returnStack = new Stack<Token>(); // stack of Tokens
 														// (representing a
 														// postfix expression)
@@ -146,15 +167,8 @@ public class Cell {
 		int literalValue = 0;
 
 		CellToken cellToken;
-		OperatorToken operatorToken = new OperatorToken('a');   // Temporary
-																// holder
-																// variable to
-																// access
-																// methods
-																// inside
-																// OperatorToken
-//		int column = 0;
-//		int row = 0;
+		// Temporary holder variable to access methods inside OperatorToken
+		OperatorToken operatorToken = new OperatorToken('a');   
 
 		int index = 0; // index into myFormula
 		Stack<Token> operatorStack = new Stack<Token>(); // stack of operators
@@ -245,7 +259,7 @@ public class Cell {
 				// We found a cell reference token
 				cellToken = new CellToken(myFormula, index);
 				Spreadsheet.CELLS[cellToken.getRow()][cellToken.getColumn()].addDependent(this);
-//				myDependencies.add(Spreadsheet.CELLS[cellToken.getRow()][cellToken.getColumn()]);
+				myDependencies.add(Spreadsheet.CELLS[cellToken.getRow()][cellToken.getColumn()]);
 				index = cellToken.getCellToken(myFormula, index);
 				if (cellToken.getRow() == CellToken.BAD_CELL) {
 					error = true;
@@ -270,7 +284,10 @@ public class Cell {
 			// a parse error; return the empty stack
 			returnStack.empty();
 		}
-
+		// Add reference to this cell and its in-degree to each dependency
+		for (final Cell cell : myDependencies) {
+			cell.addDependentVertice(myDependencies.size(), this);
+		}
 		return returnStack;
 	}
 
@@ -291,7 +308,8 @@ public class Cell {
 	 */
 	public String toString() {
 		// We can also print out the dependencies later if needed.
-		return "[" + "Value: " + myValue + "]";
+		return "Cell: (" + myRow + ", " + myColumn + ")\nValue = " + myValue + "\nFormula = " +
+				myFormula + "\n";
 	}
 	
 	/**

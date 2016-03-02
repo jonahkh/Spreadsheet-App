@@ -8,7 +8,7 @@ package model;
  */
 public class OperatorToken implements Token{
 	
-	/** Represetns an addition operator. */
+	/** Represents an addition operator. */
 	public static final char PLUS = '+';
 	
 	/** Represents a subtraction operator. */

@@ -32,10 +32,10 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	public static final int LETTERS = 26;
 	
 	/** Represents each cell of the spreadsheet. */
-	public static final Cell[][] CELLS = initializeCells();
+	protected static final Cell[][] CELLS = initializeCells();
 
 	/** The current spreadsheet. */
-	public static final Object[][] SPREADSHEET = initializeSpreadsheet();
+	protected static final Object[][] SPREADSHEET = initializeSpreadsheet();
 
 	/** The current spreadsheet. */
 	private final Object[][] spreadsheet;

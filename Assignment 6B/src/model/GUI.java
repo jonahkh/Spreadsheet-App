@@ -1,4 +1,4 @@
-package view;
+package model;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -11,8 +11,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import model.Spreadsheet;
 
 /**
  * This class runs the GUI interface for the spreadsheet application.
