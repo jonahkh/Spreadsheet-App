@@ -144,6 +144,10 @@ public class GUI extends Observable {
 		} catch (NumberFormatException e) {	// If invalid input is entered
 			// Assert the minimum size of 3x3
 			rows = cols = MIN_DIMENSION;
+			JOptionPane.showMessageDialog(myFrame.getContentPane(), 
+					"Invalid dimensions entered! Using default 3 x 3 table.", 
+					"Error! Invalid Dimensions!",
+					JOptionPane.ERROR_MESSAGE);
 		}
 		dim.setSize(cols, rows);
 		return dim;
