@@ -7,6 +7,7 @@ package model;
  * @version 28 Feb 2016
  */
 public class LiteralToken implements Token {
+	
 	/** The value of this Literal Token. */
 	private int myValue;
 	

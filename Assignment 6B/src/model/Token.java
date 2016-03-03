@@ -7,5 +7,5 @@ package model;
  * @version 1 March 2016
  */
 public interface Token {
-
+	// Do nothing
 }

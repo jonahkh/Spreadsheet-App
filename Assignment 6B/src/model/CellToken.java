@@ -44,6 +44,13 @@ public class CellToken implements Token {
 		return row;
 	}
 
+	/**
+	 * Returns a number referencing a location on the spreadsheet.
+	 * 
+	 * @param inputString the input being considered
+	 * @param startIndex the starting index for the input
+	 * @return a nuber referencing a location on the spreadsheet
+	 */
 	public int getCellToken(String inputString, int startIndex) {
 		char ch;
 		int column = 0;
