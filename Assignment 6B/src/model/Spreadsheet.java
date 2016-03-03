@@ -97,6 +97,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 					JOptionPane.ERROR_MESSAGE);
 			SPREADSHEET[theEvent.getFirstRow()][theEvent.getColumn()] = oldformula;
 		}
+		printAllFormulas();
 	}
 
 	/**
@@ -270,18 +271,27 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	/**
 	 * Prints the formula for the passed cell token.
 	 * 
-	 * @param theToken
-	 *            the cell token being considered
+	 * @param theToken The cell whose formula is being printed.
 	 */
 	public void printCellFormula(final CellToken theToken) {
-
+		Cell theCell = CELLS[theToken.getRow()][theToken.getColumn()];
+		System.out.println(theCell.getFormula());
 	}
 
 	/**
 	 * Prints the formulas of all cells.
 	 */
 	public void printAllFormulas() {
-
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 1; col < COLUMNS; col++) {
+				// Prints the Column and Row with colon (e.g. A4: )
+				System.out.print(convertToString(col - 1) + row + ": ");
+				// Prints the formula for that cell
+				System.out.print(CELLS[row][col].getFormula() + "   ");
+			}
+			// Line break at the end of a row.
+			System.out.println();
+		}
 	}
 
 	/**
