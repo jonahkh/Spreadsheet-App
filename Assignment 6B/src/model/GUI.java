@@ -30,10 +30,10 @@ public class GUI extends Observable {
 	private static final int MIN_DIMENSION = 3;
 
 	/** Horizontal offset for initial frame resizing. */
-	private static final int HORIZONTAL_OFFSET = 49;
+	private static final int HORIZONTAL_OFFSET = 50;
 	
 	/** Vertical offset for initial frame resizing. */
-	private static final int VERTICAL_OFFSET = 97;
+	private static final int VERTICAL_OFFSET = 100;
 	
 	/** The width of a cell in pixels. Default = 75 */
 	private static final int CELL_WIDTH = 75;

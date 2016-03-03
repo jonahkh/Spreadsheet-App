@@ -96,7 +96,13 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			// Tries to parse the expression entered by the user.
 			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()])
 					.parseInput((String) mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
-		} catch (NullPointerException | IllegalArgumentException e) {
+		} catch (ArithmeticException e) {
+			JOptionPane.showMessageDialog(myTable.getParent(), "HAHAHA NICE TRY. Please try again.", "Error!",
+					JOptionPane.ERROR_MESSAGE);
+			// Revert to old formula in spreadsheet and cells. 
+			mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldformula;
+			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldformula);
+		} catch (Exception e){
 			// Display an error and revert to old formula if invalid input.
 			JOptionPane.showMessageDialog(myTable.getParent(), "Invalid expression entered. Please try again.", "Error!",
 					JOptionPane.ERROR_MESSAGE);
