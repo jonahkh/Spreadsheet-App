@@ -77,22 +77,27 @@ public class GUI extends Observable {
 		bottomPanel.add(columnSize);
 	
 		panel.add(bottomPanel);
-		int result = JOptionPane.showConfirmDialog(myFrame, panel, 
-				"Please enter the size of the spreadsheet:", 
-				JOptionPane.OK_CANCEL_OPTION);
-		if (result == JOptionPane.OK_OPTION) {
-			int col = Integer.parseInt(columnSize.getText());
-			int row = Integer.parseInt(rowSize.getText());
-			// Assert the minimum size of 3x3
-			if (col < 3) {
-				col = 3;
+		// Prompt user to set the size of the spreadsheet
+		try {
+			int result = JOptionPane.showConfirmDialog(myFrame, panel, 
+					"Please enter the size of the spreadsheet:", 
+					JOptionPane.OK_CANCEL_OPTION);
+			if (result == JOptionPane.OK_OPTION) {
+				int col = Integer.parseInt(columnSize.getText());
+				int row = Integer.parseInt(rowSize.getText());
+				// Assert the minimum size of 3x3
+				if (col < 3) {
+					col = 3;
+				}
+				if (row < 3) {
+					row = 3;
+				}
+				dim.setSize(row, col);
+			} else {
+				System.exit(0);	// Terminate the program
 			}
-			if (row < 3) {
-				row = 3;
-			}
-			dim.setSize(row, col);
-		} else {
-			System.exit(0);	// Terminate the program
+		} catch (NumberFormatException e) {	// If invalid input is entered
+			dim.setSize(3, 3);
 		}
 		return dim;
 	}

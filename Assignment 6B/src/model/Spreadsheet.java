@@ -28,7 +28,10 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	
 	/** The width of the column of row numbers in pixels. */
 	public static final int ROW_NUMBER_WIDTH = 30;
-
+	
+	/** Minimum size for the spreadsheet. */
+	public static final int MIN_SPREADSHEET_SIZE = 3;
+	
 	/** Count of letters. */
 	public static final int LETTERS = 26;
 
