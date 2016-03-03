@@ -40,6 +40,9 @@ public class Cell {
 
 	/** Maps an indegree to a list of cells that are dependent on this cell. */
 	private final Map<Integer, List<Cell>> dependents;
+	
+	/** The current spreadsheet. */
+	private final Spreadsheet mySpreadsheet;
 
 	/**
 	 * Initializes a new cell.
@@ -49,8 +52,9 @@ public class Cell {
 	 * @param theRow
 	 *            The row where this cell is located.
 	 */
-	public Cell(final int theColumn, final int theRow) {
-		expressionTree = new ExpressionTree();
+	public Cell(final int theRow, final int theColumn, final Spreadsheet theSpreadsheet) {
+		mySpreadsheet = theSpreadsheet;
+		expressionTree = new ExpressionTree(theSpreadsheet);
 		myValue = 0;
 		myDependencies = new ArrayList<Cell>();
 		myDependents = new ArrayList<Cell>();
@@ -121,7 +125,7 @@ public class Cell {
 	public void updateDependents() {
 		for (final int current : dependents.keySet()) {
 			for (Cell cell : dependents.get(current)) {
-				Spreadsheet.CELLS[cell.myRow][cell.myColumn].reEvaluate();
+				mySpreadsheet.getCells()[cell.myRow][cell.myColumn].reEvaluate();
 
 			}
 		}
@@ -143,25 +147,25 @@ public class Cell {
 		if (!myDependents.isEmpty()) {
 			updateDependents();
 		}
-		Spreadsheet.updateSpreadsheet(myRow, myColumn);
+		mySpreadsheet.updateSpreadsheet(myRow, myColumn);
 		// } else {
 		// System.out.println("Wrong");
 		// throw new IllegalArgumentException("Invalid Input");
 		// }
 	}
 
-	/**
-	 * Method will check the input for errors (parenthesis, operator...);
-	 * 
-	 * @param String
-	 *            input
-	 * @return true: valid , false:invalid
-	 */
-	private boolean isvalid(final String input) {
-		int isvalid = checkparenthesis(input);
-		// checkoperands(input);
-		return isvalid == 0 && checkoperands(input) && checkoperator(input);
-	}
+//	/**
+//	 * Method will check the input for errors (parenthesis, operator...);
+//	 * 
+//	 * @param String
+//	 *            input
+//	 * @return true: valid , false:invalid
+//	 */
+//	private boolean isvalid(final String input) {
+//		int isvalid = checkparenthesis(input);
+//		// checkoperands(input);
+//		return isvalid == 0 && checkoperands(input) && checkoperator(input);
+//	}
 
 	/**
 	 * This method will return if the operands are corrected
@@ -310,7 +314,7 @@ public class Cell {
 	public void reEvaluate() {
 		myValue = expressionTree.evaluate();
 		updateDependents();
-		Spreadsheet.updateSpreadsheet(myRow, myColumn);
+		mySpreadsheet.updateSpreadsheet(myRow, myColumn);
 	}
 
 	/**
@@ -357,7 +361,6 @@ public class Cell {
 		Stack<Token> operatorStack = new Stack<Token>(); // stack of operators
 
 		while (index < myFormula.length()) {
-			System.out.println("here");
 			// get rid of leading whitespace characters
 			while (index < myFormula.length()) {
 				ch = myFormula.charAt(index);
@@ -447,10 +450,10 @@ public class Cell {
 			} else if (Character.isUpperCase(ch)) {
 				// We found a cell reference token
 				cellToken = new CellToken(myFormula, index);
-				Spreadsheet.CELLS[cellToken.getRow()][cellToken.getColumn()]
+				mySpreadsheet.getCells()[cellToken.getRow()][cellToken.getColumn()]
 						.addDependent(this);
 				myDependencies
-						.add(Spreadsheet.CELLS[cellToken.getRow()][cellToken
+						.add(mySpreadsheet.getCells()[cellToken.getRow()][cellToken
 								.getColumn()]);
 				index = cellToken.getCellToken(myFormula, index);
 				if (cellToken.getRow() == CellToken.BAD_CELL) {

@@ -7,10 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 /**
  * This class runs the GUI interface for the spreadsheet application.
@@ -29,9 +33,6 @@ public class GUI extends Observable {
 	/** The JFrame that the spreadsheet is displayed on. */
 	private final JFrame myFrame;
 	
-	/** The JScrollPane that the spreadsheet table resides in. */
-	private final JScrollPane myJScrollPane;
-	
 	/** The spreadsheet that contains all the data. */
 	private final Spreadsheet mySpreadsheet;
 
@@ -41,12 +42,37 @@ public class GUI extends Observable {
 	public GUI() {
 		// Sets the title of the program in the title bar.
 		myFrame = new JFrame("TCSS 342 Spreadsheet - Group 8");
-		mySpreadsheet = new Spreadsheet();
-		addObserver(mySpreadsheet);
+		final Dimension dimension = initialize();
+		mySpreadsheet = new Spreadsheet((int) dimension.getWidth(), (int) dimension.getHeight());
 		// Adds the spreadsheet table to a JScrollPane that allows for resizing.
-		myJScrollPane = new JScrollPane(mySpreadsheet.getTable(), 
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//		myJScrollPane = 
+	}
+	
+	/**
+	 * Prompts the user to enter the desired size of the spread sheet.
+	 * 
+	 * @return the size of the spread sheet
+	 */
+	private Dimension initialize() {
+		// This code in this method was used from
+		// http://stackoverflow.com/questions/6555040/multiple-input-in-joptionpane-showinputdialog
+		// Some minor modifications have been made to variable names
+		final Dimension dim = new Dimension();
+		JTextField rowSize = new JTextField(5);
+		JTextField columnSize = new JTextField(5);
+		JPanel panel = new JPanel();
+		panel.add(new JLabel("Rows:"));
+		panel.add(rowSize);
+		panel.add(Box.createVerticalStrut(15));
+		panel.add(new JLabel("Columns"));
+		panel.add(columnSize);
+		int result = JOptionPane.showConfirmDialog(myFrame, panel, "Please enter the size of " +
+				"the spreadsheet you would like:", JOptionPane.OK_CANCEL_OPTION);
+		if (result == JOptionPane.OK_OPTION) {
+			dim.setSize(Integer.parseInt(columnSize.getText()), 
+					Integer.parseInt(rowSize.getText()));
+		}
+		return dim;
 	}
 
 	/**
@@ -54,11 +80,15 @@ public class GUI extends Observable {
 	 */
 	public void run() {
 		final JPanel panel = new JPanel(new FlowLayout());
+		addObserver(mySpreadsheet);
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// Adds the scrollable pane to the JFrame.
-		myFrame.add(myJScrollPane, BorderLayout.CENTER);
+		myFrame.add(new JScrollPane(mySpreadsheet.getTable(), 
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS), BorderLayout.CENTER);
 		// Sets the minimum size for the window.
 		myFrame.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
+		myFrame.setLocationRelativeTo(null);
 		
 		// Add buttons to the frame
 		JButton formulas = new JButton("Display Formulas");
@@ -95,9 +125,9 @@ public class GUI extends Observable {
 				clearChanged();
 				Spreadsheet.displayFormulas = true;
 				// Fill each active cell with its corresponding formula
-				for (int i = 0; i < Spreadsheet.ROWS; i++) {
-					for (int j = 1; j < Spreadsheet.COLUMNS + 1; j++) {
-						Spreadsheet.SPREADSHEET[i][j] = Spreadsheet.CELLS[i][j].getFormula(); 
+				for (int i = 0; i < mySpreadsheet.getRows(); i++) {
+					for (int j = 1; j < mySpreadsheet.getColumns() + 1; j++) {
+						mySpreadsheet.getSpreadsheet()[i][j] = mySpreadsheet.getCells()[i][j].getFormula(); 
 					}
 				}
 				myFrame.repaint();
@@ -114,12 +144,12 @@ public class GUI extends Observable {
 				clearChanged();
 				Spreadsheet.displayFormulas = false;
 				// Fill each active cell with its corresponding value
-				for (int i = 0; i < Spreadsheet.ROWS; i++) {
-					for (int j = 1; j < Spreadsheet.COLUMNS + 1; j++) {
-						if (Spreadsheet.CELLS[i][j].getValue() != 0) {
-							Spreadsheet.SPREADSHEET[i][j] = Spreadsheet.CELLS[i][j].getValue(); 
+				for (int i = 0; i < mySpreadsheet.getRows(); i++) {
+					for (int j = 1; j < mySpreadsheet.getColumns() + 1; j++) {
+						if (mySpreadsheet.getCells()[i][j].getValue() != 0) {
+							mySpreadsheet.getSpreadsheet()[i][j] = mySpreadsheet.getCells()[i][j].getValue(); 
 						} else {
-							Spreadsheet.SPREADSHEET[i][j] = "";
+							mySpreadsheet.getSpreadsheet()[i][j] = "";
 						}
 					}
 				}

@@ -15,18 +15,17 @@ public class ExpressionTree {
     /** The root of this ExpressionTree. */
     protected ExpressionTreeNode root;
     
-    /** Constructor to initialize root to null. */
-    public ExpressionTree() {
-        this(null);
-    }
+    /** The current spreadsheet. */
+    private Spreadsheet mySpreadsheet;
     
     /**
-     * Initializes a new ExpressionTree with the given node as the root.
+     * Initializes a new ExpressionTree
      * 
-     * @param theNode the root of this expression tree
+     * @param theSpreadsheet the current spreadsheet
      */
-    public ExpressionTree(final ExpressionTreeNode theNode) {
-    	root = theNode;
+    public ExpressionTree(final Spreadsheet theSpreadsheet) {
+    	mySpreadsheet = theSpreadsheet;
+        root = null;
     }
     
     /**
@@ -86,7 +85,7 @@ public class ExpressionTree {
             else if(t.left.token instanceof LiteralToken)
                 value1 = ((LiteralToken) t.left.token).getValue();
             else if (t.left.token instanceof CellToken)
-                value1 = Spreadsheet.CELLS[((CellToken) t.left.token).getRow()][((CellToken) t.left.token).getColumn()].getValue();
+                value1 = mySpreadsheet.getCells()[((CellToken) t.left.token).getRow()][((CellToken) t.left.token).getColumn()].getValue();
             //evaluate right subtree and store value as value2
             
             if (t.right.token instanceof OperatorToken)
@@ -94,7 +93,7 @@ public class ExpressionTree {
             else if(t.right.token instanceof LiteralToken)
                 value2 = ((LiteralToken) t.right.token).getValue();
             else if (t.right.token instanceof CellToken)
-                value2 = Spreadsheet.CELLS[((CellToken) t.right.token).getRow()][((CellToken) t.right.token).getColumn()].getValue();;
+                value2 = mySpreadsheet.getCells()[((CellToken) t.right.token).getRow()][((CellToken) t.right.token).getColumn()].getValue();;
             //calculate total using the values from the two subtrees
             total = ((OperatorToken) t.token).evaluate(value1, value2);
         } else {// if (t != null){
@@ -102,7 +101,7 @@ public class ExpressionTree {
         		total = ((LiteralToken) t.token).getValue();
         	} else {
         		CellToken temp = ((CellToken) t.token);
-        		total = Spreadsheet.CELLS[temp.getRow()][temp.getColumn()].getValue();
+        		total = mySpreadsheet.getCells()[temp.getRow()][temp.getColumn()].getValue();
         	}
         }
         return total;

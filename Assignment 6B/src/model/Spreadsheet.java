@@ -27,11 +27,6 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	/** A generated Serial Version UID. */
 	private static final long serialVersionUID = 9025127485326978066L;
 
-	/** How many columns are in this spreadsheet. */
-	public static final int COLUMNS = 35;
-
-	/** How many rows are in this spreadsheet. */
-	public static final int ROWS = 20;
 	
 	/** The width of the column of row numbers in pixels. */
 	public static final int ROW_NUMBER_WIDTH = 30;
@@ -40,13 +35,22 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	public static final int LETTERS = 26;
 
 	/** Represents each cell of the spreadsheet. */
-	protected static final Cell[][] CELLS = initializeCells();
+//	private Cell[][] myCells = initializeCells();
 
 	/** The current spreadsheet. */
-	protected static final Object[][] SPREADSHEET = initializeSpreadsheet();
+//	private Object[][] mySpreadsheet = initializeSpreadsheet();
+
+	/** How many columns are in this spreadsheet. */
+	private int myColumns;
+	
+	/** How many rows are in this spreadsheet. */
+	private int myRows;
 
 	/** The current spreadsheet. */
-	private final Object[][] spreadsheet;
+	private Object[][] mySpreadsheet;
+	
+	/** The current spreadsheet of cells. */
+	private Cell[][] myCells;
 
 	/** Represents the names of the columns. */
 	private final Object[] columnNames;
@@ -59,14 +63,20 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 
 	/**
 	 * Initializes a new Spreadsheet.
+	 * 
+	 * @param theWidth the width of this spreadsheet
+	 * @param theHeight the height of this spreadsheet
 	 */
-	public Spreadsheet() {
-		spreadsheet = new Object[ROWS][COLUMNS + 1];
-		columnNames = new String[COLUMNS + 1];
-		// CELLS = new Cell[ROWS][COLUMNS + 1];
+	public Spreadsheet(final int theWidth, final int theHeight) {
+		myColumns = theWidth;
+		myRows = theHeight;
+		initializeSpreadsheet();// new Object[myRows][myColumns + 1];
+		initializeCells();
+		columnNames = new String[myColumns + 1];
+		// myCells = new Cell[myRows][myColumns + 1];
 		// initializeCells();
 		fillColumnNames();
-		myTable = new JTable(SPREADSHEET, columnNames) {
+		myTable = new JTable(mySpreadsheet, columnNames) {
 			/** A generated serial version UID. */
 			private static final long serialVersionUID = -8427343693180623327L;
 
@@ -86,19 +96,19 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	@Override
 	public void tableChanged(final TableModelEvent theEvent) {
 		// Save contents of cell before changing.
-		Cell theCell = CELLS[theEvent.getFirstRow()][theEvent.getColumn()];
+		Cell theCell = myCells[theEvent.getFirstRow()][theEvent.getColumn()];
 		String oldformula = theCell.getFormula();
 		try {
 			// Tries to parse the expression entered by the user.
-			((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()])
-					.parseInput((String) SPREADSHEET[theEvent.getFirstRow()][theEvent.getColumn()]);
+			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()])
+					.parseInput((String) mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
 		} catch (NullPointerException | IllegalArgumentException e) {
 			// Display an error and revert to old formula if invalid input.
-			JOptionPane.showMessageDialog(null, "Invalid expression entered. Please try again.", "Error!",
+			JOptionPane.showMessageDialog(myTable.getParent(), "Invalid expression entered. Please try again.", "Error!",
 					JOptionPane.ERROR_MESSAGE);
 			// Revert to old formula in spreadsheet and cells. 
-			SPREADSHEET[theEvent.getFirstRow()][theEvent.getColumn()] = oldformula;
-			((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldformula);
+			mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldformula;
+			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldformula);
 		}
 //		printAllFormulas();
 	}
@@ -114,17 +124,17 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 
 	/**
 	 * Initialize each cell.
+	 * @return 
 	 * 
 	 * @return the initialized array of cells
 	 */
-	private static Cell[][] initializeCells() {
-		final Cell[][] newcells = new Cell[ROWS][COLUMNS + 1];
-		for (int i = 0; i < ROWS; i++) {
-			for (int j = 1; j < COLUMNS + 1; j++) {
-				newcells[i][j] = new Cell(j, i);
+	private void initializeCells() {
+		myCells = new Cell[myRows][myColumns + 1];
+		for (int i = 0; i < myRows; i++) {
+			for (int j = 1; j < myColumns + 1; j++) {
+				myCells[i][j] = new Cell(i, j, this);
 			}
 		}
-		return newcells;
 	}
 
 	/**
@@ -136,15 +146,15 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * @param theColumn
 	 *            the column of the spreadsheet to be updated
 	 */
-	public static void updateSpreadsheet(final int theRow, final int theColumn) {
+	public void updateSpreadsheet(final int theRow, final int theColumn) {
 		if (displayFormulas) {
-			SPREADSHEET[theRow][theColumn] = CELLS[theRow][theColumn].getFormula();
+			mySpreadsheet[theRow][theColumn] = myCells[theRow][theColumn].getFormula();
 		} else {
-			System.out.println(CELLS[theRow][theColumn].getValue());
-			if (CELLS[theRow][theColumn].getValue() == 0) {
-				SPREADSHEET[theRow][theColumn] = "";
+//			System.out.println(myCells[theRow][theColumn].getValue());
+			if (myCells[theRow][theColumn].getValue() == 0) {
+				mySpreadsheet[theRow][theColumn] = "";
 			} else {
-				SPREADSHEET[theRow][theColumn] = CELLS[theRow][theColumn].getValue();
+				mySpreadsheet[theRow][theColumn] = myCells[theRow][theColumn].getValue();
 			}
 		}
 	}
@@ -154,7 +164,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 */
 	private void fillColumnNames() {
 		columnNames[0] = "";
-		for (int i = 1; i < COLUMNS + 1; i++) {
+		for (int i = 1; i < myColumns + 1; i++) {
 			columnNames[i] = convertToString(i - 1);
 		}
 	}
@@ -164,18 +174,17 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * 
 	 * @return the spreadsheet array
 	 */
-	private static Object[][] initializeSpreadsheet() {
-		final Object[][] newSheet = new Object[ROWS][COLUMNS + 1];
-		for (int i = 0; i < ROWS; i++) {
-			for (int j = 0; j < COLUMNS + 1; j++) {
+	private void initializeSpreadsheet() {
+		mySpreadsheet = new Object[myRows][myColumns + 1];
+		for (int i = 0; i < myRows; i++) {
+			for (int j = 0; j < myColumns + 1; j++) {
 				if (j == 0) {
-					newSheet[i][j] = i;
+					mySpreadsheet[i][j] = i;
 				} else {
-					newSheet[i][j] = "";
+					mySpreadsheet[i][j] = "";
 				}
 			}
 		}
-		return newSheet;
 	}
 
 	/**
@@ -185,7 +194,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 */
 	private void setupAllCells() {
 		// For all data columns in the table, center their cell's alignment. 
-		for (int i = 1; i < COLUMNS; i++) {
+		for (int i = 1; i < myColumns; i++) {
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 			myTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
@@ -226,7 +235,16 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * @return the spreadsheet
 	 */
 	public Object[][] getSpreadsheet() {
-		return spreadsheet;
+		return mySpreadsheet;
+	}
+	
+	/**
+	 * Return the cells spreadsheet.
+	 * 
+	 * @return the cells spreadsheet
+	 */
+	public Cell[][] getCells() {
+		return myCells;
 	}
 
 	/**
@@ -277,7 +295,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * @param theToken The cell whose formula is being printed.
 	 */
 	public void printCellFormula(final CellToken theToken) {
-		Cell theCell = CELLS[theToken.getRow()][theToken.getColumn()];
+		Cell theCell = myCells[theToken.getRow()][theToken.getColumn()];
 		System.out.println(theCell.getFormula());
 	}
 
@@ -285,12 +303,12 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * Prints the formulas of all cells.
 	 */
 	public void printAllFormulas() {
-		for (int row = 0; row < ROWS; row++) {
-			for (int col = 1; col < COLUMNS; col++) {
+		for (int row = 0; row < myRows; row++) {
+			for (int col = 1; col < myColumns; col++) {
 				// Prints the Column and Row with colon (e.g. A4: )
 				System.out.print(convertToString(col - 1) + row + ": ");
 				// Prints the formula for that cell
-				System.out.print(CELLS[row][col].getFormula() + "   ");
+				System.out.print(myCells[row][col].getFormula() + "   ");
 			}
 			// Line break at the end of a row.
 			System.out.println();
@@ -302,8 +320,17 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * 
 	 * @return the number of rows for this spreadsheet
 	 */
-	public int getNumRows() {
-		return ROWS;
+	public int getRows() {
+		return myRows;
+	}
+	
+	/**
+	 * Returns the number of columns for this spreadsheet.
+	 * 
+	 * @return the number of columns for this spreadsheet
+	 */
+	public int getColumns() {
+		return myColumns;
 	}
 
 	@Override
