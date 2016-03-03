@@ -100,7 +100,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			SPREADSHEET[theEvent.getFirstRow()][theEvent.getColumn()] = oldformula;
 			((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldformula);
 		}
-		printAllFormulas();
+//		printAllFormulas();
 	}
 
 	/**

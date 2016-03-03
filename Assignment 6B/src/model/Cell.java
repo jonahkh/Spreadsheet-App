@@ -357,6 +357,7 @@ public class Cell {
 		Stack<Token> operatorStack = new Stack<Token>(); // stack of operators
 
 		while (index < myFormula.length()) {
+			System.out.println("here");
 			// get rid of leading whitespace characters
 			while (index < myFormula.length()) {
 				ch = myFormula.charAt(index);
@@ -405,6 +406,10 @@ public class Cell {
 					System.out.println("Error in getFormula.");
 					System.exit(0);
 					break;
+				}
+				// Check if there was a negative value entered
+				if (returnStack.size() == 0 && ch == OperatorToken.MINUS) {
+					returnStack.push(new LiteralToken(0));
 				}
 				// push the operator on the operator stack
 				operatorStack.push(new OperatorToken(ch));
