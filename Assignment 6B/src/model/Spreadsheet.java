@@ -91,7 +91,8 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	public void tableChanged(final TableModelEvent theEvent) {
 		// Save contents of cell before changing.
 		Cell theCell = myCells[theEvent.getFirstRow()][theEvent.getColumn()];
-		String oldformula = theCell.getFormula();
+		String oldFormula = theCell.getFormula();
+		int oldValue = theCell.getValue();
 		try {
 			// Tries to parse the expression entered by the user.
 			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()])
@@ -100,15 +101,21 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			JOptionPane.showMessageDialog(myTable.getParent(), "HAHAHA NICE TRY. Please try again.", "Error!",
 					JOptionPane.ERROR_MESSAGE);
 			// Revert to old formula in spreadsheet and cells. 
-			mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldformula;
-			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldformula);
+			mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
+			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldFormula);
 		} catch (Exception e){
 			// Display an error and revert to old formula if invalid input.
 			JOptionPane.showMessageDialog(myTable.getParent(), "Invalid expression entered. Please try again.", "Error!",
 					JOptionPane.ERROR_MESSAGE);
-			// Revert to old formula in spreadsheet and cells. 
-			mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldformula;
-			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldformula);
+			// Revert to old formula in cells if displaying formula.
+			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldFormula);
+			if (displayFormulas) {
+				// Display reverted formula if in formula mode.
+				mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
+			} else {
+				// Display reverted value if in value mode.
+				mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
+			}
 		}
 //		printAllFormulas();
 	}
