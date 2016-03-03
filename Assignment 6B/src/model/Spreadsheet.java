@@ -86,7 +86,8 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	@Override
 	public void tableChanged(final TableModelEvent theEvent) {
 		// Save contents of cell before changing.
-		String oldformula = CELLS[theEvent.getFirstRow()][theEvent.getColumn()].getFormula();
+		Cell theCell = CELLS[theEvent.getFirstRow()][theEvent.getColumn()];
+		String oldformula = theCell.getFormula();
 		try {
 			// Tries to parse the expression entered by the user.
 			((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()])
@@ -95,7 +96,9 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			// Display an error and revert to old formula if invalid input.
 			JOptionPane.showMessageDialog(null, "Invalid expression entered. Please try again.", "Error!",
 					JOptionPane.ERROR_MESSAGE);
+			// Revert to old formula in spreadsheet and cells. 
 			SPREADSHEET[theEvent.getFirstRow()][theEvent.getColumn()] = oldformula;
+			((Cell) CELLS[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldformula);
 		}
 		printAllFormulas();
 	}

@@ -486,6 +486,14 @@ public class Cell {
 	public String getFormula() {
 		return myFormula;
 	}
+	
+	/**
+	 * Sets the formula for the cell.
+	 * @param theFormula The formula for this cell.
+	 */
+	protected void setFormula(final String theFormula) {
+		myFormula = theFormula;
+	}
 
 	/**
 	 * Prints out a representation of this cell's internal status.
