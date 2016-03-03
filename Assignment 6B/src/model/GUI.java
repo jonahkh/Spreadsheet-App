@@ -136,13 +136,14 @@ public class GUI extends Observable {
 					"Please enter the size of the spreadsheet:", 
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if (result == JOptionPane.OK_OPTION) {
-				cols = Integer.parseInt(columnSize.getText());
-				rows = Integer.parseInt(rowSize.getText());
+				// Assert the minimum size of 3x3
+				cols = Math.max(Integer.parseInt(columnSize.getText()), MIN_DIMENSION);
+				rows = Math.max(Integer.parseInt(rowSize.getText()), MIN_DIMENSION);
 			} else {
 				System.exit(0);	// Terminate the program
 			}
 		} catch (NumberFormatException e) {	// If invalid input is entered
-			// Assert the minimum size of 3x3
+			// Both dimensions set to minimum size
 			rows = cols = MIN_DIMENSION;
 			JOptionPane.showMessageDialog(myFrame.getContentPane(), 
 					"Invalid dimensions entered! Using default 3 x 3 table.", 
