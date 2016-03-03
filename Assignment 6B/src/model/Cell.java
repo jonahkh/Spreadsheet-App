@@ -137,7 +137,7 @@ public class Cell {
 		// if (isvalid(input)) {
 		final Stack<Token> formula = getFormula(input);
 		myFormula = input;
-		expressionTree.BuildExpressionTree(formula, myDependents);
+		expressionTree.BuildExpressionTree(formula);
 		myValue = expressionTree.evaluate();
 		if (!myDependents.isEmpty()) {
 			updateDependents();

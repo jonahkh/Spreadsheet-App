@@ -50,7 +50,7 @@ public class ExpressionTree {
      * 
      * @param t the node that roots the (sub)tree
      */
-    public void printTree(ExpressionTreeNode t) {
+    public void printTree(final ExpressionTreeNode t) {
         if(t != null) {
             printTree(t.left);
             printTree(t.right);
@@ -70,9 +70,8 @@ public class ExpressionTree {
      * Evaluates this tree in post-order traversal.
      * 
      * @param t the node that roots the (sub)tree
-     * @param value the 
      */
-    private int evaluate(ExpressionTreeNode t) {
+    private int evaluate(final ExpressionTreeNode t) {
         int total = 0;
         int value1 = 0;
         int value2 = 0;
@@ -113,8 +112,8 @@ public class ExpressionTree {
      * @param s the stack of tokens being used
      * @param theDependants the list of dependents for the current cell
      */
-    public void BuildExpressionTree (Stack<Token> s, final List<Cell> theDependants) {
-    	root = getExpressionTree(s, theDependants);
+    public void BuildExpressionTree (final Stack<Token> s) {
+    	root = getExpressionTree(s);
     	if (!s.isEmpty()) {
     		System.out.println("Error in BuildExpressionTree.");
     	}
@@ -127,7 +126,7 @@ public class ExpressionTree {
      * @param theDependants the list of dependents for the current cell
      * @return an ExpressionTree with a completed Expression Tree built
      */
-    private ExpressionTreeNode getExpressionTree(Stack<Token> s, final List<Cell> theDependants) {
+    private ExpressionTreeNode getExpressionTree(final Stack<Token> s) {
     	ExpressionTreeNode returnTree;
     	Token token;
     	if (s.isEmpty()) {
@@ -142,8 +141,8 @@ public class ExpressionTree {
     	} else { // if (token instanceof OperatorToken) {
     		// Continue finding tokens that will form the
     		// right subtree and left subtree.
-    		ExpressionTreeNode rightSubtree = getExpressionTree (s, theDependants);
-    		ExpressionTreeNode leftSubtree = getExpressionTree (s, theDependants);
+    		ExpressionTreeNode rightSubtree = getExpressionTree (s);
+    		ExpressionTreeNode leftSubtree = getExpressionTree (s);
     		returnTree = new ExpressionTreeNode(token, leftSubtree, rightSubtree);
     		return returnTree;
     	}
