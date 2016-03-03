@@ -47,10 +47,8 @@ public class Cell {
 	/**
 	 * Initializes a new cell.
 	 * 
-	 * @param theColumn
-	 *            The column where this cell is located.
-	 * @param theRow
-	 *            The row where this cell is located.
+	 * @param theColumn The column where this cell is located.
+	 * @param theRow The row where this cell is located.
 	 */
 	public Cell(final int theRow, final int theColumn, final Spreadsheet theSpreadsheet) {
 		mySpreadsheet = theSpreadsheet;
@@ -76,15 +74,12 @@ public class Cell {
 	/**
 	 * Removes a dependent from the list of dependents.
 	 * 
-	 * @param theCell
-	 *            the dependent to be removed
-	 * @param inDegree
-	 *            the inDegree of the passed cell
+	 * @param theCell the dependent to be removed
+	 * @param inDegree the inDegree of the passed cell
 	 */
 	public void removeDependent(final int inDegree, final Cell theCell) {
 		dependents.get(inDegree).remove(theCell);
-		for (Iterator<Cell> iterator = myDependents.iterator(); iterator
-				.hasNext();) {
+		for (Iterator<Cell> iterator = myDependents.iterator(); iterator.hasNext();) {
 			Cell cell = iterator.next();
 			if (cell == theCell) {
 				iterator.remove();
@@ -132,10 +127,10 @@ public class Cell {
 	}
 
 	/**
-	 * Parse and evaluate input for this cell.
+	 * Parse and evaluate input for this cell. Notifies any dependents that this cell has been
+	 * changed.
 	 * 
-	 * @param input
-	 *            The new input for this cell
+	 * @param input The new input for this cell
 	 */
 	public void parseInput(final String input) {
 
@@ -154,24 +149,23 @@ public class Cell {
 		// }
 	}
 
-//	/**
-//	 * Method will check the input for errors (parenthesis, operator...);
-//	 * 
-//	 * @param String
-//	 *            input
-//	 * @return true: valid , false:invalid
-//	 */
-//	private boolean isvalid(final String input) {
-//		int isvalid = checkparenthesis(input);
-//		// checkoperands(input);
-//		return isvalid == 0 && checkoperands(input) && checkoperator(input);
-//	}
+	/**
+	 * Method will check the input for errors (parenthesis, operator...);
+	 * 
+	 * @param String
+	 *            input
+	 * @return true: valid , false:invalid
+	 */
+	private boolean isvalid(final String input) {
+		int isvalid = checkparenthesis(input);
+		// checkoperands(input);
+		return isvalid == 0 && checkoperands(input) && checkoperator(input);
+	}
 
 	/**
 	 * This method will return if the operands are corrected
 	 * 
-	 * @param String
-	 *            input
+	 * @param String input the input being evaluated
 	 * @return true:valid false:invalid
 	 */
 	private boolean checkoperands(final String input) {
@@ -233,7 +227,6 @@ public class Cell {
 			}
 		}
 		return true;
-
 	}
 
 	/**
@@ -244,7 +237,6 @@ public class Cell {
 	 */
 	private boolean function(String input) {
 		String temp = input.replaceAll("\\s", "");
-
 		char[] operator = { '*', '+', '-', '/' };
 		for (int i = 0; i < temp.length(); i++) {
 			for (int j = 0; j < operator.length; j++) {
@@ -339,8 +331,7 @@ public class Cell {
 	/**
 	 * Returns a stack representing the passed myFormula.
 	 * 
-	 * @param myFormula
-	 *            the current myFormula being considered
+	 * @param myFormula the current myFormula being considered
 	 * @return A stack representing the passed myFormula
 	 */
 	public Stack<Token> getFormula(String myFormula) {
@@ -497,6 +488,7 @@ public class Cell {
 	
 	/**
 	 * Sets the formula for the cell.
+	 * 
 	 * @param theFormula The formula for this cell.
 	 */
 	protected void setFormula(final String theFormula) {

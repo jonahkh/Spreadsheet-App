@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.Observable;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,9 +44,8 @@ public class GUI extends Observable {
 		// Sets the title of the program in the title bar.
 		myFrame = new JFrame("TCSS 342 Spreadsheet - Group 8");
 		final Dimension dimension = initialize();
-		mySpreadsheet = new Spreadsheet((int) dimension.getWidth(), (int) dimension.getHeight());
-		// Adds the spreadsheet table to a JScrollPane that allows for resizing.
-//		myJScrollPane = 
+		mySpreadsheet = new Spreadsheet((int) dimension.getWidth(), 
+				(int) dimension.getHeight());
 	}
 	
 	/**
@@ -60,17 +60,39 @@ public class GUI extends Observable {
 		final Dimension dim = new Dimension();
 		JTextField rowSize = new JTextField(5);
 		JTextField columnSize = new JTextField(5);
+		// Format the text fields
+		
+		// The main panel for the dialog
 		JPanel panel = new JPanel();
-		panel.add(new JLabel("Rows:"));
-		panel.add(rowSize);
-		panel.add(Box.createVerticalStrut(15));
-		panel.add(new JLabel("Columns"));
-		panel.add(columnSize);
-		int result = JOptionPane.showConfirmDialog(myFrame, panel, "Please enter the size of " +
-				"the spreadsheet you would like:", JOptionPane.OK_CANCEL_OPTION);
+		// Holds the text boxes
+		JPanel bottomPanel = new JPanel();
+
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(new JLabel("Minimum size is 3x3")); // This is asserted
+		
+		bottomPanel.add(new JLabel("Rows:"));
+		bottomPanel.add(rowSize);
+		bottomPanel.add(Box.createVerticalStrut(15));
+		bottomPanel.add(new JLabel("Columns"));
+		bottomPanel.add(columnSize);
+	
+		panel.add(bottomPanel);
+		int result = JOptionPane.showConfirmDialog(myFrame, panel, 
+				"Please enter the size of the spreadsheet:", 
+				JOptionPane.OK_CANCEL_OPTION);
 		if (result == JOptionPane.OK_OPTION) {
-			dim.setSize(Integer.parseInt(columnSize.getText()), 
-					Integer.parseInt(rowSize.getText()));
+			int col = Integer.parseInt(columnSize.getText());
+			int row = Integer.parseInt(rowSize.getText());
+			// Assert the minimum size of 3x3
+			if (col < 3) {
+				col = 3;
+			}
+			if (row < 3) {
+				row = 3;
+			}
+			dim.setSize(row, col);
+		} else {
+			System.exit(0);	// Terminate the program
 		}
 		return dim;
 	}
@@ -82,7 +104,7 @@ public class GUI extends Observable {
 		final JPanel panel = new JPanel(new FlowLayout());
 		addObserver(mySpreadsheet);
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// Adds the scrollable pane to the JFrame.
+		// Adds the scrollable pane to the JFrame to enable the scrollbar
 		myFrame.add(new JScrollPane(mySpreadsheet.getTable(), 
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS), BorderLayout.CENTER);
@@ -118,8 +140,10 @@ public class GUI extends Observable {
 		formulaButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent theEvent) {
+				// Reverse the enabling of the buttons
 				valuesButton.setEnabled(true);
 				formulaButton.setEnabled(false);
+				// Update the spreadsheet
 				setChanged();
 				notifyObservers(true);
 				clearChanged();
@@ -127,7 +151,8 @@ public class GUI extends Observable {
 				// Fill each active cell with its corresponding formula
 				for (int i = 0; i < mySpreadsheet.getRows(); i++) {
 					for (int j = 1; j < mySpreadsheet.getColumns() + 1; j++) {
-						mySpreadsheet.getSpreadsheet()[i][j] = mySpreadsheet.getCells()[i][j].getFormula(); 
+						mySpreadsheet.getSpreadsheet()[i][j] = 
+								mySpreadsheet.getCells()[i][j].getFormula(); 
 					}
 				}
 				myFrame.repaint();
@@ -137,8 +162,10 @@ public class GUI extends Observable {
 		valuesButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent theEvent) {
+				// Reverse the enablign of the buttons
 				formulaButton.setEnabled(true);
 				valuesButton.setEnabled(false);
+				// Update the spreadsheet
 				setChanged();
 				notifyObservers(false);
 				clearChanged();
@@ -147,7 +174,8 @@ public class GUI extends Observable {
 				for (int i = 0; i < mySpreadsheet.getRows(); i++) {
 					for (int j = 1; j < mySpreadsheet.getColumns() + 1; j++) {
 						if (mySpreadsheet.getCells()[i][j].getValue() != 0) {
-							mySpreadsheet.getSpreadsheet()[i][j] = mySpreadsheet.getCells()[i][j].getValue(); 
+							mySpreadsheet.getSpreadsheet()[i][j] = 
+									mySpreadsheet.getCells()[i][j].getValue(); 
 						} else {
 							mySpreadsheet.getSpreadsheet()[i][j] = "";
 						}

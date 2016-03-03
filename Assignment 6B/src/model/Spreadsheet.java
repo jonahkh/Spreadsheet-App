@@ -8,7 +8,6 @@ import java.util.Observer;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -26,19 +25,12 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 
 	/** A generated Serial Version UID. */
 	private static final long serialVersionUID = 9025127485326978066L;
-
 	
 	/** The width of the column of row numbers in pixels. */
 	public static final int ROW_NUMBER_WIDTH = 30;
 
 	/** Count of letters. */
 	public static final int LETTERS = 26;
-
-	/** Represents each cell of the spreadsheet. */
-//	private Cell[][] myCells = initializeCells();
-
-	/** The current spreadsheet. */
-//	private Object[][] mySpreadsheet = initializeSpreadsheet();
 
 	/** How many columns are in this spreadsheet. */
 	private int myColumns;
@@ -70,11 +62,9 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	public Spreadsheet(final int theWidth, final int theHeight) {
 		myColumns = theWidth;
 		myRows = theHeight;
-		initializeSpreadsheet();// new Object[myRows][myColumns + 1];
+		initializeSpreadsheet();
 		initializeCells();
 		columnNames = new String[myColumns + 1];
-		// myCells = new Cell[myRows][myColumns + 1];
-		// initializeCells();
 		fillColumnNames();
 		myTable = new JTable(mySpreadsheet, columnNames) {
 			/** A generated serial version UID. */
@@ -88,6 +78,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			}
 		};
 		setupAllCells();
+		// Set interface properties for the table
 		myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		myTable.getModel().addTableModelListener(this);
 		myTable.getTableHeader().setReorderingAllowed(false);
@@ -141,17 +132,15 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * updates the spreadsheet at the location with respect to the passed row
 	 * and column.
 	 * 
-	 * @param theRow
-	 *            the row of the spreadsheet to be updated
-	 * @param theColumn
-	 *            the column of the spreadsheet to be updated
+	 * @param theRow the row of the spreadsheet to be updated
+	 * @param theColumn the column of the spreadsheet to be updated
 	 */
 	public void updateSpreadsheet(final int theRow, final int theColumn) {
 		if (displayFormulas) {
 			mySpreadsheet[theRow][theColumn] = myCells[theRow][theColumn].getFormula();
 		} else {
-//			System.out.println(myCells[theRow][theColumn].getValue());
 			if (myCells[theRow][theColumn].getValue() == 0) {
+				// Cell's formula is empty if the value is 0 initially 
 				mySpreadsheet[theRow][theColumn] = "";
 			} else {
 				mySpreadsheet[theRow][theColumn] = myCells[theRow][theColumn].getValue();
@@ -199,17 +188,19 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 			myTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
-		// Special case for first column, set the background color to match the column headers in
-		// addition to centering each cell. 
+		// Special case for first column, set the background color to match the column headers
+		// in addition to centering each cell. 
 		TableColumn rowNums = myTable.getColumnModel().getColumn(0);
 		rowNums.setCellRenderer(new DefaultTableCellRenderer() {
 			
 			/** A generated serial version UID. */
 			private static final long serialVersionUID = 3565976393614019090L;
-			
-			public Component getTableCellRendererComponent(final JTable table, final Object value, 
-					final boolean isSelected, final boolean hasFocus, final int row, final int column) {
-				final Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			@Override
+			public Component getTableCellRendererComponent(final JTable table, 
+					final Object value, final boolean isSelected, final boolean hasFocus, 
+					final int row, final int column) {
+				final Component cell = super.getTableCellRendererComponent(table, value, 
+						isSelected, hasFocus, row, column);
 				final Color lightGray = new Color(238, 238, 238);
 				cell.setBackground(lightGray);
 				setHorizontalAlignment(JLabel.CENTER);
@@ -269,8 +260,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	/**
 	 * Returns the integer version of the passed column.
 	 * 
-	 * @param theColumn
-	 *            the current column being converted
+	 * @param theColumn the current column being converted
 	 * @return the integer version of the passed column
 	 */
 	public static int convertToInt(final String theColumn) {

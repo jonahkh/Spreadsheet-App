@@ -50,6 +50,7 @@ public class OperatorToken implements Token{
 	/**
 	 * Return true if the char ch is an operator of a formula.
 	 * Current operators are: +, -, *, /, (.
+	 * 
 	 * @param ch  a char
 	 * @return  whether ch is an operator
 	 */

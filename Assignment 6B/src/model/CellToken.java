@@ -49,7 +49,7 @@ public class CellToken implements Token {
 	 * 
 	 * @param inputString the input being considered
 	 * @param startIndex the starting index for the input
-	 * @return a nuber referencing a location on the spreadsheet
+	 * @return a number referencing a location on the spreadsheet
 	 */
 	public int getCellToken(String inputString, int startIndex) {
 		char ch;
