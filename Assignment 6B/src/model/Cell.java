@@ -15,6 +15,9 @@ import java.util.TreeMap;
  * @author Jonah Howard
  * @author Henry Lai
  * @author John Bui
+ * @author Lisa Taylor
+ * 
+ * @version 3 March 2016
  */
 public class Cell {
 
@@ -43,6 +46,9 @@ public class Cell {
 	
 	/** The current spreadsheet. */
 	private final Spreadsheet mySpreadsheet;
+	
+	/** True if circular dependency is found, otherwise false. */
+	private boolean hasCircDepend;
 
 	/**
 	 * Initializes a new cell.
@@ -52,6 +58,7 @@ public class Cell {
 	 */
 	public Cell(final int theRow, final int theColumn, final Spreadsheet theSpreadsheet) {
 		mySpreadsheet = theSpreadsheet;
+		hasCircDepend = false;
 		expressionTree = new ExpressionTree(theSpreadsheet);
 		myValue = 0;
 		myDependencies = new ArrayList<Cell>();
@@ -131,25 +138,33 @@ public class Cell {
 	 * changed.
 	 * 
 	 * @param input The new input for this cell
+	 * @throws CircularDependencyException 
 	 */
-	public void parseInput(final String input) {
+	public void parseInput(final String input) throws CircularDependencyException {
 		final Stack<Token> formula = getFormula(input);
-		myFormula = input;
-		expressionTree.BuildExpressionTree(formula);
-		myValue = expressionTree.evaluate();
-		if (!myDependents.isEmpty()) {
-			updateDependents();
+		checkForCircularDependency();
+		if (!hasCircDepend) {//only updates everything if there is no circular dependency
+		    expressionTree.BuildExpressionTree(formula);
+		    myFormula = input;
+		    myValue = expressionTree.evaluate();
+		    if (!myDependents.isEmpty()) {
+			    updateDependents();
+		    }
+		} else {//since values weren't changed, hasCircDepend is reset to false
+		    setHasCircDepend(false);
 		}
-		mySpreadsheet.updateSpreadsheet(myRow, myColumn);
+        mySpreadsheet.updateSpreadsheet(myRow, myColumn);
 	}
 
 	/**
 	 * Evaluates this cell if a change is made to one of its dependencies.
 	 */
 	public void reEvaluate() {
-		myValue = expressionTree.evaluate();
-		updateDependents();
-		mySpreadsheet.updateSpreadsheet(myRow, myColumn);
+	    if (!hasCircDepend) {
+		    myValue = expressionTree.evaluate();
+		    updateDependents();
+		    mySpreadsheet.updateSpreadsheet(myRow, myColumn);
+	    }
 	}
 
 	/**
@@ -177,7 +192,7 @@ public class Cell {
 	 * @param myFormula the current myFormula being considered
 	 * @return A stack representing the passed myFormula
 	 */
-	public Stack<Token> getFormula(String myFormula) {
+	public Stack<Token> getFormula(String myFormula) throws CircularDependencyException {
 		removeAllDependencies();
 		Stack<Token> returnStack = new Stack<Token>(); // stack of Tokens
 														// (representing a
@@ -339,6 +354,33 @@ public class Cell {
 	 */
 	protected void setFormula(final String theFormula) {
 		myFormula = theFormula;
+	}
+	
+	/**
+	 * Returns whether cell has circular dependency.
+	 * 
+	 * @return true if has circular dependency, else false
+	 */
+	public boolean hasCircularDependency() {
+	    return hasCircDepend;
+	}
+	
+	/**
+	 * Sets the boolean value for circDepend.
+	 * 
+	 * @param bool the boolean value
+	 */
+	public void setHasCircDepend(boolean bool) {
+	    hasCircDepend = bool;
+	}
+	
+	public void checkForCircularDependency() {
+	    for (Cell in : myDependencies){
+	        for(Cell out : myDependents) {
+	            if (in.equals(out))
+	                setHasCircDepend(true);
+	        }
+	    }
 	}
 
 	/**
