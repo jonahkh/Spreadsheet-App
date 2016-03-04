@@ -145,29 +145,21 @@ public class Cell {
 	 * @throws CircularDependencyException 
 	 */
 	public void parseInput(final String input) throws CircularDependencyException {
-	    if (input == null) {
-	        setHasInput(false);
-	        expressionTree.root = null;
-	        myFormula = "";
-	        removeAllDependencies();
-	        myValue = 0;
+	    final Stack<Token> formula = getFormula(input);
+	    checkForCircularDependency(this);
+	    if (hasCircDepend)
+	        throw new CircularDependencyException();
+	    else {
+	        setHasInput(true);
+	        expressionTree.BuildExpressionTree(formula);
+	        myFormula = input;
+	        myValue = expressionTree.evaluate();
+	        if (!myDependents.isEmpty()) {
+		        updateDependents();
+	        }
 	        mySpreadsheet.updateSpreadsheet(myRow, myColumn);
-	    } else {
-		    final Stack<Token> formula = getFormula(input);
-		    checkForCircularDependency(this);
-		    if (hasCircDepend)
-		        throw new CircularDependencyException();
-		    else {
-		        setHasInput(true);
-		        expressionTree.BuildExpressionTree(formula);
-		        myFormula = input;
-		        myValue = expressionTree.evaluate();
-		        if (!myDependents.isEmpty()) {
-			        updateDependents();
-		        }
-		        mySpreadsheet.updateSpreadsheet(myRow, myColumn);
-		    }
 	    }
+	    
 	}
 
 	/**
@@ -188,6 +180,15 @@ public class Cell {
 	 */
 	public int getValue() {
 		return myValue;
+	}
+	
+	/**
+	 * Set the myValue for this cell.
+	 * 
+	 * @param value the value to be set
+	 */
+	public void setValue(final int value) {
+	    myValue = value;
 	}
 
 	/**
