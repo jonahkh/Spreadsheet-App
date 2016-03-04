@@ -100,19 +100,21 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 		} catch (CircularDependencyException e) {
 		    JOptionPane.showMessageDialog(myTable.getParent(), "Circular Dependency found. Reverting back to"
 		                                                     + " previous entry.");
-		    ((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldFormula);
-            if (displayFormulas) {
-                // Display reverted formula if in formula mode.
-                mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
-            } else {
-                // Display reverted value if in value mode.
-                mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
-            }
+		    // Revert to old formula in spreadsheet and cells
+		    if (displayFormulas) {
+		        // Display reverted formula if in formula mode
+	            mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
+		    } else {
+		        // Display reverted formula if in value mode
+		        mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
+		    }
+	        ((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldFormula);
+            ((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setHasCircDepend(false);
 		} catch (ArithmeticException e) {
 			JOptionPane.showMessageDialog(myTable.getParent(), "HAHAHA NICE TRY. Please try again.", "Error!",
 					JOptionPane.ERROR_MESSAGE);
+			// Revert to old formula in spreadsheet and cells. 
 			mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
-			// Revert to old formula in spreadsheet and cells.
 			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldFormula);
 		} catch (Exception e){
 			// Display an error and revert to old formula if invalid input.

@@ -145,15 +145,15 @@ public class Cell {
 		checkForCircularDependency();
 		if (hasCircDepend)
 		    throw new CircularDependencyException();
-		else {//only updates everything if there is no circular dependency
+		else if (!hasCircDepend) {
 		    expressionTree.BuildExpressionTree(formula);
 		    myFormula = input;
 		    myValue = expressionTree.evaluate();
 		    if (!myDependents.isEmpty()) {
 			    updateDependents();
 		    }
+		    mySpreadsheet.updateSpreadsheet(myRow, myColumn);
 		}
-        mySpreadsheet.updateSpreadsheet(myRow, myColumn);
 	}
 
 	/**
@@ -379,7 +379,6 @@ public class Cell {
 	        for(Cell out : myDependents) {
 	            if (in.equals(out))
 	                setHasCircDepend(true);
-	                myDependencies.remove(in);
 	        }
 	    }
 	}
