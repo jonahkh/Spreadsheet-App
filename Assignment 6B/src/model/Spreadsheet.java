@@ -103,7 +103,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 				    	.parseInput(formula);
 		    } catch (CircularDependencyException e) {
 		        JOptionPane.showMessageDialog(myTable.getParent(), "Circular Dependency found. Reverting back to"
-		                                                         + " previous entry.");
+		                                                         + " previous entry.", "Error!", JOptionPane.ERROR_MESSAGE);
 		        // Revert to old formula in spreadsheet and cells
 		        if (displayFormulas) {
 		            // Display reverted formula if in formula mode
@@ -209,7 +209,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 		for (int i = 0; i < myRows; i++) {
 			for (int j = 0; j < myColumns + 1; j++) {
 				if (j == 0) {
-					mySpreadsheet[i][j] = i;
+					mySpreadsheet[i][j] = i + 1;
 				} else {
 					mySpreadsheet[i][j] = "";
 				}
