@@ -23,6 +23,9 @@ import javax.swing.JTextField;
  * 
  * @author Jonah Howard
  * @author Henry Lai
+ * @author Lisa Taylor
+ * 
+ * @version 3 March 2016
  */
 public class GUI {
 	
@@ -39,7 +42,7 @@ public class GUI {
 	private static final int CELL_WIDTH = 75;
 
 	/** The height of a cell in pixels. Default = 16 */
-	private static final int CELL_HEIGTH = 16;
+	private static final int CELL_HEIGHT = 16;
 	
 	/** The JFrame that the spreadsheet is displayed on. */
 	private final JFrame myFrame;
@@ -71,7 +74,7 @@ public class GUI {
 	private void resizeComponents() {
 		// Calculate the width and height of all components based on table dimensions.
 		final int newWidth = (HORIZONTAL_OFFSET + CELL_WIDTH * cols);
-		final int newHeight = (VERTICAL_OFFSET + CELL_HEIGTH * rows);
+		final int newHeight = (VERTICAL_OFFSET + CELL_HEIGHT * rows);
 		
 		// Gets the screen resolution of user's system.
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -83,7 +86,7 @@ public class GUI {
 		
 		// Sets the minimum window size to the the minimum of 6 columns and 8 rows unless it is smaller.
 		final int minWidth = (int) Math.min(newWidth, HORIZONTAL_OFFSET + CELL_WIDTH * 6);
-		final int minHeight = (int) Math.min(newHeight, VERTICAL_OFFSET + CELL_HEIGTH * 8);
+		final int minHeight = (int) Math.min(newHeight, VERTICAL_OFFSET + CELL_HEIGHT * 8);
 		
 		// Sets the maximum window size to be the table dimension unless it is larger than resolution.
 		myFrame.setMinimumSize(new Dimension(minWidth, minHeight));
@@ -210,7 +213,7 @@ public class GUI {
 				// Fill each active cell with its corresponding value
 				for (int i = 0; i < mySpreadsheet.getRows(); i++) {
 					for (int j = 1; j < mySpreadsheet.getColumns() + 1; j++) {
-						if (mySpreadsheet.getCells()[i][j].getValue() != 0) {
+						if (mySpreadsheet.getCells()[i][j].hasInput()) {
 							mySpreadsheet.getSpreadsheet()[i][j] = 
 									mySpreadsheet.getCells()[i][j].getValue(); 
 						} else {

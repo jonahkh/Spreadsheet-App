@@ -49,6 +49,9 @@ public class Cell {
 	
 	/** True if circular dependency is found, otherwise false. */
 	private boolean hasCircDepend;
+	
+	/** True if cell contains input from user, otherwise false. */
+	private boolean hasInput;
 
 	/**
 	 * Initializes a new cell.
@@ -59,6 +62,7 @@ public class Cell {
 	public Cell(final int theRow, final int theColumn, final Spreadsheet theSpreadsheet) {
 		mySpreadsheet = theSpreadsheet;
 		hasCircDepend = false;
+		hasInput = false;
 		expressionTree = new ExpressionTree(theSpreadsheet);
 		myValue = 0;
 		myDependencies = new ArrayList<Cell>();
@@ -145,7 +149,8 @@ public class Cell {
 		checkForCircularDependency(this);
 		if (hasCircDepend)
 		    throw new CircularDependencyException();
-		else if (!hasCircDepend) {
+		else {
+		    setHasInput(true);
 		    expressionTree.BuildExpressionTree(formula);
 		    myFormula = input;
 		    myValue = expressionTree.evaluate();
@@ -374,6 +379,13 @@ public class Cell {
 	    hasCircDepend = bool;
 	}
 	
+	/**
+	 * Checks if circular dependency exists in spreadsheet. Cell first compares itself
+	 * to the cells that it depends on and then recursively compares itself to the cells 
+	 * that its dependencies depend on.
+	 * 
+	 * @param cell the original cell
+	 */
 	public void checkForCircularDependency(Cell cell) {
 	    for (Cell in : myDependencies){
 	        if (in.equals(cell)) {
@@ -389,6 +401,24 @@ public class Cell {
 	            }
 	        }
 	    }
+	}
+	
+	/** 
+	 * Returns whether cell contains input.
+	 * 
+	 * @return true if contains input, else false
+	 */
+	public boolean hasInput() {
+	    return hasInput;
+	}
+	
+	/**
+	 * Sets the boolean value for hasInput.
+	 * 
+	 * @param bool the boolean value
+	 */
+	public void setHasInput(final boolean bool) {
+	    hasInput = bool;
 	}
 
 	/**
