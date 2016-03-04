@@ -117,6 +117,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 				mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
 			}
 		}
+		System.out.println(myCells[theEvent.getFirstRow()][theEvent.getColumn()].toString()	);
 //		printAllFormulas();
 	}
 
@@ -165,7 +166,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	}
 
 	/**
-	 * Fill the columns with their respective letter representations.
+	 * Fill the columns with their respective letter representations..
 	 */
 	private void fillColumnNames() {
 		columnNames[0] = "";

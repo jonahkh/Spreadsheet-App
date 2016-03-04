@@ -26,6 +26,7 @@ public class CellToken implements Token {
 	public CellToken(final String theFormula, final int theIndex) {
 		getCellToken(theFormula, theIndex);
 	}
+	
 	/**
 	 * Returns the column for this cell token.
 	 * 
@@ -95,7 +96,7 @@ public class CellToken implements Token {
 		while (index < inputString.length()) {
 			ch = inputString.charAt(index);
 			if (Character.isUpperCase(ch)) {
-				column = ((column + 1) * 26) + (ch - 'A') + 1;
+				column = (column * 26) + (ch - 'A') + 1;
 				index++;
 			} else {
 				break;

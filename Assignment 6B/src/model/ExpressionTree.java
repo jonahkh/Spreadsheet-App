@@ -92,7 +92,7 @@ public class ExpressionTree {
             else if(t.right.token instanceof LiteralToken)
                 value2 = ((LiteralToken) t.right.token).getValue();
             else if (t.right.token instanceof CellToken)
-                value2 = mySpreadsheet.getCells()[((CellToken) t.right.token).getRow()][((CellToken) t.right.token).getColumn()].getValue();;
+                value2 = mySpreadsheet.getCells()[((CellToken) t.right.token).getRow()][((CellToken) t.right.token).getColumn()].getValue();
             //calculate total using the values from the two subtrees
             total = ((OperatorToken) t.token).evaluate(value1, value2);
         } else {// if (t != null){
