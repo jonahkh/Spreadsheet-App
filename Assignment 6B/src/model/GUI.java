@@ -44,7 +44,7 @@ public class GUI {
 	private static final int HORIZONTAL_OFFSET = 50;
 	
 	/** Vertical offset for initial frame resizing. */
-	private static final int VERTICAL_OFFSET = 100;
+	private static final int VERTICAL_OFFSET = 122;
 	
 	/** The width of a cell in pixels. Default = 75 */
 	private static final int CELL_WIDTH = 75;
