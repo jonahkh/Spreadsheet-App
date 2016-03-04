@@ -143,15 +143,15 @@ public class Cell {
 	public void parseInput(final String input) throws CircularDependencyException {
 		final Stack<Token> formula = getFormula(input);
 		checkForCircularDependency();
-		if (!hasCircDepend) {//only updates everything if there is no circular dependency
+		if (hasCircDepend)
+		    throw new CircularDependencyException();
+		else {//only updates everything if there is no circular dependency
 		    expressionTree.BuildExpressionTree(formula);
 		    myFormula = input;
 		    myValue = expressionTree.evaluate();
 		    if (!myDependents.isEmpty()) {
 			    updateDependents();
 		    }
-		} else {//since values weren't changed, hasCircDepend is reset to false
-		    setHasCircDepend(false);
 		}
         mySpreadsheet.updateSpreadsheet(myRow, myColumn);
 	}
@@ -379,6 +379,7 @@ public class Cell {
 	        for(Cell out : myDependents) {
 	            if (in.equals(out))
 	                setHasCircDepend(true);
+	                myDependencies.remove(in);
 	        }
 	    }
 	}

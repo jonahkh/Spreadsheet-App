@@ -17,7 +17,9 @@ import javax.swing.table.TableColumn;
  * cells of the spreadsheet.
  * 
  * @author Jonah Howard
- * @vesion 1 March 2016
+ * @author Lisa Taylor
+ * 
+ * @vesion 3 March 2016
  */
 public class Spreadsheet extends DefaultTableModel implements TableModelListener {
 
@@ -95,11 +97,22 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			// Tries to parse the expression entered by the user.
 			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()])
 					.parseInput((String) mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
+		} catch (CircularDependencyException e) {
+		    JOptionPane.showMessageDialog(myTable.getParent(), "Circular Dependency found. Reverting back to"
+		                                                     + " previous entry.");
+		    ((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldFormula);
+            if (displayFormulas) {
+                // Display reverted formula if in formula mode.
+                mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
+            } else {
+                // Display reverted value if in value mode.
+                mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
+            }
 		} catch (ArithmeticException e) {
 			JOptionPane.showMessageDialog(myTable.getParent(), "HAHAHA NICE TRY. Please try again.", "Error!",
 					JOptionPane.ERROR_MESSAGE);
-			// Revert to old formula in spreadsheet and cells. 
 			mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
+			// Revert to old formula in spreadsheet and cells.
 			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldFormula);
 		} catch (Exception e){
 			// Display an error and revert to old formula if invalid input.
