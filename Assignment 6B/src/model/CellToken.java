@@ -6,7 +6,7 @@ package model;
  * @author Jonah Howard
  * @version 28 Feb 2016
  */
-public class CellToken implements Token {
+public class CellToken extends Token {
 
 	/** Represents a bad cell. */
 	public static final int BAD_CELL = -1;

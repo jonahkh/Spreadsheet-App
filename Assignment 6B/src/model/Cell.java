@@ -210,7 +210,7 @@ public class Cell {
 			}
 
 			// ASSERT: ch now contains the first character of the next token.
-			if (operatorToken.isOperator(ch)) {
+			if (operatorToken.isValidOperator(ch)) {
 				// We found an operator token
 				switch (ch) {
 				case OperatorToken.POW:
