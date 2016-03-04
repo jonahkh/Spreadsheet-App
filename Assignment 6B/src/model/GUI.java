@@ -24,7 +24,7 @@ import javax.swing.JTextField;
  * @author Jonah Howard
  * @author Henry Lai
  */
-public class GUI extends Observable {
+public class GUI {
 	
 	/** The minimum number of rows and columns allowed. */
 	private static final int MIN_DIMENSION = 3;
@@ -86,16 +86,6 @@ public class GUI extends Observable {
 		final int minHeight = (int) Math.min(newHeight, VERTICAL_OFFSET + CELL_HEIGTH * 8);
 		
 		// Sets the maximum window size to be the table dimension unless it is larger than resolution.
-		/* This currently doesn't work.
-		int maxWidth = newWidth;
-		int maxHeight = newHeight;
-		if (newWidth > width) {
-			maxWidth = (int) width;
-		}
-		if (newHeight > height) {
-			maxHeight = (int) height;
-		} 
-		myFrame.setMaximumSize(new Dimension(maxWidth, maxHeight)); */
 		myFrame.setMinimumSize(new Dimension(minWidth, minHeight));
 	}
 
@@ -159,7 +149,6 @@ public class GUI extends Observable {
 	 */
 	public void run() {
 		final JPanel panel = new JPanel(new FlowLayout());
-		addObserver(mySpreadsheet);
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// Adds the scrollable pane to the JFrame to enable the scrollbar
 		myFrame.add(new JScrollPane(mySpreadsheet.getTable(), 
@@ -198,10 +187,7 @@ public class GUI extends Observable {
 				valuesButton.setEnabled(true);
 				formulaButton.setEnabled(false);
 				// Update the spreadsheet
-				setChanged();
-				notifyObservers(true);
-				clearChanged();
-				Spreadsheet.displayFormulas = true;
+				mySpreadsheet.setFormulaMode(true);
 				// Fill each active cell with its corresponding formula
 				for (int i = 0; i < mySpreadsheet.getRows(); i++) {
 					for (int j = 1; j < mySpreadsheet.getColumns() + 1; j++) {
@@ -220,10 +206,7 @@ public class GUI extends Observable {
 				formulaButton.setEnabled(true);
 				valuesButton.setEnabled(false);
 				// Update the spreadsheet
-				setChanged();
-				notifyObservers(false);
-				clearChanged();
-				Spreadsheet.displayFormulas = false;
+				mySpreadsheet.setFormulaMode(false);
 				// Fill each active cell with its corresponding value
 				for (int i = 0; i < mySpreadsheet.getRows(); i++) {
 					for (int j = 1; j < mySpreadsheet.getColumns() + 1; j++) {

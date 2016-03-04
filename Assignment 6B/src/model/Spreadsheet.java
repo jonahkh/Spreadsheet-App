@@ -2,8 +2,6 @@ package model;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,7 +19,7 @@ import javax.swing.table.TableColumn;
  * @author Jonah Howard
  * @vesion 1 March 2016
  */
-public class Spreadsheet extends DefaultTableModel implements TableModelListener, Observer {
+public class Spreadsheet extends DefaultTableModel implements TableModelListener {
 
 	/** A generated Serial Version UID. */
 	private static final long serialVersionUID = 9025127485326978066L;
@@ -119,6 +117,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 		}
 		System.out.println(myCells[theEvent.getFirstRow()][theEvent.getColumn()].toString()	);
 //		printAllFormulas();
+		
 	}
 
 	/**
@@ -339,11 +338,12 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	public int getColumns() {
 		return myColumns;
 	}
-
-	@Override
-	public void update(final Observable theObservable, final Object theObject) {
-		if (theObject instanceof Boolean) {
-			displayFormulas = (boolean) theObject;
-		}
+	
+	/**
+	 * Toggles the view mode from displaying formulas or values.
+	 * @param formulaMode True if displaying formulas.
+	 */
+	public void setFormulaMode(final boolean formulaMode) {
+		displayFormulas = formulaMode;
 	}
 }

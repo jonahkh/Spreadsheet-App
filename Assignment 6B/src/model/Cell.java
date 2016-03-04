@@ -133,8 +133,6 @@ public class Cell {
 	 * @param input The new input for this cell
 	 */
 	public void parseInput(final String input) {
-
-		// if (isvalid(input)) {
 		final Stack<Token> formula = getFormula(input);
 		myFormula = input;
 		expressionTree.BuildExpressionTree(formula);
@@ -143,161 +141,6 @@ public class Cell {
 			updateDependents();
 		}
 		mySpreadsheet.updateSpreadsheet(myRow, myColumn);
-		// } else {
-		// System.out.println("Wrong");
-		// throw new IllegalArgumentException("Invalid Input");
-		// }
-	}
-
-	/**
-	 * Method will check the input for errors (parenthesis, operator...);
-	 * 
-	 * @param String
-	 *            input
-	 * @return true: valid , false:invalid
-	 */
-	private boolean isvalid(final String input) {
-		int isvalid = checkparenthesis(input);
-		// checkoperands(input);
-		return isvalid == 0 && checkoperands(input) && checkoperator(input);
-	}
-
-	/**
-	 * This method will return if the operands are corrected
-	 * 
-	 * @param String input the input being evaluated
-	 * @return true:valid false:invalid
-	 */
-	private boolean checkoperands(final String input) {
-		String upper = input.toUpperCase();
-		char first = upper.charAt(0);
-		if (first == '-' && upper.length() == 1) {
-			if (upper.length() == 1) {
-				return false;
-			}
-		} else if (first == '*' || first == '+' || first == '/') {
-			return false;
-		}
-
-		// The above is checking the first character.
-		if (function(input)) {
-			char temp;
-
-			if (first == '-' || first >= 'A' && first <= 'Z' || first >= '0'
-					&& first <= '9') {
-				// This for loop is also checking for first char to see if it
-				// between(A-Z or a-z)
-				for (int i = 0; i < upper.length(); i++) {
-					temp = upper.charAt(i);
-
-					if (temp >= 'A' && temp <= 'Z') {
-						int j = 1;
-						while (j < upper.length()) {
-							if (upper.charAt(j) > '0' && upper.charAt(j) < '9') {
-								break;
-							} else {
-								return false;
-							}
-
-						}
-						if (i + 1 >= upper.length()) {
-							return false;
-
-						} else if (upper.charAt(i + 1) >= 'A'
-								&& upper.charAt(i + 1) <= 'Z') {
-							if (i + 2 >= upper.length()) {
-								return false;
-
-							} else if (upper.charAt(i + 2) >= '0'
-									|| upper.charAt(i + 2) <= '9') {
-								if (i + 3 >= upper.length()) {
-									return false;
-								} else if (upper.charAt(i + 3) >= '0'
-										|| upper.charAt(i + 3) <= '9') {
-									return true;
-								}
-							}
-						}
-						return true;
-					}
-				}
-
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Returns whether the passed input is a function.
-	 * 
-	 * @param input the input being considered
-	 * @return true if the passed input is a function
-	 */
-	private boolean function(String input) {
-		String temp = input.replaceAll("\\s", "");
-		char[] operator = { '*', '+', '-', '/' };
-		for (int i = 0; i < temp.length(); i++) {
-			for (int j = 0; j < operator.length; j++) {
-				if (operator[j] == temp.charAt(i)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Checks what follows after operator; input String input 
-	 * 
-	 * @param input the input to be evaluated
-	 * @return true:valid, false:invalid
-	 */
-	private boolean checkoperator(String input) {
-		String temp = input.replaceAll("\\s", "").toUpperCase();
-		char[] operator = { '*', '+', '-', '/' };
-		// This loop will check if the last index is an operator
-		for (int i = 0; i < operator.length; i++) {
-			if (operator[i] == temp.charAt(temp.length() - 1)) {
-				System.out.println("Operator at the end");
-				return false;
-
-			}
-		}
-		// After the first loop, this will check to see what is after the operator
-		for (int i = 0; i < temp.length(); i++) {
-			if (temp.charAt(i) == '+' || temp.charAt(i) == '-'
-					|| temp.charAt(i) == '*' || temp.charAt(i) == '/') {
-				if (temp.charAt(i + 1) < '0' || temp.charAt(i + 1) > '9'
-						&& temp.charAt(i + 1) < 'A' || temp.charAt(i + 1) > 'Z') {
-					System.out.println("Operator wrong");
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * This method will return if the parenthesis are correct.
-	 * 
-	 * @param String
-	 *            input
-	 * @return 0: valid, otherwise is invalid
-	 */
-	private int checkparenthesis(final String input) {
-		int temp = 0;
-		for (int i = 0; i < input.length(); i++) {
-			char c = input.charAt(i);
-			if (c == '(') {
-				temp++;
-			} else if (c == ')') {
-				temp--;
-			}
-		}
-		return temp;
 	}
 
 	/**
@@ -392,6 +235,9 @@ public class Cell {
 						} else {
 							break;
 						}
+					}
+					if (ch == OperatorToken.LT_PAREN && myFormula.charAt(index + 1) == OperatorToken.MINUS) {
+						returnStack.push(new LiteralToken(0));
 					}
 					break;
 
