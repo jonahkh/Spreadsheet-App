@@ -208,6 +208,7 @@ public class GUI {
 								mySpreadsheet.getCells()[i][j].getFormula(); 
 					}
 				}
+				myFrame.repaint();
 			}
 		});
 		valuesButton.addActionListener(new ActionListener() {
@@ -229,6 +230,7 @@ public class GUI {
 						}
 					}
 				}
+				myFrame.repaint();
 			}
 		});
 	}
