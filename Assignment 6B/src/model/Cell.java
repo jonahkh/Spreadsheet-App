@@ -1,3 +1,13 @@
+/*
+ * Lisa Taylor
+ * Jonah Howard
+ * Henry Lai
+ * John Bui
+ * 
+ * TCSS 342 - Spring 2016
+ * Assignment 6B
+ */
+
 package model;
 
 import java.util.ArrayList;
@@ -13,9 +23,9 @@ import java.util.TreeMap;
  * mathematical computations.
  * 
  * @author Jonah Howard
+ * @author Lisa Taylor
  * @author Henry Lai
  * @author John Bui
- * @author Lisa Taylor
  * 
  * @version 3 March 2016
  */
@@ -367,7 +377,7 @@ public class Cell {
 	 * 
 	 * @param theFormula The formula for this cell.
 	 */
-	protected void setFormula(final String theFormula) {
+	public void setFormula(final String theFormula) {
 		myFormula = theFormula;
 	}
 	

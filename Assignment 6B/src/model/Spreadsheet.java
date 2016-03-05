@@ -1,3 +1,13 @@
+/*
+ * Lisa Taylor
+ * Jonah Howard
+ * Henry Lai
+ * John Bui
+ * 
+ * TCSS 342 - Spring 2016
+ * Assignment 6B
+ */
+
 package model;
 
 import java.awt.Color;
@@ -363,6 +373,24 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	public int getColumns() {
 		return myColumns;
 	}
+	
+	   /**
+     * Returns if in Display Formulas mode.
+     * 
+     * @return true if viewing formula mode, else false
+     */
+    public static boolean getDisplayFormulas() {
+        return displayFormulas;
+    }
+
+    /**
+     * Sets the displayFormulas boolean value.
+     * 
+     * @param bool the boolean value
+     */
+    public static void setDisplayFormulas(final boolean bool) {
+        displayFormulas = bool;
+    }
 	
 	/**
 	 * Toggles the view mode from displaying formulas or values.
