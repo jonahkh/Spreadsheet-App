@@ -14,9 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -29,7 +26,7 @@ import javax.swing.KeyStroke;
  * 
  * @version 4 March 2016
  */
-public class FileMenu implements PropertyChangeListener {
+public class FileMenu {
 
     /** JFrame containing spreadsheet application. */
     private final JFrame myFrame;
@@ -98,7 +95,7 @@ public class FileMenu implements PropertyChangeListener {
      */
     private void buildSaveFile() {
         
-        saveFile.setEnabled(false);
+        saveFile.setEnabled(true);
         saveFile.setMnemonic(KeyEvent.VK_S);
         saveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
         saveFile.addActionListener(new ActionListener() {
@@ -144,14 +141,5 @@ public class FileMenu implements PropertyChangeListener {
         myFileMenu.add(saveFile);
         myFileMenu.addSeparator();
         myFileMenu.add(exitApp);
-    }
-    
-    @Override
-    public void propertyChange(final PropertyChangeEvent theEvent) {
-        
-        if ("TableState".equals(theEvent.getPropertyName())) {
-            
-            saveFile.setEnabled((boolean) theEvent.getNewValue());
-        }
     }
 }

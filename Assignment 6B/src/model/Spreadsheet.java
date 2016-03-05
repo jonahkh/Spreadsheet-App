@@ -64,7 +64,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	private final JTable myTable;
 
 	/** True if the Display Formulas button is pressed, false otherwise. */
-	protected static boolean displayFormulas = true;
+	private boolean displayFormulas;
 
 	/**
 	 * Initializes a new Spreadsheet.
@@ -73,6 +73,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * @param theHeight the height of this spreadsheet
 	 */
 	public Spreadsheet(final int theWidth, final int theHeight) {
+	    displayFormulas = true;
 		myColumns = theWidth;
 		myRows = theHeight;
 		initializeSpreadsheet();
@@ -171,7 +172,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * 
 	 * @return the initialized array of cells
 	 */
-	private void initializeCells() {
+	public void initializeCells() {
 		myCells = new Cell[myRows][myColumns + 1];
 		for (int i = 0; i < myRows; i++) {
 			for (int j = 1; j < myColumns + 1; j++) {
@@ -234,7 +235,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 */
 	private void setupAllCells() {
 		// For all data columns in the table, center their cell's alignment. 
-		for (int i = 1; i < myColumns; i++) {
+		for (int i = 1; i < myColumns + 1; i++) {
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 			myTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
@@ -346,8 +347,10 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	public void printAllFormulas() {
 		for (int row = 0; row < myRows; row++) {
 			for (int col = 1; col < myColumns; col++) {
+			    
 				// Prints the Column and Row with colon (e.g. A4: )
 				System.out.print(convertToString(col - 1) + row + ": ");
+				
 				// Prints the formula for that cell
 				System.out.print(myCells[row][col].getFormula() + "   ");
 			}
@@ -373,30 +376,22 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	public int getColumns() {
 		return myColumns;
 	}
-	
-	   /**
-     * Returns if in Display Formulas mode.
-     * 
-     * @return true if viewing formula mode, else false
-     */
-    public static boolean getDisplayFormulas() {
-        return displayFormulas;
-    }
 
     /**
      * Sets the displayFormulas boolean value.
      * 
      * @param bool the boolean value
      */
-    public static void setDisplayFormulas(final boolean bool) {
+    public void setDisplayFormulas(final boolean bool) {
         displayFormulas = bool;
     }
-	
-	/**
-	 * Toggles the view mode from displaying formulas or values.
-	 * @param formulaMode True if displaying formulas.
-	 */
-	public void setFormulaMode(final boolean formulaMode) {
-		displayFormulas = formulaMode;
-	}
+    
+	   /**
+     * Returns whether in Display Formulas mode.
+     * 
+     * @return true if viewing formula mode, else false
+     */
+    public boolean getDisplayFormulas() {
+        return displayFormulas;
+    }
 }

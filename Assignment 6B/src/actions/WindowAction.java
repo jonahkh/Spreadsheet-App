@@ -60,7 +60,7 @@ public class WindowAction extends AbstractAction {
         if ("Display Formulas".equals(theEvent.getActionCommand())) {
             
             // Update the spreadsheet
-            //mySpreadsheet.setFormulaMode(true);
+            mySpreadsheet.setDisplayFormulas(true);
             
             // Fill each active cell with its corresponding formula
             for (int i = 0; i < mySpreadsheet.getRows(); i++) {
@@ -74,7 +74,7 @@ public class WindowAction extends AbstractAction {
         } else {
             
             // Update the spreadsheet
-            //mySpreadsheet.setFormulaMode(false);
+            mySpreadsheet.setDisplayFormulas(false);
             
             // Fill each active cell with its corresponding value
             for (int i = 0; i < mySpreadsheet.getRows(); i++) {

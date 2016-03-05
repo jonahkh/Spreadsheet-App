@@ -18,6 +18,9 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JTable;
+
+import model.Spreadsheet;
 
 /**
  * An Options drop-down menu.
@@ -31,23 +34,39 @@ public class OptionsMenu implements PropertyChangeListener {
     /** JMenu to hold Options menu items. */
     private final JMenu myOptionsMenu;
     
+    /** The Spreadsheet. */
+    private final Spreadsheet mySpreadsheet;
+    
+    /** The table that holds the cells for the spreadsheet. */
+    private final JTable myTable;
+    
     /** MenuItem to clear the entire spreadsheet. */
     private final JMenuItem clearAll;
     
     /** MenuItem to resize spreadsheet. */
     private final JMenuItem resize;
     
+    /** MenuItem to add row(s) to spreadsheet. */
+    private final JMenuItem addRows;
+    
+    /** MenuItem to add column(s) to spreadsheet. */
+    private final JMenuItem addColumns;
+    
     /** 
      * Constructor to initialize fields. 
      * 
      * @param thePanel the CanvasPanel
      */
-    public OptionsMenu() {
+    public OptionsMenu(final Spreadsheet theSpreadsheet, final JTable theTable) {
         
         myOptionsMenu = new JMenu("Options");
+        mySpreadsheet = theSpreadsheet;
+        myTable = theTable;
         
         clearAll = new JMenuItem("Clear All");
         resize = new JMenuItem("Resize");
+        addRows = new JMenuItem("Add Row(s)");
+        addColumns = new JMenuItem("Add Column(s)");
         
         setupOptionsMenu();
     }
@@ -67,14 +86,14 @@ public class OptionsMenu implements PropertyChangeListener {
      */
     private void buildClearAll() {
         
-        clearAll.setEnabled(false);
+        clearAll.setEnabled(true);
         clearAll.setMnemonic(KeyEvent.VK_C);
         clearAll.addActionListener(new ActionListener() {
             
             @Override
             public void actionPerformed(final ActionEvent theEvent) {
                 
-                //Code here
+                mySpreadsheet.initializeCells();
             }
         });
     }
@@ -96,16 +115,54 @@ public class OptionsMenu implements PropertyChangeListener {
         });
     }
     
+    /**
+     * Adds ActionListener to addRows menu item.
+     */
+    private void buildAddRows() {
+        
+        addRows.setEnabled(true);
+        addRows.setMnemonic(KeyEvent.VK_R);
+        addRows.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(final ActionEvent theEvent) {
+                
+                //Code here
+            }
+        });
+    }
+    
+    /**
+     * Adds ActionListener to addColumns menu item.
+     */
+    private void buildAddColumns() {
+        
+        addColumns.setEnabled(true);
+        addColumns.setMnemonic(KeyEvent.VK_R);
+        addColumns.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(final ActionEvent theEvent) {
+                
+                //Code here
+            }
+        });
+    }
+    
     /** Method to add menu items to OptionsMenu and sets a Mnemonic. */
     private void setupOptionsMenu() {
         
         buildClearAll();
         buildResize();
+        buildAddRows();
+        buildAddColumns();
         
         myOptionsMenu.setMnemonic(KeyEvent.VK_O);
         myOptionsMenu.add(clearAll);
         myOptionsMenu.addSeparator();
         myOptionsMenu.add(resize);
+        myOptionsMenu.add(addRows);
+        myOptionsMenu.add(addColumns);
     }
     
     @Override

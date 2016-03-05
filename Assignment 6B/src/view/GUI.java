@@ -198,7 +198,7 @@ public class GUI {
      */
     public void run() {
         
-        final JPanel panel = new JPanel(new FlowLayout());
+        //final JPanel panel = new JPanel(new FlowLayout());
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Adds the scrollable pane to the JFrame to enable the scrollbar
@@ -209,7 +209,7 @@ public class GUI {
         addMenuBar();
         addToolBar();
 
-        myFrame.add(panel, BorderLayout.SOUTH);
+        //myFrame.add(panel, BorderLayout.SOUTH);
         myFrame.add(myToolBar,  BorderLayout.SOUTH);
         //myFrame.pack();
         myFrame.setVisible(true);
@@ -222,7 +222,7 @@ public class GUI {
 	private void addMenuBar() {
 	    
 		myMenuBar.add(new FileMenu(myFrame).getFileMenu());
-		myMenuBar.add(new OptionsMenu().getOptionsMenu());
+		myMenuBar.add(new OptionsMenu(mySpreadsheet, mySpreadsheet.getTable()).getOptionsMenu());
 		myMenuBar.add(myWindowViews.getWindowMenu());
 		myMenuBar.add(new HelpMenu().getHelpMenu());
 		

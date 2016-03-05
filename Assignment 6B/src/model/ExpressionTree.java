@@ -12,6 +12,8 @@ package model;
 
 import java.util.Stack;
 
+import utils.Operators;
+
 /**
  * This class represents an expression tree for calculating formulas
  * entered into a cell.
@@ -33,6 +35,7 @@ public class ExpressionTree {
      * @param theSpreadsheet the current spreadsheet
      */
     public ExpressionTree(final Spreadsheet theSpreadsheet) {
+        
     	mySpreadsheet = theSpreadsheet;
         root = null;
     }
@@ -41,6 +44,7 @@ public class ExpressionTree {
      * Removes all nodes from this tree.
      */
     public void makeEmpty() {
+        
         root = null;
     }
     
@@ -48,8 +52,10 @@ public class ExpressionTree {
      * Prints this tree in post-order traversal.
      */
     public void printTree() {
+        
         if(root == null)
             System.out.println( "Empty tree" );
+        
         else 
             printTree(root);
     }
@@ -60,6 +66,7 @@ public class ExpressionTree {
      * @param t the node that roots the (sub)tree
      */
     public void printTree(final ExpressionTreeNode t) {
+        
         if(t != null) {
             printTree(t.left);
             printTree(t.right);
@@ -72,6 +79,7 @@ public class ExpressionTree {
      * @return the result of the evaluated tree
      */
     public int evaluate() {
+        
     	return evaluate(root);
     }
     
@@ -81,37 +89,49 @@ public class ExpressionTree {
      * @param t the node that roots the (sub)tree
      */
     private int evaluate(final ExpressionTreeNode t) {
+        
         int total = 0;
         int value1 = 0;
         int value2 = 0;
         
         if (t != null && t.token instanceof OperatorToken) {
-            //evaluate left subtree and store value as value1
-        	
+            
+            //evaluate left subtree and store value as value1    	
             if (t.left.token instanceof OperatorToken)
                 value1 = evaluate(t.left);
+            
             else if(t.left.token instanceof LiteralToken)
                 value1 = ((LiteralToken) t.left.token).getValue();
-            else if (t.left.token instanceof CellToken)
-                value1 = mySpreadsheet.getCells()[((CellToken) t.left.token).getRow()][((CellToken) t.left.token).getColumn()].getValue();
-            //evaluate right subtree and store value as value2
             
+            else if (t.left.token instanceof CellToken)
+                value1 = mySpreadsheet.getCells()[((CellToken) t.left.token).getRow()]
+                        [((CellToken) t.left.token).getColumn()].getValue();
+            
+            //evaluate right subtree and store value as value2        
             if (t.right.token instanceof OperatorToken)
                 value2 = evaluate(t.right);
+            
             else if(t.right.token instanceof LiteralToken)
                 value2 = ((LiteralToken) t.right.token).getValue();
+            
             else if (t.right.token instanceof CellToken)
-                value2 = mySpreadsheet.getCells()[((CellToken) t.right.token).getRow()][((CellToken) t.right.token).getColumn()].getValue();
+                value2 = mySpreadsheet.getCells()[((CellToken) t.right.token).getRow()]
+                        [((CellToken) t.right.token).getColumn()].getValue();
+            
             //calculate total using the values from the two subtrees
-            total = ((OperatorToken) t.token).evaluate(value1, value2);
-        } else {// if (t != null){
-        	if (t.token instanceof LiteralToken) {
+            total = Operators.evaluate(t.token, value1, value2);
+            
+        } else { //ASSERT: not null
+            
+        	if (t.token instanceof LiteralToken)
         		total = ((LiteralToken) t.token).getValue();
-        	} else {
+        	
+        	else {
         		CellToken temp = ((CellToken) t.token);
         		total = mySpreadsheet.getCells()[temp.getRow()][temp.getColumn()].getValue();
         	}
         }
+        
         return total;
     }
     
@@ -122,8 +142,11 @@ public class ExpressionTree {
      * @param theDependants the list of dependents for the current cell
      */
     public void BuildExpressionTree (final Stack<Token> s) {
+        
     	root = getExpressionTree(s);
+    	
     	if (!s.isEmpty()) {
+    	    
     		System.out.println("Error in BuildExpressionTree.");
     	}
  	}
