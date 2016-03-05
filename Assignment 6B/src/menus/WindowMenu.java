@@ -106,8 +106,8 @@ public class WindowMenu {
      */
     private void setupWindowActions() {
         
-        final WindowAction formulaAction = new WindowAction("formulas", myFrame, mySpreadsheet);
-        final WindowAction valueAction = new WindowAction("values", myFrame, mySpreadsheet);
+        final WindowAction formulaAction = new WindowAction("Display Formulas", myFrame, mySpreadsheet);
+        final WindowAction valueAction = new WindowAction("Display Values", myFrame, mySpreadsheet);
         
         formulaAction.putValue(Action.DISPLAYED_MNEMONIC_INDEX_KEY, KeyEvent.VK_F);
         formulaAction.putValue(Action.SHORT_DESCRIPTION, "View Formulas");

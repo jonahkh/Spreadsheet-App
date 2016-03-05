@@ -57,7 +57,7 @@ public class WindowAction extends AbstractAction {
     public void actionPerformed(final ActionEvent theEvent) {
         //System.out.println(theEvent.getActionCommand());
         
-        if ("formulas".equals(theEvent.getActionCommand())) {
+        if ("Display Formulas".equals(theEvent.getActionCommand())) {
             
             // Update the spreadsheet
             //mySpreadsheet.setFormulaMode(true);
