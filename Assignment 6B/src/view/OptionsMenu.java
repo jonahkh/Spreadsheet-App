@@ -8,7 +8,9 @@
  * Assignment 6B
  */
 
-package menus;
+package view;
+
+import model.Spreadsheet;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,11 +18,10 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
-
-import model.Spreadsheet;
 
 /**
  * An Options drop-down menu.
@@ -34,6 +35,9 @@ public class OptionsMenu implements PropertyChangeListener {
     /** JMenu to hold Options menu items. */
     private final JMenu myOptionsMenu;
     
+    /** The JFrame that the spreadsheet is displayed on. */
+    private final JFrame myFrame;
+       
     /** The Spreadsheet. */
     private final Spreadsheet mySpreadsheet;
     
@@ -57,9 +61,11 @@ public class OptionsMenu implements PropertyChangeListener {
      * 
      * @param thePanel the CanvasPanel
      */
-    public OptionsMenu(final Spreadsheet theSpreadsheet, final JTable theTable) {
+    public OptionsMenu(final JFrame theFrame, final Spreadsheet theSpreadsheet, final JTable theTable) {
         
         myOptionsMenu = new JMenu("Options");
+        
+        myFrame = theFrame;
         mySpreadsheet = theSpreadsheet;
         myTable = theTable;
         
@@ -94,6 +100,7 @@ public class OptionsMenu implements PropertyChangeListener {
             public void actionPerformed(final ActionEvent theEvent) {
                 
                 mySpreadsheet.initializeCells();
+                myFrame.repaint();
             }
         });
     }
@@ -104,7 +111,7 @@ public class OptionsMenu implements PropertyChangeListener {
     private void buildResize() {
         
         resize.setEnabled(true);
-        resize.setMnemonic(KeyEvent.VK_R);
+        resize.setMnemonic(KeyEvent.VK_S);
         resize.addActionListener(new ActionListener() {
             
             @Override
@@ -138,7 +145,7 @@ public class OptionsMenu implements PropertyChangeListener {
     private void buildAddColumns() {
         
         addColumns.setEnabled(true);
-        addColumns.setMnemonic(KeyEvent.VK_R);
+        addColumns.setMnemonic(KeyEvent.VK_C);
         addColumns.addActionListener(new ActionListener() {
             
             @Override
@@ -157,7 +164,6 @@ public class OptionsMenu implements PropertyChangeListener {
         buildAddRows();
         buildAddColumns();
         
-        myOptionsMenu.setMnemonic(KeyEvent.VK_O);
         myOptionsMenu.add(clearAll);
         myOptionsMenu.addSeparator();
         myOptionsMenu.add(resize);

@@ -10,14 +10,14 @@
 
 package model;
 
+import util.Operators;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
-
-import utils.Operators;
 
 /**
  * This class represents a single cell in a spreadsheet. It contains data

@@ -8,7 +8,7 @@
  * Assignment 6B
  */
 
-package utils;
+package util;
 
 import model.OperatorToken;
 import model.Token;
@@ -19,7 +19,6 @@ import model.Token;
  * 
  * @author Lisa Taylor
  * @author Jonah Howard
-
  * 
  * @version 4 March 2016
  */

@@ -10,9 +10,9 @@
 
 package model;
 
-import java.util.Stack;
+import util.Operators;
 
-import utils.Operators;
+import java.util.Stack;
 
 /**
  * This class represents an expression tree for calculating formulas

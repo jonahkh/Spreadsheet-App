@@ -8,7 +8,7 @@
  * Assignment 6B
  */
 
-package menus;
+package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,11 +28,11 @@ import javax.swing.KeyStroke;
  */
 public class FileMenu {
 
-    /** JFrame containing spreadsheet application. */
-    private final JFrame myFrame;
-    
     /** JMenu to hold File menu items. */
     private final JMenu myFileMenu;
+    
+    /** JFrame containing spreadsheet application. */
+    private final JFrame myFrame;
     
     /** MenuItem to open a file in the spreadsheet. */
     private final JMenuItem openFile;
@@ -51,9 +51,9 @@ public class FileMenu {
      */
     public FileMenu(final JFrame theFrame) {
         
-        myFrame = theFrame;
-        
         myFileMenu = new JMenu("File");
+        
+        myFrame = theFrame;
         
         openFile = new JMenuItem("Open...");
         saveFile = new JMenuItem("Save...");
@@ -73,7 +73,7 @@ public class FileMenu {
     }
     
     /**
-     * Adds ActionListener to myUndoAll menu item.
+     * Adds ActionListener to openFile menu item.
      */
     private void buildOpenFile() {
         
@@ -91,7 +91,7 @@ public class FileMenu {
     }
     
     /**
-     * Adds ActionListener to myUndo menu item.
+     * Adds ActionListener to saveFile menu item.
      */
     private void buildSaveFile() {
         
@@ -109,7 +109,7 @@ public class FileMenu {
     }
     
     /**
-     * Adds ActionListener to myExit menu item.
+     * Adds ActionListener to exitApp menu item.
      */
     private void buildExitApp() {
         
@@ -135,7 +135,6 @@ public class FileMenu {
         buildSaveFile();
         buildExitApp();
         
-        myFileMenu.setMnemonic(KeyEvent.VK_F);
         myFileMenu.add(openFile);
         //myMenu.addSeparator();
         myFileMenu.add(saveFile);

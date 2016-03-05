@@ -10,8 +10,6 @@
 
 package model;
 
-import utils.Operators;
-
 /**
  * This class represents an individual Operator Token. 
  * 

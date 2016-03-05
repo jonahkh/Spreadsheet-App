@@ -31,12 +31,6 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
-import actions.WindowAction;
-import menus.FileMenu;
-import menus.HelpMenu;
-import menus.OptionsMenu;
-import menus.WindowMenu;
-
 /**
  * This class runs the GUI interface for the spreadsheet application.
  * 
@@ -222,7 +216,7 @@ public class GUI {
 	private void addMenuBar() {
 	    
 		myMenuBar.add(new FileMenu(myFrame).getFileMenu());
-		myMenuBar.add(new OptionsMenu(mySpreadsheet, mySpreadsheet.getTable()).getOptionsMenu());
+		myMenuBar.add(new OptionsMenu(myFrame, mySpreadsheet, mySpreadsheet.getTable()).getOptionsMenu());
 		myMenuBar.add(myWindowViews.getWindowMenu());
 		myMenuBar.add(new HelpMenu().getHelpMenu());
 		
@@ -234,10 +228,10 @@ public class GUI {
      */
     private void addToolBar() {
         
-        final List<WindowAction> windowActions = myWindowViews.getWindowActions();
+        final List<WindowMenu.WindowAction> windowActions = myWindowViews.getWindowActions();
         final ButtonGroup btngrp = new ButtonGroup();
         
-        for (final WindowAction winAction : windowActions) {
+        for (final WindowMenu.WindowAction winAction : windowActions) {
             
             final JToggleButton tbtn = new JToggleButton(winAction);
             btngrp.add(tbtn);
