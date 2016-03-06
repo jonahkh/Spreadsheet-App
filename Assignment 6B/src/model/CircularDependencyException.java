@@ -14,13 +14,27 @@ package model;
  * Exception class for circular dependency.
  *
  * @author Lisa Taylor
+ * @author Jonah Howard
+ * 
  * @version 3 March 2016
  */
 public class CircularDependencyException extends Exception {
-    public CircularDependencyException() {
+	
+    /** A generated serial version UID. */
+	private static final long serialVersionUID = 1754962508847115076L;
+
+	/**
+	 * Initialize a new CircularDependencyException.
+	 */
+	public CircularDependencyException() {
     }
 
-    public CircularDependencyException(String message) {
+	/**
+	 * Initializes a new CircularDependencyException.
+	 * 
+	 * @param message the message to be displayed when this exception occurs.
+	 */
+    public CircularDependencyException(final String message) {
         super(message);
     }
 }

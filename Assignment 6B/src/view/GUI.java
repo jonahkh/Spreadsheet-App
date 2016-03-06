@@ -42,6 +42,9 @@ import javax.swing.JToolBar;
  */
 public class GUI extends JFrame {
 	
+	/** A generated serial version UID. */
+	private static final long serialVersionUID = -5443058312779589707L;
+
 	/** The minimum number of rows and columns allowed. */
 	private static final int MIN_DIMENSION = 3;
 
@@ -75,11 +78,8 @@ public class GUI extends JFrame {
 	/** The user-inputed number of columns in the spreadsheet. */
 	private int cols;
 
-	/**
-	 * This constructor initializes the GUI interface.
-	 */
+	/** Initializes the interface for the Spreadsheet application. */
 	public GUI() {
-		// Sets the title of the program in the title bar.
 	    super("TCSS 342 Spreadsheet - Group 8");
 		
 	    final Dimension dimension = initialize();
@@ -142,9 +142,10 @@ public class GUI extends JFrame {
 
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		JPanel textPanel = new JPanel();
-		textPanel.add(new JLabel("Minimum size is 3x3."));
-		panel.add(textPanel); // This is asserted
+		textPanel.add(new JLabel("Minimum size is 3x3.")); // This is asserted
+		panel.add(textPanel); 
 		
+		// Format the text fields
 		bottomPanel.add(new JLabel("Rows:"));
 		bottomPanel.add(rowSize);
 		bottomPanel.add(Box.createVerticalStrut(15));
@@ -158,19 +159,15 @@ public class GUI extends JFrame {
 			int result = JOptionPane.showConfirmDialog(this, panel, 
 					"Please enter the size of the spreadsheet:", 
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-			
 			if (result == JOptionPane.OK_OPTION) {
 				// Assert the minimum size of 3x3
 				cols = Math.max(Integer.parseInt(columnSize.getText()), MIN_DIMENSION);
 				rows = Math.max(Integer.parseInt(rowSize.getText()), MIN_DIMENSION);
-				
 			} else {
-			    
 				System.exit(0);	// Terminate the program
 			}
 			
 		} catch (NumberFormatException e) {	
-		    
 		    // If invalid input is entered
 			// Both dimensions set to minimum size
 			rows = cols = MIN_DIMENSION;
@@ -191,14 +188,12 @@ public class GUI extends JFrame {
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		// Adds the scrollable pane to the JFrame to enable the scrollbar
+		// Adds a scroll bar to the table
         add(new JScrollPane(mySpreadsheet.getTable(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
 
         addMenuBar();
         addToolBar();
-
-        //pack();
         setVisible(true);
         setLocationRelativeTo(null);
 	}
@@ -223,7 +218,7 @@ public class GUI extends JFrame {
         
         final List<WindowMenu.WindowAction> windowActions = myWindowViews.getWindowActions();
         final ButtonGroup btngrp = new ButtonGroup();
-        
+        // comment
         for (final WindowMenu.WindowAction winAction : windowActions) {
             
             final JToggleButton tbtn = new JToggleButton(winAction);

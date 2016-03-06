@@ -24,10 +24,9 @@ import javax.swing.JMenu;
 import javax.swing.JRadioButtonMenuItem;
 
 /**
- * A View drop-down menu.
+ * This class represents the View drop down menu.
  * 
  * @author Lisa Taylor
- * 
  * @version 4 March 2016
  */
 public class WindowMenu {
@@ -62,7 +61,7 @@ public class WindowMenu {
     }
     
     /**
-     * Method to get WindowMenu field.
+     * Returns the Window menu.
      * 
      * @return the Options menu
      */
@@ -72,7 +71,7 @@ public class WindowMenu {
     }
     
     /**
-     * Method to get myWindowActions field.
+     * Returns the list of windows actions.
      * 
      * @return the Tool actions
      */
@@ -82,7 +81,7 @@ public class WindowMenu {
     }
     
     /**
-     * Method to add menu items to WindowMenu and sets a Mnemonic.
+     * Adds menu items to WindowMenu and sets a Mnemonic.
      * Puts window view actions into a button group.
      */
     private void setupWindowMenu() {
@@ -98,7 +97,7 @@ public class WindowMenu {
     }
     
     /**
-     * Method to add menu items to WindowMenu and
+     * Adds menu items to WindowMenu and
      * sets a Mnemonic and short description.
      * 
      * @param thePanel the CanvasPanel
@@ -120,17 +119,10 @@ public class WindowMenu {
         myWindowActions.add(valueAction);;
     }
     
-    /** Inner Action class for making Window Actions. 
-     * 
-     * @author Lisa Taylor
-     * 
-     * @version 4 March 2016
-     */
+     /** Inner Action class for making Window Actions. */ 
     public class WindowAction extends AbstractAction {
 
-        /**
-         * Serial Version ID.
-         */
+        /** A generated serial version UID. */
         private static final long serialVersionUID = -1317743352381047973L;
 
         /**
@@ -147,7 +139,6 @@ public class WindowMenu {
         
         @Override
         public void actionPerformed(final ActionEvent theEvent) {
-            //System.out.println(theEvent.getActionCommand());
             
             if ("Display Formulas".equals(theEvent.getActionCommand())) {
                 

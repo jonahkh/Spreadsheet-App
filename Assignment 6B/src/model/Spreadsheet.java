@@ -84,18 +84,13 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			/** A generated serial version UID. */
 			private static final long serialVersionUID = -8427343693180623327L;
 
-			// This anonymous inner class disables the row numbers from
-			// being editable.
+			//Disables the row numbers from being editable.
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return column != 0;
 			}
 		};
 		setupAllCells();
-		// Set interface properties for the table
-		myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		myTable.getModel().addTableModelListener(this);
-		myTable.getTableHeader().setReorderingAllowed(false);
 	}
 
 	@Override
@@ -189,6 +184,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * @param theColumn the column of the spreadsheet to be updated
 	 */
 	public void updateSpreadsheet(final int theRow, final int theColumn) {
+		// Check whether the display formulas button is pressed or display values
 		if (displayFormulas) {
 			mySpreadsheet[theRow][theColumn] = myCells[theRow][theColumn].getFormula();
 		} else {
@@ -219,6 +215,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 		mySpreadsheet = new Object[myRows][myColumns + 1];
 		for (int i = 0; i < myRows; i++) {
 			for (int j = 0; j < myColumns + 1; j++) {
+				// First column is set to a number in ascending order, all others are empty
 				if (j == 0) {
 					mySpreadsheet[i][j] = i + 1;
 				} else {
@@ -229,9 +226,9 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	}
 
 	/**
-	 * This method centers all the cells be setting each columns default cell
+	 * Centers all the cells be setting each columns default cell
 	 * render to center the cell's data. It also colors the background of the
-	 * row numbers to indicate that they are part of the UI and is uneditable.
+	 * row numbers to indicate that they are part of the UI and is in-editable.
 	 */
 	private void setupAllCells() {
 		// For all data columns in the table, center their cell's alignment. 
@@ -240,6 +237,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 			myTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
+		
 		// Special case for first column, set the background color to match the column headers
 		// in addition to centering each cell. 
 		TableColumn rowNums = myTable.getColumnModel().getColumn(0);
@@ -247,6 +245,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			
 			/** A generated serial version UID. */
 			private static final long serialVersionUID = 3565976393614019090L;
+			// Comment
 			@Override
 			public Component getTableCellRendererComponent(final JTable table, 
 					final Object value, final boolean isSelected, final boolean hasFocus, 
@@ -260,7 +259,11 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			}
 		});
 		
+		// Set interface properties for the table
 		myTable.getColumnModel().getColumn(0).setPreferredWidth(ROW_NUMBER_WIDTH);
+		myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		myTable.getModel().addTableModelListener(this);
+		myTable.getTableHeader().setReorderingAllowed(false);
 	}
 
 	/**
@@ -378,15 +381,15 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	}
 
     /**
-     * Sets the displayFormulas boolean value.
+     * Notifies the spreadsheet when one of the buttons has been pressed.
      * 
-     * @param bool the boolean value
+     * @param bool true if the display formulas button is pressed, false otherwise
      */
     public void setDisplayFormulas(final boolean bool) {
         displayFormulas = bool;
     }
     
-	   /**
+	/**
      * Returns whether in Display Formulas mode.
      * 
      * @return true if viewing formula mode, else false

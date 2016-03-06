@@ -156,7 +156,7 @@ public class OptionsMenu implements PropertyChangeListener {
         });
     }
     
-    /** Method to add menu items to OptionsMenu and sets a Mnemonic. */
+    /** Add menu items to OptionsMenu and sets a Mnemonic. */
     private void setupOptionsMenu() {
         
         buildClearAll();

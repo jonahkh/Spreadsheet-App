@@ -168,9 +168,8 @@ public class ExpressionTree {
     	if ((token instanceof LiteralToken) || (token instanceof CellToken) ) {
     		// Literals and Cells are leaves in the expression tree
     		returnTree = new ExpressionTreeNode(token, null, null);
-//    		theDependants.add(new CellToken())
     		return returnTree;
-    	} else { // if (token instanceof OperatorToken) {
+    	} else { 
     		// Continue finding tokens that will form the
     		// right subtree and left subtree.
     		ExpressionTreeNode rightSubtree = getExpressionTree (s);

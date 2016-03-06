@@ -18,13 +18,24 @@ package model;
  */
 public abstract class Token {
 
+	/** Represents the current token. */
     private String token = null;
 
+    /**
+     * Returns the current token.
+     * 
+     * @return the current token
+     */
     public String getToken() {
         return token;
     }
 
-    public void setToken(String token) {
+    /**
+     * Sets this token to the passed value.
+     * 
+     * @param token the new value for this token
+     */
+    public void setToken(final String token) {
         this.token = token;
     }
     

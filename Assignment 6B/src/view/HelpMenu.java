@@ -48,7 +48,7 @@ public class HelpMenu {
     }
     
     /**
-     * Method to get myHelpMenu field.
+     * Returns the help menu. 
      * 
      * @return the Options menu
      */
@@ -92,7 +92,7 @@ public class HelpMenu {
     }
     
     /**
-     * Method to add menu items to HelpMenu and sets a Mnemonic.
+     * Adds menu items to HelpMenu and sets a Mnemonic.
      */
     private void setupHelpMenu() {
         

@@ -28,7 +28,7 @@ public class LiteralToken extends Token {
         this(literal + "");
     }
     
-       /**
+    /**
      * Initialize a new Literal Token for string passed as argument.
      * 
      * @param literal the value for this Token
@@ -39,7 +39,7 @@ public class LiteralToken extends Token {
     }
     
     /**
-     * Set the token to the passed int myValue.
+     * Set the token to the passed value.
      * 
      * @param theValue The myValue to set this token to
      */
@@ -48,7 +48,7 @@ public class LiteralToken extends Token {
     }
     
     /**
-     * Set the token to the passed int myValue.
+     * Set the token to the passed value.
      * 
      * @param theValue The myValue to set this token to
      */

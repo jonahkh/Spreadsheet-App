@@ -44,10 +44,9 @@ public class FileMenu {
     private final JMenuItem exitApp;
     
     /** 
-     * Constructor to initialize fields.
+     * Initializes a new FileMenu.
      *
-     * @param theFrame the JFrame
-     * @param thePanel the CanvasPanel
+     * @param theFrame the current JFrame
      */
     public FileMenu(final JFrame theFrame) {
         
@@ -63,7 +62,7 @@ public class FileMenu {
     }
     
     /**
-     * Method to get myMenu field.
+     * Returns this file menu.
      * 
      * @return the File menu
      */
@@ -126,8 +125,7 @@ public class FileMenu {
     }
     
     /**
-     * Method to add menu items to FileMenu and
-     * sets a Mnemonic.
+     * Adds menu items to FileMenu and sets a Mnemonic.
      */
     private void setupFileMenu() {
         

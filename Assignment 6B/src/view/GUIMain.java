@@ -21,15 +21,14 @@ import java.awt.EventQueue;
 public final class GUIMain {
     
     /**
-     * Private constructor to prevent instantiation of this class.
+     * Prevents instantiation of this class.
      */
     private GUIMain() {
-        
         throw new IllegalStateException();
     }
 
     /**
-     * The main method invokes the SpreadsheetGUI. Command line arguments
+     * Invokes the SpreadsheetGUI. Command line arguments
      * are ignored.
      * 
      * @param theArgs Command line arguments.
