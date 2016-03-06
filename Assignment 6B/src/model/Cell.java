@@ -259,7 +259,7 @@ public class Cell {
 					OperatorToken stackOperator;
 					while (!operatorStack.isEmpty()) {
 						stackOperator = (OperatorToken) operatorStack.peek();
-						if ((Operators.priority(stackOperator) >= Operators.operatorPriority(ch))
+						if ((Operators.operatorPriority(stackOperator) >= Operators.operatorPriority(ch))
 								&& (stackOperator.getOperatorToken() != Operators.LT_PAREN)) {
 
 							// output the operator to the return stack

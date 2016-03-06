@@ -38,6 +38,9 @@ public class Operators {
 
     /** Represents a parentheses operator. */
     public static final char LT_PAREN = '(';
+    
+    /** Represents a right parentheses operator. */
+    public static final char RT_PAREN = ')';
 
     /** Represents a power operator. */
     public static final char POW = '^';
@@ -52,27 +55,27 @@ public class Operators {
     /**
      * Evaluates the two passed values based on the current operator.
      * 
-     * @param value1 the first value to be considered
-     * @param value2 the second value to be considered
+     * @param operand1 the first value to be considered
+     * @param operand2 the second value to be considered
      * @return the result based on the current operator
      */
-    public static int evaluate(final Token theToken, final int value1, final int value2) {
+    public static int evaluate(final Token theToken, final int operand1, final int operand2) {
         int result = 0;
         switch (((OperatorToken) theToken).getOperatorToken()) {
             case PLUS: {
-                result = value1 + value2;
+                result = operand1 + operand2;
                 break;
             } case MINUS: {
-                result = value1 - value2;
+                result = operand1 - operand2;
                 break;
             } case MULT: {
-                result = value1 * value2;
+                result = operand1 * operand2;
                 break;
             } case DIV: {
-                result = value1 / value2;
+                result = operand1 / operand2;
                 break;
             } case POW: {
-                result = (int) Math.pow(value1, value2);
+                result = (int) Math.pow(operand1, operand2);
                 break;
             }
         }
@@ -105,10 +108,12 @@ public class Operators {
                 return 1;
             case DIV:
                 return 1;
-            case LT_PAREN:
-                return 3;
             case POW:
                 return 2;
+            case LT_PAREN:
+                return 3;
+            case RT_PAREN:
+                return 3;
 
             default:
                 // This case should NEVER happen
@@ -117,22 +122,6 @@ public class Operators {
                 break;
         }
         return -1;
-    }
-    
-    /**
-     * Return true if the char ch is an operator of a formula.
-     * Current operators are: +, -, *, /, (, ^.
-     * 
-     * @param ch  a char
-     * @return  whether ch is an operator
-     */
-    public static boolean isValidOperator (char ch) {
-        return ((ch == Operators.PLUS) ||
-                (ch == Operators.MINUS) ||
-                (ch == Operators.MULT) ||
-                (ch == Operators.DIV) ||
-                (ch == Operators.LT_PAREN) ||
-                (ch == Operators.POW));
     }
     
     /**
@@ -146,7 +135,7 @@ public class Operators {
      *
      * @return  the priority of operatorToken
      */
-    public static int priority (final Token theToken) {
+    public static int operatorPriority (final Token theToken) {
         switch (((OperatorToken) theToken).getOperatorToken()) {
             case PLUS:
                 return 0;
@@ -168,5 +157,22 @@ public class Operators {
                 break;
         }
         return -1;
+    }
+    
+    /**
+     * Return true if the char ch is an operator of a formula.
+     * Current operators are: +, -, *, /, (, ^.
+     * 
+     * @param ch  a char
+     * @return  whether ch is an operator
+     */
+    public static boolean isValidOperator (char ch) {
+        return ((ch == Operators.PLUS) ||
+                (ch == Operators.MINUS) ||
+                (ch == Operators.MULT) ||
+                (ch == Operators.DIV) ||
+                (ch == Operators.LT_PAREN) ||
+                (ch == Operators.RT_PAREN) ||
+                (ch == Operators.POW));
     }
 }
