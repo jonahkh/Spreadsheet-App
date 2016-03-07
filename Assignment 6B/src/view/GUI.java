@@ -118,7 +118,6 @@ public class GUI {
 	 * http://stackoverflow.com/questions/6555040/multiple-input-in-joptionpane-showinputdialog
 	 * Some minor modifications have been made to variable names.
 	 * 
-	 * 
 	 * @return the size of the spread sheet
 	 */
 	private Dimension initialize() {
