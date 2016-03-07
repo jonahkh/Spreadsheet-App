@@ -38,6 +38,7 @@ public class Cell {
 	/** The list of dependencies for this cell. */
 	private final List<Cell> myDependencies;
 
+	/** The list of dependents for this cell. */
 	private final List<Cell> myDependents;
 
 	/** The current row for this cell. */

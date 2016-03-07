@@ -41,7 +41,7 @@ public class Operators {
     public static final char POW = '^';
     
     /** Array to hold valid operators. */
-    public static final int[] ops = {PLUS, MINUS, MULT, DIV, LT_PAREN, POW};
+    public static final char[] ops = {PLUS, MINUS, MULT, DIV, LT_PAREN, POW};
     
     static {
         
