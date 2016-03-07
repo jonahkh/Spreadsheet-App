@@ -37,7 +37,7 @@ import javax.swing.JToolBar;
 public class GUI {
 
 	/** The minimum number of rows and columns allowed. */
-	private static final int MIN_DIMENSION = 3;
+	private static final int MIN_DIMENSION = 5;
 
 	/** Horizontal offset for initial frame resizing. */
 	private static final int HORIZONTAL_OFFSET = 49;
@@ -135,7 +135,7 @@ public class GUI {
 
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		JPanel textPanel = new JPanel();
-		textPanel.add(new JLabel("Minimum size is 3x3.")); // This is asserted
+		textPanel.add(new JLabel("Minimum size is " + MIN_DIMENSION + "x" + MIN_DIMENSION + ".")); 
 		panel.add(textPanel); 
 		
 		// Format the text fields
@@ -153,7 +153,7 @@ public class GUI {
 					"Please enter the size of the spreadsheet:", 
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if (result == JOptionPane.OK_OPTION) {
-				// Assert the minimum size of 3x3
+				// Assert the minimum size of MIN_DIMENSION x MIN_DIMENSION
 				cols = Math.max(Integer.parseInt(columnSize.getText()), MIN_DIMENSION);
 				rows = Math.max(Integer.parseInt(rowSize.getText()), MIN_DIMENSION);
 			} else {
@@ -165,7 +165,8 @@ public class GUI {
 			// Both dimensions set to minimum size
 			rows = cols = MIN_DIMENSION;
 			JOptionPane.showMessageDialog(myFrame.getContentPane(), 
-					"Invalid dimensions entered! Using default 3 x 3 table.", 
+					"Invalid dimensions entered! " + 
+					"Using default " + MIN_DIMENSION + "x" + MIN_DIMENSION + " table.", 
 					"Error! Invalid Dimensions!",
 					JOptionPane.ERROR_MESSAGE);
 		}
