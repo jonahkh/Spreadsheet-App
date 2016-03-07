@@ -27,6 +27,7 @@ import javax.swing.JRadioButtonMenuItem;
  * This class represents the View drop down menu.
  * 
  * @author Lisa Taylor
+ * 
  * @version 4 March 2016
  */
 public class WindowMenu {

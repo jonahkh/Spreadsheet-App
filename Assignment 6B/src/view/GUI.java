@@ -40,10 +40,7 @@ import javax.swing.JToolBar;
  * 
  * @version 4 March 2016
  */
-public class GUI extends JFrame {
-	
-	/** A generated serial version UID. */
-	private static final long serialVersionUID = -5443058312779589707L;
+public class GUI {
 
 	/** The minimum number of rows and columns allowed. */
 	private static final int MIN_DIMENSION = 3;
@@ -59,6 +56,9 @@ public class GUI extends JFrame {
 
 	/** The height of a cell in pixels. Default = 16 */
 	private static final int CELL_HEIGHT = 16;
+	
+    /** The JFrame that the spreadsheet is displayed on. */
+    private final JFrame myFrame;
 	
     /** JMenuBar to display Menus. */
     private final JMenuBar  myMenuBar;
@@ -80,13 +80,13 @@ public class GUI extends JFrame {
 
 	/** Initializes the interface for the Spreadsheet application. */
 	public GUI() {
-	    super("TCSS 342 Spreadsheet - Group 8");
-		
+
+        myFrame = new JFrame("TCSS 342 Spreadsheet - Group 8");		
 	    final Dimension dimension = initialize();
 	    mySpreadsheet = new Spreadsheet((int) dimension.getWidth(), (int) dimension.getHeight());
 		myMenuBar = new JMenuBar();
         myToolBar = new JToolBar();
-        myWindowViews = new WindowMenu(this, mySpreadsheet);
+        myWindowViews = new WindowMenu(myFrame, mySpreadsheet);
 
 		resizeComponents();
 	}
@@ -107,14 +107,14 @@ public class GUI extends JFrame {
 		final double height = screenSize.getHeight();
 		
 		// Sets the initial window size to be the minimum of either screen resolution or calculated dimensions.
-		setSize((int) Math.min(minWidth, width), (int) Math.min(minHeight, height));
+		myFrame.setSize((int) Math.min(minWidth, width), (int) Math.min(minHeight, height));
 		
 		// Sets the minimum window size to the the default of 6 columns and 8 rows unless it is smaller.
 		minWidth = (int) Math.min(minWidth, HORIZONTAL_OFFSET + CELL_WIDTH * 6);
 		minHeight = (int) Math.min(minHeight, VERTICAL_OFFSET + CELL_HEIGHT * 8);
 		
 		// Sets the maximum window size to be the table dimension unless it is larger than resolution.
-		setMaximumSize(new Dimension(minWidth, minHeight));
+		myFrame.setMaximumSize(new Dimension(minWidth, minHeight));
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class GUI extends JFrame {
 		
 		// Prompt user to set the size of the spreadsheet
 		try {
-			int result = JOptionPane.showConfirmDialog(this, panel, 
+			int result = JOptionPane.showConfirmDialog(myFrame, panel, 
 					"Please enter the size of the spreadsheet:", 
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if (result == JOptionPane.OK_OPTION) {
@@ -171,7 +171,7 @@ public class GUI extends JFrame {
 		    // If invalid input is entered
 			// Both dimensions set to minimum size
 			rows = cols = MIN_DIMENSION;
-			JOptionPane.showMessageDialog(getContentPane(), 
+			JOptionPane.showMessageDialog(myFrame.getContentPane(), 
 					"Invalid dimensions entered! Using default 3 x 3 table.", 
 					"Error! Invalid Dimensions!",
 					JOptionPane.ERROR_MESSAGE);
@@ -186,16 +186,17 @@ public class GUI extends JFrame {
      */
     public void run() {
         
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Adds a scroll bar to the table
-        add(new JScrollPane(mySpreadsheet.getTable(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+        myFrame.add(new JScrollPane(mySpreadsheet.getTable(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
 
         addMenuBar();
         addToolBar();
-        setVisible(true);
-        setLocationRelativeTo(null);
+        
+        myFrame.setVisible(true);
+        myFrame.setLocationRelativeTo(null);
 	}
 	
 	/**
@@ -203,12 +204,12 @@ public class GUI extends JFrame {
 	 */
 	private void addMenuBar() {
 	    
-		myMenuBar.add(new FileMenu(this).getFileMenu());
-		myMenuBar.add(new OptionsMenu(this, mySpreadsheet, mySpreadsheet.getTable()).getOptionsMenu());
+		myMenuBar.add(new FileMenu(myFrame).getFileMenu());
+		myMenuBar.add(new OptionsMenu(myFrame, mySpreadsheet, mySpreadsheet.getTable()).getOptionsMenu());
 		myMenuBar.add(myWindowViews.getWindowMenu());
 		myMenuBar.add(new HelpMenu().getHelpMenu());
 		
-		setJMenuBar(myMenuBar);
+		myFrame.setJMenuBar(myMenuBar);
 	}
 	
     /**
@@ -229,6 +230,6 @@ public class GUI extends JFrame {
         myToolBar.setFloatable(false);
         myToolBar.setLayout(new FlowLayout(FlowLayout.CENTER));
         
-        add(myToolBar,  BorderLayout.SOUTH);
+        myFrame.add(myToolBar,  BorderLayout.SOUTH);
     }
 }

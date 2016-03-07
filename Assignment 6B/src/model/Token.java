@@ -14,6 +14,7 @@ package model;
  * This interface represents a Token. It allows for a generic instantiation of a Token.
  * 
  * @author Lisa Taylor
+ * 
  * @version 3 March 2016
  */
 public abstract class Token {

@@ -112,8 +112,8 @@ public class Operators {
                 return 2;
             case LT_PAREN:
                 return 3;
-            case RT_PAREN:
-                return 3;
+            //case RT_PAREN:
+                //return 3;
 
             default:
                 // This case should NEVER happen
@@ -172,7 +172,7 @@ public class Operators {
                 (ch == Operators.MULT) ||
                 (ch == Operators.DIV) ||
                 (ch == Operators.LT_PAREN) ||
-                (ch == Operators.RT_PAREN) ||
+                //(ch == Operators.RT_PAREN) ||
                 (ch == Operators.POW));
     }
 }
