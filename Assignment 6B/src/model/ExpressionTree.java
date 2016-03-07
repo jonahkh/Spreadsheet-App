@@ -1,11 +1,11 @@
-/*
- * Lisa Taylor
- * Jonah Howard
- * Henry Lai
- * John Bui
- * 
- * TCSS 342 - Spring 2016
- * Assignment 6B
+/* Bui, John
+ * Howard, Jonah
+ * Lai, Henry
+ * Taylor, Lisa
+ * TCSS 342 - Data Structures
+ * Professor Donald Chinn
+ * Homework 6B
+ * March 8, 2016
  */
 
 package model;
@@ -17,9 +17,6 @@ import java.util.Stack;
 /**
  * This class represents an expression tree for calculating formulas
  * entered into a cell.
- * 
- * @author Lisa Taylor
- * @author Jonah Howard
  */
 public class ExpressionTree {
     

@@ -1,11 +1,11 @@
-/*
- * Lisa Taylor
- * Jonah Howard
- * Henry Lai
- * John Bui
- * 
- * TCSS 342 - Spring 2016
- * Assignment 6B
+/* Bui, John
+ * Howard, Jonah
+ * Lai, Henry
+ * Taylor, Lisa
+ * TCSS 342 - Data Structures
+ * Professor Donald Chinn
+ * Homework 6B
+ * March 8, 2016
  */
 
 package view;
@@ -33,12 +33,6 @@ import javax.swing.JToolBar;
 
 /**
  * This class runs the GUI interface for the spreadsheet application.
- * 
- * @author Jonah Howard
- * @author Lisa Taylor
- * @author Henry Lai
- * 
- * @version 4 March 2016
  */
 public class GUI {
 
@@ -113,8 +107,8 @@ public class GUI {
 		minWidth = (int) Math.min(minWidth, HORIZONTAL_OFFSET + CELL_WIDTH * 6);
 		minHeight = (int) Math.min(minHeight, VERTICAL_OFFSET + CELL_HEIGHT * 8);
 		
-		// Sets the maximum window size to be the table dimension unless it is larger than resolution.
-		myFrame.setMaximumSize(new Dimension(minWidth, minHeight));
+		// Sets the minimum window size to be the table dimension unless it is larger than resolution.
+		myFrame.setMinimumSize(new Dimension(minWidth, minHeight));
 	}
 
 	/**
