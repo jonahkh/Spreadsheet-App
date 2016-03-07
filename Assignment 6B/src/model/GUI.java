@@ -62,6 +62,12 @@ public class GUI {
 	/** The spreadsheet that contains all the data. */
 	private Spreadsheet mySpreadsheet;
 	
+	/** A JRadioButtonMenu Item for displaying formulas context menu. */
+	private JRadioButtonMenuItem formulaRadioItem;
+	
+	/** A JRadioButtonMenu Item for displaying values in context menu. */
+	private JRadioButtonMenuItem valueRadioItem;
+	
 	/** The user-inputed number of rows in the spreadsheet. */
 	private int rows;
 	
@@ -202,6 +208,7 @@ public class GUI {
 			public void actionPerformed(final ActionEvent theEvent) {
 				// Reverse the enabling of the buttons
 				valuesButton.setEnabled(true);
+				formulaRadioItem.setSelected(true);
 				formulaButton.setEnabled(false);
 				// Update the spreadsheet
 				mySpreadsheet.setFormulaMode(true);
@@ -220,6 +227,7 @@ public class GUI {
 			public void actionPerformed(final ActionEvent theEvent) {
 				// Reverse the enabling of the buttons
 				formulaButton.setEnabled(true);
+				valueRadioItem.setSelected(true);
 				valuesButton.setEnabled(false);
 				// Update the spreadsheet
 				mySpreadsheet.setFormulaMode(false);
@@ -287,9 +295,9 @@ public class GUI {
 	 */
 	public void fillOptionsMenu(final JMenu theOptions, final JButton theFormulas, 
 			final JButton theValues) {
-		final JRadioButtonMenuItem form = new JRadioButtonMenuItem(theFormulas.getAction());
-		final JRadioButtonMenuItem vals = new JRadioButtonMenuItem(theValues.getAction());
-		form.setAction(new AbstractAction(){
+		formulaRadioItem = new JRadioButtonMenuItem(theFormulas.getAction());
+		valueRadioItem = new JRadioButtonMenuItem(theValues.getAction());
+		formulaRadioItem.setAction(new AbstractAction(){
 			/** A generated serial version UID.*/
 			private static final long serialVersionUID = -9041504660800114137L;
 			@Override
@@ -297,7 +305,7 @@ public class GUI {
 				theFormulas.doClick();
 			}
 		});
-		vals.setAction(new AbstractAction(){
+		valueRadioItem.setAction(new AbstractAction(){
 			/** A generated serial version UID.*/
 			private static final long serialVersionUID = -9041502352140114345L;
 			@Override
@@ -306,15 +314,15 @@ public class GUI {
 			}
 		});
 
-		form.setText("Display Formulas");
-		vals.setText("Display Values");
-		form.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
-		vals.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
-		form.setSelected(true);
+		formulaRadioItem.setText("Display Formulas");
+		valueRadioItem.setText("Display Values");
+		formulaRadioItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
+		valueRadioItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
+		formulaRadioItem.setSelected(true);
 		// Add components to the menu
 		final ButtonGroup group = new ButtonGroup();
-		group.add(form);
-		group.add(vals);
+		group.add(formulaRadioItem);
+		group.add(valueRadioItem);
 		final AbstractAction clearAll = new AbstractAction() {
 			/** A generated serial version UID.*/
 			private static final long serialVersionUID = -5502251240488341976L;
@@ -368,8 +376,8 @@ public class GUI {
 		};
 		final JMenuItem resize = new JMenuItem(resizeAction);
 		resize.setText("Resize");
-		theOptions.add(form);
-		theOptions.add(vals);
+		theOptions.add(formulaRadioItem);
+		theOptions.add(valueRadioItem);
 		theOptions.addSeparator();
 		theOptions.add(clear);
 		theOptions.add(resize);
