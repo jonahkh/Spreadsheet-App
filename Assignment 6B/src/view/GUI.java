@@ -196,9 +196,11 @@ public class GUI {
 	private void setupJFrame() {
 		// Override default close behavior.
 		myFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		// Anonymous listener class prompts user for confirmation on window close.
 		myFrame.addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent we) { 
+				// Prompts the user for confirmation that they want to quit.
                 int input = JOptionPane.showConfirmDialog(myFrame, 
                 		"Are you sure you want to quit?", 
                 		"Quit?", JOptionPane.YES_NO_OPTION);
@@ -208,6 +210,7 @@ public class GUI {
                 }
 			}  
 		});
+		// Adds scroll bars to the table by putting Spreadsheet in a JScrollPane.
         myFrame.add(new JScrollPane(mySpreadsheet.getTable(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
 	}
