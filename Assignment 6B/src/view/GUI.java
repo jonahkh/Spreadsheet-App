@@ -77,7 +77,7 @@ public class GUI {
 
         myFrame = new JFrame("TCSS 342 Spreadsheet - Group 8");		
 	    final Dimension dimension = initialize();
-	    mySpreadsheet = new Spreadsheet((int) dimension.getWidth(), (int) dimension.getHeight());
+	    mySpreadsheet = new Spreadsheet((int) dimension.getWidth(), (int) dimension.getHeight(), myFrame);
 		myMenuBar = new JMenuBar();
         myToolBar = new JToolBar();
         myWindowViews = new WindowMenu(myFrame, mySpreadsheet);

@@ -13,6 +13,7 @@ package model;
 import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -58,6 +59,9 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	/** Represents the current JTable. */
 	private final JTable myTable;
 
+	/** Represents the current JFrame. */
+	private final JFrame myFrame;
+	
 	/** True if the Display Formulas button is pressed, false otherwise. */
 	private boolean displayFormulas;
 
@@ -67,10 +71,11 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * @param theWidth the width of this spreadsheet
 	 * @param theHeight the height of this spreadsheet
 	 */
-	public Spreadsheet(final int theWidth, final int theHeight) {
+	public Spreadsheet(final int theWidth, final int theHeight, final JFrame theFrame) {
 	    displayFormulas = true;
 		myColumns = theWidth;
 		myRows = theHeight;
+		myFrame = theFrame;
 		initializeSpreadsheet();
 		initializeCells();
 		columnNames = new String[myColumns + 1];
@@ -100,6 +105,8 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
         try {
             // Tries to parse the expression entered by the user.
     	    theCell.parseInput(formula);
+    	    theCell.updateDependents();
+    	    myFrame.repaint();
 	    } catch (CircularDependencyException e) {
 	        JOptionPane.showMessageDialog(myTable.getParent(), "Circular Dependency found. Reverting back to"
 	                                                         + " previous entry.", "Error!", JOptionPane.ERROR_MESSAGE);
