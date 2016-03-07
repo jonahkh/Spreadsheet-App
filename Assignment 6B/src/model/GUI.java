@@ -16,17 +16,22 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Observable;
-
+import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 /**
  * This class runs the GUI interface for the spreadsheet application.
@@ -37,22 +42,22 @@ public class GUI {
 	private static final int MIN_DIMENSION = 3;
 
 	/** Horizontal offset for initial frame resizing. */
-	private static final int HORIZONTAL_OFFSET = 50;
+	private static final int HORIZONTAL_OFFSET = 49;
 	
 	/** Vertical offset for initial frame resizing. */
-	private static final int VERTICAL_OFFSET = 100;
+	private static final int VERTICAL_OFFSET = 127;
 	
 	/** The width of a cell in pixels. Default = 75 */
 	private static final int CELL_WIDTH = 75;
 
 	/** The height of a cell in pixels. Default = 16 */
-	private static final int CELL_HEIGTH = 16;
+	private static final int CELL_HEIGHT = 16;
 	
 	/** The JFrame that the spreadsheet is displayed on. */
 	private final JFrame myFrame;
 	
 	/** The spreadsheet that contains all the data. */
-	private final Spreadsheet mySpreadsheet;
+	private Spreadsheet mySpreadsheet;
 	
 	/** The user-inputed number of rows in the spreadsheet. */
 	private int rows;
@@ -78,7 +83,7 @@ public class GUI {
 	private void resizeComponents() {
 		// Calculate the width and height of all components based on table dimensions.
 		final int newWidth = (HORIZONTAL_OFFSET + CELL_WIDTH * cols);
-		final int newHeight = (VERTICAL_OFFSET + CELL_HEIGTH * rows);
+		final int newHeight = (VERTICAL_OFFSET + CELL_HEIGHT * rows);
 		
 		// Gets the screen resolution of user's system.
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -90,7 +95,7 @@ public class GUI {
 		
 		// Sets the minimum window size to the the minimum of 6 columns and 8 rows unless it is smaller.
 		final int minWidth = (int) Math.min(newWidth, HORIZONTAL_OFFSET + CELL_WIDTH * 6);
-		final int minHeight = (int) Math.min(newHeight, VERTICAL_OFFSET + CELL_HEIGTH * 8);
+		final int minHeight = (int) Math.min(newHeight, VERTICAL_OFFSET + CELL_HEIGHT * 8);
 		
 		// Sets the maximum window size to be the table dimension unless it is larger than resolution.
 		myFrame.setMinimumSize(new Dimension(minWidth, minHeight));
@@ -169,16 +174,18 @@ public class GUI {
 		JButton formulas = new JButton("Display Formulas");
 		JButton values = new JButton("Display Values");
 		
+		
 		formulas.setEnabled(false);
 		formulas.doClick();
 		addListeners(formulas, values);
 
 		panel.add(formulas, BorderLayout.SOUTH);
 		panel.add(values, BorderLayout.SOUTH);
-		
+		addMenuBar(formulas, values);
 		myFrame.add(panel, BorderLayout.SOUTH);
 		myFrame.setVisible(true);
 	}
+	
 	
 	/**
 	 * Adds the action listeners for the "Display Values" and "Display Formulas" buttons.
@@ -205,11 +212,10 @@ public class GUI {
 				myFrame.repaint();
 			}
 		});
-		
 		valuesButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent theEvent) {
-				// Reverse the enablign of the buttons
+				// Reverse the enabling of the buttons
 				formulaButton.setEnabled(true);
 				valuesButton.setEnabled(false);
 				// Update the spreadsheet
@@ -217,7 +223,7 @@ public class GUI {
 				// Fill each active cell with its corresponding value
 				for (int i = 0; i < mySpreadsheet.getRows(); i++) {
 					for (int j = 1; j < mySpreadsheet.getColumns() + 1; j++) {
-						if (mySpreadsheet.getCells()[i][j].getValue() != 0) {
+						if (mySpreadsheet.getCells()[i][j].hasInput()) {
 							mySpreadsheet.getSpreadsheet()[i][j] = 
 									mySpreadsheet.getCells()[i][j].getValue(); 
 						} else {
@@ -228,6 +234,118 @@ public class GUI {
 				myFrame.repaint();
 			}
 		});
+	}
+	
+	/**
+	 * Adds the menu bar to this frame.
+	 * 
+	 * @param theFormulas the formulas button
+	 * @param theValues the values button
+	 */
+	private void addMenuBar(final JButton theFormulas, final JButton theValues) {
+		final JMenuBar menu = new JMenuBar();
+		final JMenu file = new JMenu("File");
+		final JMenu options = new JMenu("Options");
+		fillFileMenu(file);
+		fillOptionsMenu(options, theFormulas, theValues);
+		menu.add(file);
+		menu.add(options);
+		myFrame.setJMenuBar(menu);
+	}
+	
+	/**
+	 * Fills the file menu of its components.
+	 * 
+	 * @param theFile the file menu
+	 */
+	public void fillFileMenu(final JMenu theFile) {
+		final JMenuItem exit = new JMenuItem("Exit");
+		exit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent theEvent) {
+				myFrame.dispose();
+			}
+		});
+		final JMenuItem open = new JMenuItem("Open");
+		final JMenuItem save = new JMenuItem("Save");
+		
+		theFile.add(open);
+		theFile.add(save);
+		theFile.addSeparator();
+		theFile.add(exit);
+	}
+	
+	/**
+	 * Fills the options menu of its components.
+	 * 
+	 * @param theOptions the options menu
+	 * @param theFormulas the formulas button
+	 * @param theValues the values button
+	 */
+	public void fillOptionsMenu(final JMenu theOptions, final JButton theFormulas, 
+			final JButton theValues) {
+		final JRadioButtonMenuItem form = new JRadioButtonMenuItem(theFormulas.getAction());
+		final JRadioButtonMenuItem vals = new JRadioButtonMenuItem(theValues.getAction());
+		form.setAccelerator(KeyStroke.getKeyStroke("control F"));
+		vals.setAccelerator(KeyStroke.getKeyStroke("control V"));
+		form.setSelected(true);
+		// Add components to the menu
+		final ButtonGroup group = new ButtonGroup();
+		group.add(form);
+		group.add(vals);
+		final AbstractAction clearAll = new AbstractAction() {
+			/** A generated serial version UID.*/
+			private static final long serialVersionUID = -5502251240488341976L;
+
+			@Override
+			public void actionPerformed(final ActionEvent theEvent) {
+				// Zero out all active cells
+				for (int rows = 0; rows < mySpreadsheet.getRows(); rows++) {
+					for (int cols = 1; cols < mySpreadsheet.getColumns(); cols++) {
+						if (mySpreadsheet.getCells()[rows][cols].getValue() != 0) {
+							mySpreadsheet.getCells()[rows][cols].setValue(0);
+							mySpreadsheet.getCells()[rows][cols].setFormula("");
+						}
+					}
+				}
+				// Reset values in cells and go back to formula mode
+				theValues.doClick();
+				theFormulas.doClick();
+			}
+		};
+		final JMenuItem clear = new JMenuItem(clearAll);
+		clear.setText("Clear All");
+		final AbstractAction resizeAction = new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent theEvent) {
+				Dimension dim = initialize();
+				rows = (int) dim.getWidth();
+				cols = (int) dim.getHeight();
+				Spreadsheet newSheet = new Spreadsheet(rows, cols);
+				for (int i = 0; i < mySpreadsheet.getRows(); i++) {
+					for (int j = 1; j < mySpreadsheet.getColumns(); j++) {
+						if (mySpreadsheet.getCells()[i][j].getValue() != 0 && i <= rows && j <= cols) {
+							newSheet.getCells()[i][j] = mySpreadsheet.getCells()[rows][cols];
+							newSheet.getSpreadsheet()[i][j] = mySpreadsheet.getSpreadsheet()[i][j];
+						}
+					}
+				}
+				mySpreadsheet = newSheet;
+				theValues.doClick();
+				theFormulas.doClick();
+				myFrame.removeAll();
+				myFrame.add(new JScrollPane(mySpreadsheet.getTable(), 
+						JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
+			}
+		};
+		final JMenuItem resize = new JMenuItem(resizeAction);
+		resize.setText("Resize");
+		theOptions.add(form);
+		theOptions.add(vals);
+		theOptions.addSeparator();
+		theOptions.add(clear);
+		theOptions.add(resize);
 	}
 
 	/**

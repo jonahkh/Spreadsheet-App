@@ -91,14 +91,12 @@ public class CellToken extends Token {
 
 		ch = inputString.charAt(index);
 		// process CAPITAL alphabetic characters to calculate the column
-		if (!Character.isUpperCase(ch)) {
-			setColumn(BAD_CELL);
-			setRow(BAD_CELL);
-			return index;
-		} else {
-			column = ch - 'A' + 1;
-			index++;
+		if (Character.isLowerCase(ch)) {
+		    Character.toUpperCase(ch);
 		}
+        column = ch - 'A' + 1;
+		index++;
+		
 
 		while (index < inputString.length()) {
 			ch = inputString.charAt(index);
@@ -142,7 +140,7 @@ public class CellToken extends Token {
 
 		// successfully parsed a cell reference
 		setColumn(column);
-		setRow(row);
+		setRow(row - 1);
 		return index;
 	}
 	
@@ -166,6 +164,6 @@ public class CellToken extends Token {
 	
 	@Override
 	public String toString() {
-		return Spreadsheet.convertToString(column) + Integer.toString(row);
+		return Spreadsheet.convertToString(column) + Integer.toString(row + 1);
 	}
 }
