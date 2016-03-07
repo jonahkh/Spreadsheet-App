@@ -158,10 +158,6 @@ public class Cell {
 		        expressionTree.BuildExpressionTree(formula);
 		        myFormula = input;
 		        myValue = expressionTree.evaluate();
-		        if (!myDependents.isEmpty()) {
-			        updateDependents();
-		        }
-		        mySpreadsheet.updateSpreadsheet(myRow, myColumn);
 		    }
 		} else {
 			removeAllDependencies();
@@ -169,6 +165,11 @@ public class Cell {
 			myValue = 0;
 			hasInput = false;
 		}
+		
+        if (!myDependents.isEmpty()) {
+	        updateDependents();
+        }
+        mySpreadsheet.updateSpreadsheet(myRow, myColumn);
 	}
 
 	/**
