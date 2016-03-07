@@ -1,13 +1,3 @@
-/*
- * Lisa Taylor
- * Jonah Howard
- * Henry Lai
- * John Bui
- * 
- * TCSS 342 - Spring 2016
- * Assignment 6B
- */
-
 package model;
 
 /**
@@ -28,7 +18,7 @@ public class LiteralToken extends Token {
         this(literal + "");
     }
     
-    /**
+       /**
      * Initialize a new Literal Token for string passed as argument.
      * 
      * @param literal the value for this Token
@@ -39,7 +29,7 @@ public class LiteralToken extends Token {
     }
     
     /**
-     * Set the token to the passed value.
+     * Set the token to the passed int myValue.
      * 
      * @param theValue The myValue to set this token to
      */
@@ -48,7 +38,7 @@ public class LiteralToken extends Token {
     }
     
     /**
-     * Set the token to the passed value.
+     * Set the token to the passed int myValue.
      * 
      * @param theValue The myValue to set this token to
      */

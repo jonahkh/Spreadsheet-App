@@ -1,13 +1,3 @@
-/*
- * Lisa Taylor
- * Jonah Howard
- * Henry Lai
- * John Bui
- * 
- * TCSS 342 - Spring 2016
- * Assignment 6B
- */
-
 package model;
 
 /**

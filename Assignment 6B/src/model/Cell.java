@@ -1,16 +1,4 @@
-/*
- * Lisa Taylor
- * Jonah Howard
- * Henry Lai
- * John Bui
- * 
- * TCSS 342 - Spring 2016
- * Assignment 6B
- */
-
 package model;
-
-import util.Operators;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,9 +13,9 @@ import java.util.TreeMap;
  * mathematical computations.
  * 
  * @author Jonah Howard
- * @author Lisa Taylor
  * @author Henry Lai
  * @author John Bui
+ * @author Lisa Taylor
  * 
  * @version 3 March 2016
  */
@@ -61,9 +49,6 @@ public class Cell {
 	
 	/** True if circular dependency is found, otherwise false. */
 	private boolean hasCircDepend;
-	
-	/** True if cell contains input from user, otherwise false. */
-	private boolean hasInput;
 
 	/**
 	 * Initializes a new cell.
@@ -74,7 +59,6 @@ public class Cell {
 	public Cell(final int theRow, final int theColumn, final Spreadsheet theSpreadsheet) {
 		mySpreadsheet = theSpreadsheet;
 		hasCircDepend = false;
-		hasInput = false;
 		expressionTree = new ExpressionTree(theSpreadsheet);
 		myValue = 0;
 		myDependencies = new ArrayList<Cell>();
@@ -157,21 +141,19 @@ public class Cell {
 	 * @throws CircularDependencyException 
 	 */
 	public void parseInput(final String input) throws CircularDependencyException {
-	    final Stack<Token> formula = getFormula(input);
-	    checkForCircularDependency(this);
-	    if (hasCircDepend)
-	        throw new CircularDependencyException();
-	    else {
-	        setHasInput(true);
-	        expressionTree.BuildExpressionTree(formula);
-	        myFormula = input;
-	        myValue = expressionTree.evaluate();
-	        if (!myDependents.isEmpty()) {
-		        updateDependents();
-	        }
-	        mySpreadsheet.updateSpreadsheet(myRow, myColumn);
-	    }
-	    
+		final Stack<Token> formula = getFormula(input);
+		checkForCircularDependency();
+		if (hasCircDepend)
+		    throw new CircularDependencyException();
+		else if (!hasCircDepend) {
+		    expressionTree.BuildExpressionTree(formula);
+		    myFormula = input;
+		    myValue = expressionTree.evaluate();
+		    if (!myDependents.isEmpty()) {
+			    updateDependents();
+		    }
+		    mySpreadsheet.updateSpreadsheet(myRow, myColumn);
+		}
 	}
 
 	/**
@@ -192,15 +174,6 @@ public class Cell {
 	 */
 	public int getValue() {
 		return myValue;
-	}
-	
-	/**
-	 * Set the myValue for this cell.
-	 * 
-	 * @param value the value to be set
-	 */
-	public void setValue(final int value) {
-	    myValue = value;
 	}
 
 	/**
@@ -230,12 +203,13 @@ public class Cell {
 		int literalValue = 0;
 
 		CellToken cellToken;
+		// Temporary holder variable to access methods inside OperatorToken
+		OperatorToken operatorToken = new OperatorToken('a');
 
 		int index = 0; // index into myFormula
 		Stack<Token> operatorStack = new Stack<Token>(); // stack of operators
 
 		while (index < myFormula.length()) {
-		    
 			// get rid of leading whitespace characters
 			while (index < myFormula.length()) {
 				ch = myFormula.charAt(index);
@@ -251,16 +225,24 @@ public class Cell {
 			}
 
 			// ASSERT: ch now contains the first character of the next token.
-			if (Operators.isValidOperator(ch)) {
-			    try {
+			if (operatorToken.isValidOperator(ch)) {
+				// We found an operator token
+				switch (ch) {
+				case OperatorToken.POW:
+				case OperatorToken.PLUS:
+				case OperatorToken.MINUS:
+				case OperatorToken.MULT:
+				case OperatorToken.DIV:
+				case OperatorToken.LT_PAREN:
 					// push operatorTokens onto the output stack until
 					// we reach an operator on the operator stack that has
 					// lower priority than the current one.
 					OperatorToken stackOperator;
 					while (!operatorStack.isEmpty()) {
 						stackOperator = (OperatorToken) operatorStack.peek();
-						if ((Operators.operatorPriority(stackOperator) >= Operators.operatorPriority(ch))
-								&& (stackOperator.getOperatorToken() != Operators.LT_PAREN)) {
+						if ((stackOperator.priority() >= operatorToken
+								.operatorPriority(ch))
+								&& (stackOperator.getOperatorToken() != OperatorToken.LT_PAREN)) {
 
 							// output the operator to the return stack
 							operatorStack.pop();
@@ -269,16 +251,19 @@ public class Cell {
 							break;
 						}
 					}
-					if (ch == Operators.LT_PAREN && myFormula.charAt(index + 1) == Operators.MINUS) {
+					if (ch == OperatorToken.LT_PAREN && myFormula.charAt(index + 1) == OperatorToken.MINUS) {
 						returnStack.push(new LiteralToken(0));
 					}
-			    } catch (Exception e){
+					break;
+
+				default:
 					// This case should NEVER happen
 					System.out.println("Error in getFormula.");
 					System.exit(0);
+					break;
 				}
 				// Check if there was a negative value entered
-				if (returnStack.size() == 0 && ch == Operators.MINUS) {
+				if (returnStack.size() == 0 && ch == OperatorToken.MINUS) {
 					returnStack.push(new LiteralToken(0));
 				}
 				// push the operator on the operator stack
@@ -290,7 +275,7 @@ public class Cell {
 				OperatorToken stackOperator;
 				stackOperator = (OperatorToken) operatorStack.pop();
 				// This code does not handle operatorStack underflow.
-				while (stackOperator.getOperatorToken() != Operators.LT_PAREN) {
+				while (stackOperator.getOperatorToken() != OperatorToken.LT_PAREN) {
 					// pop operators off the stack until a LeftParen appears and
 					// place the operators on the output stack
 					returnStack.push(stackOperator);
@@ -359,7 +344,6 @@ public class Cell {
 	 * @return Returns a string that represents this cell's myFormula.
 	 */
 	public String getFormula() {
-	    
 		return myFormula;
 	}
 	
@@ -368,8 +352,7 @@ public class Cell {
 	 * 
 	 * @param theFormula The formula for this cell.
 	 */
-	public void setFormula(final String theFormula) {
-	    
+	protected void setFormula(final String theFormula) {
 		myFormula = theFormula;
 	}
 	
@@ -379,7 +362,6 @@ public class Cell {
 	 * @return true if has circular dependency, else false
 	 */
 	public boolean hasCircularDependency() {
-	    
 	    return hasCircDepend;
 	}
 	
@@ -389,57 +371,16 @@ public class Cell {
 	 * @param bool the boolean value
 	 */
 	public void setHasCircDepend(boolean bool) {
-	    
 	    hasCircDepend = bool;
 	}
 	
-	/**
-	 * Checks if circular dependency exists in spreadsheet. Cell first compares itself
-	 * to the cells that it depends on and then recursively compares itself to the cells 
-	 * that its dependencies depend on.
-	 * 
-	 * @param cell the original cell
-	 */
-	public void checkForCircularDependency(Cell cell) {
-	    
+	public void checkForCircularDependency() {
 	    for (Cell in : myDependencies){
-	        
-	        if (in.equals(cell)) {
-	            
-	            cell.setHasCircDepend(true);
-	            break;
-	        }
-	        
-	        in.checkForCircularDependency(cell);
-	        for (Cell out : myDependents) {
-	            
-	            if (in.equals(out)) {
-	                
+	        for(Cell out : myDependents) {
+	            if (in.equals(out))
 	                setHasCircDepend(true);
-	                break;
-	            }
 	        }
 	    }
-	}
-	
-	/** 
-	 * Returns whether cell contains input.
-	 * 
-	 * @return true if contains input, else false
-	 */
-	public boolean hasInput() {
-	    
-	    return hasInput;
-	}
-	
-	/**
-	 * Sets the boolean value for hasInput.
-	 * 
-	 * @param bool the boolean value
-	 */
-	public void setHasInput(final boolean bool) {
-	    
-	    hasInput = bool;
 	}
 
 	/**

@@ -1,22 +1,10 @@
-/*
- * Lisa Taylor
- * Jonah Howard
- * Henry Lai
- * John Bui
- * 
- * TCSS 342 - Spring 2016
- * Assignment 6B
- */
-
 package model;
 
 /**
  * This class represents a Cell Token.
  * 
  * @author Jonah Howard
- * @author Lisa Taylor
- * 
- * @version 3 March 2016
+ * @version 28 Feb 2016
  */
 public class CellToken extends Token {
 
@@ -96,12 +84,14 @@ public class CellToken extends Token {
 
 		ch = inputString.charAt(index);
 		// process CAPITAL alphabetic characters to calculate the column
-		if (Character.isLowerCase(ch)) {
-		    Character.toUpperCase(ch);
+		if (!Character.isUpperCase(ch)) {
+			setColumn(BAD_CELL);
+			setRow(BAD_CELL);
+			return index;
+		} else {
+			column = ch - 'A' + 1;
+			index++;
 		}
-        column = ch - 'A' + 1;
-		index++;
-		
 
 		while (index < inputString.length()) {
 			ch = inputString.charAt(index);
@@ -145,7 +135,7 @@ public class CellToken extends Token {
 
 		// successfully parsed a cell reference
 		setColumn(column);
-		setRow(row - 1);
+		setRow(row);
 		return index;
 	}
 	
@@ -169,6 +159,6 @@ public class CellToken extends Token {
 	
 	@Override
 	public String toString() {
-		return Spreadsheet.convertToString(column) + Integer.toString(row + 1);
+		return Spreadsheet.convertToString(column) + Integer.toString(row);
 	}
 }

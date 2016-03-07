@@ -1,13 +1,3 @@
-/*
- * Lisa Taylor
- * Jonah Howard
- * Henry Lai
- * John Bui
- * 
- * TCSS 342 - Spring 2016
- * Assignment 6B
- */
-
 package model;
 
 import java.awt.Color;
@@ -64,7 +54,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	private final JTable myTable;
 
 	/** True if the Display Formulas button is pressed, false otherwise. */
-	private boolean displayFormulas;
+	protected static boolean displayFormulas = true;
 
 	/**
 	 * Initializes a new Spreadsheet.
@@ -73,7 +63,6 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * @param theHeight the height of this spreadsheet
 	 */
 	public Spreadsheet(final int theWidth, final int theHeight) {
-	    displayFormulas = true;
 		myColumns = theWidth;
 		myRows = theHeight;
 		initializeSpreadsheet();
@@ -84,73 +73,67 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			/** A generated serial version UID. */
 			private static final long serialVersionUID = -8427343693180623327L;
 
-			//Disables the row numbers from being editable.
+			// This anonymous inner class disables the row numbers from
+			// being editable.
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return column != 0;
 			}
 		};
 		setupAllCells();
+		// Set interface properties for the table
+		myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		myTable.getModel().addTableModelListener(this);
+		myTable.getTableHeader().setReorderingAllowed(false);
 	}
 
 	@Override
 	public void tableChanged(final TableModelEvent theEvent) {
 		// Save contents of cell before changing.
 		Cell theCell = myCells[theEvent.getFirstRow()][theEvent.getColumn()];
-        String formula = (String) mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()];
-        String oldFormula = theCell.getFormula();
-        int oldValue = theCell.getValue();
-        try {
-            // Tries to parse the expression entered by the user.
-    	    theCell.parseInput(formula);
-        } catch (NullPointerException e) {
-	        theCell.setHasInput(false);
-	        theCell.removeAllDependencies();
-	        theCell.setFormula(null);
-	        theCell.setValue(0);
-	        theCell.updateDependents();
-	    } catch (CircularDependencyException e) {
-	        JOptionPane.showMessageDialog(myTable.getParent(), "Circular Dependency found. Reverting back to"
-	                                                         + " previous entry.", "Error!", JOptionPane.ERROR_MESSAGE);
-	        // Revert to old formula in spreadsheet and cells
-	        if (displayFormulas) {
-	            // Display reverted formula if in formula mode
-                mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
-	        } else {
-	            // Display reverted formula if in value mode
-	            mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
-	        }
-            theCell.setFormula(oldFormula);
-            theCell.setHasCircDepend(false);
-	    } catch (ArithmeticException e) {
-		    JOptionPane.showMessageDialog(myTable.getParent(), "HAHAHA NICE TRY. Please try again.", "Error!",
-			    	JOptionPane.ERROR_MESSAGE);
+		String oldFormula = theCell.getFormula();
+		int oldValue = theCell.getValue();
+		try {
+			// Tries to parse the expression entered by the user.
+			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()])
+					.parseInput((String) mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()]);
+		} catch (CircularDependencyException e) {
+		    JOptionPane.showMessageDialog(myTable.getParent(), "Circular Dependency found. Reverting back to"
+		                                                     + " previous entry.");
 		    // Revert to old formula in spreadsheet and cells
-            if (displayFormulas) {
-                // Display reverted formula if in formula mode
-                mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = formula;
-            } else {
-                // Display reverted formula if in value mode
-                mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
-            }
-		    theCell.setFormula(oldFormula);
-	    } catch (Exception e){
-    	    // Display an error and revert to old formula if invalid input.
-		    JOptionPane.showMessageDialog(myTable.getParent(), "Invalid expression entered. Please try again.", "Error!",
-			    	JOptionPane.ERROR_MESSAGE);
-		    // Revert to old formula in cells if displaying formula.
-		    theCell.setFormula(oldFormula);
 		    if (displayFormulas) {
-			    // Display reverted formula if in formula mode.
-			    mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
+		        // Display reverted formula if in formula mode
+	            mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
 		    } else {
-			    // Display reverted value if in value mode.
-   				mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
-    		}
-	    }
-	    System.out.println(myCells[theEvent.getFirstRow()][theEvent.getColumn()].toString()	);
-//		printAllFormulas();	
-    }
+		        // Display reverted formula if in value mode
+		        mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
+		    }
+	        ((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldFormula);
+            ((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setHasCircDepend(false);
+		} catch (ArithmeticException e) {
+			JOptionPane.showMessageDialog(myTable.getParent(), "HAHAHA NICE TRY. Please try again.", "Error!",
+					JOptionPane.ERROR_MESSAGE);
+			// Revert to old formula in spreadsheet and cells. 
+			mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
+			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldFormula);
+		} catch (Exception e){
+			// Display an error and revert to old formula if invalid input.
+			JOptionPane.showMessageDialog(myTable.getParent(), "Invalid expression entered. Please try again.", "Error!",
+					JOptionPane.ERROR_MESSAGE);
+			// Revert to old formula in cells if displaying formula.
+			((Cell) myCells[theEvent.getFirstRow()][theEvent.getColumn()]).setFormula(oldFormula);
+			if (displayFormulas) {
+				// Display reverted formula if in formula mode.
+				mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
+			} else {
+				// Display reverted value if in value mode.
+				mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
+			}
+		}
+		System.out.println(myCells[theEvent.getFirstRow()][theEvent.getColumn()].toString()	);
+//		printAllFormulas();
+		
+	}
 
 	/**
 	 * Returns the current JTable.
@@ -167,7 +150,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * 
 	 * @return the initialized array of cells
 	 */
-	public void initializeCells() {
+	private void initializeCells() {
 		myCells = new Cell[myRows][myColumns + 1];
 		for (int i = 0; i < myRows; i++) {
 			for (int j = 1; j < myColumns + 1; j++) {
@@ -184,14 +167,14 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	 * @param theColumn the column of the spreadsheet to be updated
 	 */
 	public void updateSpreadsheet(final int theRow, final int theColumn) {
-		// Check whether the display formulas button is pressed or display values
 		if (displayFormulas) {
 			mySpreadsheet[theRow][theColumn] = myCells[theRow][theColumn].getFormula();
 		} else {
-			if (myCells[theRow][theColumn].hasInput()) {
-				mySpreadsheet[theRow][theColumn] = myCells[theRow][theColumn].getValue();
-			} else {
+			if (myCells[theRow][theColumn].getValue() == 0) {
+				// Cell's formula is empty if the value is 0 initially 
 				mySpreadsheet[theRow][theColumn] = "";
+			} else {
+				mySpreadsheet[theRow][theColumn] = myCells[theRow][theColumn].getValue();
 			}
 		}
 	}
@@ -215,9 +198,8 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 		mySpreadsheet = new Object[myRows][myColumns + 1];
 		for (int i = 0; i < myRows; i++) {
 			for (int j = 0; j < myColumns + 1; j++) {
-				// First column is set to a number in ascending order, all others are empty
 				if (j == 0) {
-					mySpreadsheet[i][j] = i + 1;
+					mySpreadsheet[i][j] = i;
 				} else {
 					mySpreadsheet[i][j] = "";
 				}
@@ -226,18 +208,17 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	}
 
 	/**
-	 * Centers all the cells be setting each columns default cell
+	 * This method centers all the cells be setting each columns default cell
 	 * render to center the cell's data. It also colors the background of the
-	 * row numbers to indicate that they are part of the UI and is in-editable.
+	 * row numbers to indicate that they are part of the UI and is uneditable.
 	 */
 	private void setupAllCells() {
 		// For all data columns in the table, center their cell's alignment. 
-		for (int i = 1; i < myColumns + 1; i++) {
+		for (int i = 1; i < myColumns; i++) {
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 			myTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
-		
 		// Special case for first column, set the background color to match the column headers
 		// in addition to centering each cell. 
 		TableColumn rowNums = myTable.getColumnModel().getColumn(0);
@@ -245,7 +226,6 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			
 			/** A generated serial version UID. */
 			private static final long serialVersionUID = 3565976393614019090L;
-			// Comment
 			@Override
 			public Component getTableCellRendererComponent(final JTable table, 
 					final Object value, final boolean isSelected, final boolean hasFocus, 
@@ -259,11 +239,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			}
 		});
 		
-		// Set interface properties for the table
 		myTable.getColumnModel().getColumn(0).setPreferredWidth(ROW_NUMBER_WIDTH);
-		myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		myTable.getModel().addTableModelListener(this);
-		myTable.getTableHeader().setReorderingAllowed(false);
 	}
 
 	/**
@@ -350,10 +326,8 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	public void printAllFormulas() {
 		for (int row = 0; row < myRows; row++) {
 			for (int col = 1; col < myColumns; col++) {
-			    
 				// Prints the Column and Row with colon (e.g. A4: )
 				System.out.print(convertToString(col - 1) + row + ": ");
-				
 				// Prints the formula for that cell
 				System.out.print(myCells[row][col].getFormula() + "   ");
 			}
@@ -379,22 +353,12 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	public int getColumns() {
 		return myColumns;
 	}
-
-    /**
-     * Notifies the spreadsheet when one of the buttons has been pressed.
-     * 
-     * @param bool true if the display formulas button is pressed, false otherwise
-     */
-    public void setDisplayFormulas(final boolean bool) {
-        displayFormulas = bool;
-    }
-    
+	
 	/**
-     * Returns whether in Display Formulas mode.
-     * 
-     * @return true if viewing formula mode, else false
-     */
-    public boolean getDisplayFormulas() {
-        return displayFormulas;
-    }
+	 * Toggles the view mode from displaying formulas or values.
+	 * @param formulaMode True if displaying formulas.
+	 */
+	public void setFormulaMode(final boolean formulaMode) {
+		displayFormulas = formulaMode;
+	}
 }
