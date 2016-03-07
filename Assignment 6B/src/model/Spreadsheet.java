@@ -99,56 +99,39 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
         String formula = (String) mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()];
         String oldFormula = theCell.getFormula();
         int oldValue = theCell.getValue();
+        boolean error = false;
+        boolean hadInput = theCell.hasInput();
         try {
             // Tries to parse the expression entered by the user.
     	    theCell.parseInput(formula);
-        } catch (NullPointerException e) {
-	        theCell.setHasInput(false);
-	        theCell.removeAllDependencies();
-	        theCell.setFormula(null);
-	        theCell.setValue(0);
-	        theCell.updateDependents();
 	    } catch (CircularDependencyException e) {
 	        JOptionPane.showMessageDialog(myTable.getParent(), "Circular Dependency found. Reverting back to"
 	                                                         + " previous entry.", "Error!", JOptionPane.ERROR_MESSAGE);
-	        // Revert to old formula in spreadsheet and cells
-	        if (displayFormulas) {
-	            // Display reverted formula if in formula mode
-                mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
-	        } else {
-	            // Display reverted formula if in value mode
-	            mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
-	        }
-            theCell.setFormula(oldFormula);
             theCell.setHasCircDepend(false);
+	        error = true;
 	    } catch (ArithmeticException e) {
-		    JOptionPane.showMessageDialog(myTable.getParent(), "HAHAHA NICE TRY. Please try again.", "Error!",
+		    JOptionPane.showMessageDialog(myTable.getParent(), "Can not divide by zero! Please try again.", "Error!",
 			    	JOptionPane.ERROR_MESSAGE);
-		    // Revert to old formula in spreadsheet and cells
-            if (displayFormulas) {
-                // Display reverted formula if in formula mode
-                mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = formula;
-            } else {
-                // Display reverted formula if in value mode
-                mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
-            }
-		    theCell.setFormula(oldFormula);
+		    error = true;
 	    } catch (Exception e){
     	    // Display an error and revert to old formula if invalid input.
 		    JOptionPane.showMessageDialog(myTable.getParent(), "Invalid expression entered. Please try again.", "Error!",
 			    	JOptionPane.ERROR_MESSAGE);
-		    // Revert to old formula in cells if displaying formula.
-		    theCell.setFormula(oldFormula);
-		    if (displayFormulas) {
-			    // Display reverted formula if in formula mode.
-			    mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
-		    } else {
-			    // Display reverted value if in value mode.
-   				mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
-    		}
+		    error = true;
 	    }
-	    System.out.println(myCells[theEvent.getFirstRow()][theEvent.getColumn()].toString()	);
-//		printAllFormulas();	
+	    if(error) {
+		    // Revert cell to previous status.
+            theCell.setFormula(oldFormula);
+            theCell.setHasInput(hadInput);
+            theCell.setValue(oldValue);
+            if (displayFormulas) {
+                // Display reverted formula if in formula mode
+                mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldFormula;
+            } else {
+                // Display reverted formula if in value mode
+                mySpreadsheet[theEvent.getFirstRow()][theEvent.getColumn()] = oldValue;
+            }
+	    }
     }
 
 	/**

@@ -16,7 +16,10 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -42,10 +45,10 @@ public class GUI {
 	private static final int MIN_DIMENSION = 3;
 
 	/** Horizontal offset for initial frame resizing. */
-	private static final int HORIZONTAL_OFFSET = 49;
+	private static final int HORIZONTAL_OFFSET = 50;
 	
 	/** Vertical offset for initial frame resizing. */
-	private static final int VERTICAL_OFFSET = 127;
+	private static final int VERTICAL_OFFSET = 121;
 	
 	/** The width of a cell in pixels. Default = 75 */
 	private static final int CELL_WIDTH = 75;
@@ -286,8 +289,27 @@ public class GUI {
 			final JButton theValues) {
 		final JRadioButtonMenuItem form = new JRadioButtonMenuItem(theFormulas.getAction());
 		final JRadioButtonMenuItem vals = new JRadioButtonMenuItem(theValues.getAction());
-		form.setAccelerator(KeyStroke.getKeyStroke("control F"));
-		vals.setAccelerator(KeyStroke.getKeyStroke("control V"));
+		form.setAction(new AbstractAction(){
+			/** A generated serial version UID.*/
+			private static final long serialVersionUID = -9041504660800114137L;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				theFormulas.doClick();
+			}
+		});
+		vals.setAction(new AbstractAction(){
+			/** A generated serial version UID.*/
+			private static final long serialVersionUID = -9041502352140114345L;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				theValues.doClick();
+			}
+		});
+
+		form.setText("Display Formulas");
+		vals.setText("Display Values");
+		form.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
+		vals.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
 		form.setSelected(true);
 		// Add components to the menu
 		final ButtonGroup group = new ButtonGroup();
@@ -304,7 +326,9 @@ public class GUI {
 					for (int cols = 1; cols < mySpreadsheet.getColumns(); cols++) {
 						if (mySpreadsheet.getCells()[rows][cols].getValue() != 0) {
 							mySpreadsheet.getCells()[rows][cols].setValue(0);
+							mySpreadsheet.getCells()[rows][cols].setHasInput(false);
 							mySpreadsheet.getCells()[rows][cols].setFormula("");
+							mySpreadsheet.getSpreadsheet()[rows][cols] = "";
 						}
 					}
 				}
@@ -316,6 +340,9 @@ public class GUI {
 		final JMenuItem clear = new JMenuItem(clearAll);
 		clear.setText("Clear All");
 		final AbstractAction resizeAction = new AbstractAction() {
+			/** A generated serial version UID.*/
+			private static final long serialVersionUID = 8735403676555608662L;
+
 			@Override
 			public void actionPerformed(final ActionEvent theEvent) {
 				Dimension dim = initialize();
