@@ -145,7 +145,7 @@ public class Cell {
 	 */
 	public void parseInput(final String input) throws CircularDependencyException {
 		final Stack<Token> formula = getFormula(input);
-		checkForCircularDependency();
+		checkForCircularDependency(this);
 		if (hasCircDepend)
 		    throw new CircularDependencyException();
 		else if (!hasCircDepend) {
@@ -377,11 +377,19 @@ public class Cell {
 	    hasCircDepend = bool;
 	}
 	
-	public void checkForCircularDependency() {
+	public void checkForCircularDependency(Cell cell) {
 	    for (Cell in : myDependencies){
-	        for(Cell out : myDependents) {
-	            if (in.equals(out))
+	        if (in.equals(cell)) {
+	            cell.setHasCircDepend(true);
+	            break;
+	        }
+	        in.checkForCircularDependency(cell);
+	        for (Cell out : myDependents) {
+	            //in.checkForCircularDependency(out);
+	            if (in.equals(out)) {
 	                setHasCircDepend(true);
+	                break;
+	            }
 	        }
 	    }
 	}
