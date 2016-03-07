@@ -10,8 +10,6 @@
 
 package model;
 
-import util.Operators;
-
 import java.util.Stack;
 
 /**

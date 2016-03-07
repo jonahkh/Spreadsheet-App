@@ -8,10 +8,8 @@
  * March 8, 2016
  */
 
-package util;
+package model;
 
-import model.OperatorToken;
-import model.Token;
 
 /**
  * Utility class for supported operators.
