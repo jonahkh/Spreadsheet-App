@@ -1,10 +1,17 @@
+/* Bui, John
+ * Howard, Jonah
+ * Lai, Henry
+ * Taylor, Lisa
+ * TCSS 342 - Data Structures
+ * Professor Donald Chinn
+ * Homework 6B
+ * March 8, 2016
+ */
+
 package model;
 
 /**
  * Exception class for circular dependency.
- *
- * @author Lisa Taylor
- * @version 3 March 2016
  */
 public class CircularDependencyException extends Exception {
     public CircularDependencyException() {

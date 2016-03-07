@@ -1,3 +1,13 @@
+/* Bui, John
+ * Howard, Jonah
+ * Lai, Henry
+ * Taylor, Lisa
+ * TCSS 342 - Data Structures
+ * Professor Donald Chinn
+ * Homework 6B
+ * March 8, 2016
+ */
+
 package model;
 
 import java.util.ArrayList;
@@ -11,13 +21,6 @@ import java.util.TreeMap;
  * This class represents a single cell in a spreadsheet. It contains data
  * specific to this cell and can depend on the myValue of other cells for
  * mathematical computations.
- * 
- * @author Jonah Howard
- * @author Henry Lai
- * @author John Bui
- * @author Lisa Taylor
- * 
- * @version 3 March 2016
  */
 public class Cell {
 

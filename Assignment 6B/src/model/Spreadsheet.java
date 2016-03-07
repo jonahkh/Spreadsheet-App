@@ -1,3 +1,13 @@
+/* Bui, John
+ * Howard, Jonah
+ * Lai, Henry
+ * Taylor, Lisa
+ * TCSS 342 - Data Structures
+ * Professor Donald Chinn
+ * Homework 6B
+ * March 8, 2016
+ */
+
 package model;
 
 import java.awt.Color;
@@ -15,11 +25,6 @@ import javax.swing.table.TableColumn;
 /**
  * This class represents a spreadsheet. It stores the information for all of the
  * cells of the spreadsheet.
- * 
- * @author Jonah Howard
- * @author Lisa Taylor
- * 
- * @vesion 3 March 2016
  */
 public class Spreadsheet extends DefaultTableModel implements TableModelListener {
 

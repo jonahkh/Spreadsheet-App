@@ -1,11 +1,17 @@
+/* Bui, John
+ * Howard, Jonah
+ * Lai, Henry
+ * Taylor, Lisa
+ * TCSS 342 - Data Structures
+ * Professor Donald Chinn
+ * Homework 6B
+ * March 8, 2016
+ */
+
 package model;
 
 /**
  * This class represents an individual Operator Token. 
- * 
- * @author Jonah Howard
- * @author Lisa Taylor
- * @version 3 March 2016
  */
 public class OperatorToken extends Token{
 

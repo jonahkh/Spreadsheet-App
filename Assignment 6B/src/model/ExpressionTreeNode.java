@@ -1,10 +1,17 @@
+/* Bui, John
+ * Howard, Jonah
+ * Lai, Henry
+ * Taylor, Lisa
+ * TCSS 342 - Data Structures
+ * Professor Donald Chinn
+ * Homework 6B
+ * March 8, 2016
+ */
+
 package model;
 
 /**
  * This class represents an individual Expression Tree Node.
- * 
- * @author Jonah Howard
- * @version 28 Feb 2016
  */
 public class ExpressionTreeNode {
 
