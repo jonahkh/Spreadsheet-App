@@ -65,9 +65,28 @@ public class HelpMenu {
             @Override
             public void actionPerformed(final ActionEvent theEvent) {
                 
-                //Code here
+            	JOptionPane.showMessageDialog(null, buildstring());
+            	
+                
             }
         });
+    }
+    /**
+     * String builder to build message in Help content memu.
+     * @return StringBuilder.
+     */
+    private StringBuilder buildstring(){
+    	String content;
+    	content = "To do basics calculation follow this format:\n";
+    	StringBuilder sb = new StringBuilder(content);
+    	sb.append("Negative number have to be enclosed by parenthesis\n");
+    	sb.append("Addition : A + B, (-A) + B or A + (-B)\n");
+    	sb.append("Subtraction: A - B, A - (-B) or (-A) - B\n");
+    	sb.append("Multiplication: A * B, A * (-B), or -A * B\n");
+    	sb.append("Division: A/B, (-A)/B or A/(-B)\n");
+    	sb.append("Power: A^B\n");
+    	sb.append("A,B: could be integer or cell reference");
+    	return sb;
     }
     
     /**

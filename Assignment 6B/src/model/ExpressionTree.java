@@ -143,8 +143,8 @@ public class ExpressionTree {
     	root = getExpressionTree(s);
     	
     	if (!s.isEmpty()) {
-    	    
-    		System.out.println("Error in BuildExpressionTree.");
+    	    throw new IllegalArgumentException();
+    		//System.out.println("Error in BuildExpressionTree.");
     	}
  	}
 
