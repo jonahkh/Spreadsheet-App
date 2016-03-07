@@ -163,8 +163,11 @@ public class Cell {
 		        }
 		        mySpreadsheet.updateSpreadsheet(myRow, myColumn);
 		    }
-		} else if (!myDependencies.isEmpty()) {
+		} else {
 			removeAllDependencies();
+			myFormula = "";
+			myValue = 0;
+			hasInput = false;
 		}
 	}
 
