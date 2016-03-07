@@ -163,6 +163,8 @@ public class Cell {
 		        }
 		        mySpreadsheet.updateSpreadsheet(myRow, myColumn);
 		    }
+		} else if (!myDependencies.isEmpty()) {
+			removeAllDependencies();
 		}
 	}
 
