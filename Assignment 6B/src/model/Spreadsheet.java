@@ -142,7 +142,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
     }
 
 	/**
-	 * Returns the current JTable.
+	 * Gets the current JTable.
 	 * 
 	 * @return the current table
 	 */
@@ -152,9 +152,6 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 
 	/**
 	 * Initialize each cell.
-	 * @return 
-	 * 
-	 * @return the initialized array of cells
 	 */
 	public void initializeCells() {
 		myCells = new Cell[myRows][myColumns + 1];
@@ -166,7 +163,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	}
 
 	/**
-	 * updates the spreadsheet at the location with respect to the passed row
+	 * Updates the spreadsheet at the location with respect to the passed row
 	 * and column.
 	 * 
 	 * @param theRow the row of the spreadsheet to be updated
@@ -256,7 +253,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	}
 
 	/**
-	 * Return the column names.
+	 * Get the column names.
 	 * 
 	 * @return the column names
 	 */
@@ -265,7 +262,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	}
 
 	/**
-	 * Return the spreadsheet.
+	 * Get the spreadsheet.
 	 * 
 	 * @return the spreadsheet
 	 */
@@ -274,7 +271,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	}
 	
 	/**
-	 * Return the cells spreadsheet.
+	 * Get the cells spreadsheet.
 	 * 
 	 * @return the cells spreadsheet
 	 */
@@ -352,7 +349,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	}
 
 	/**
-	 * Returns the number of rows for this spreadsheet.
+	 * Get the number of rows for this spreadsheet.
 	 * 
 	 * @return the number of rows for this spreadsheet
 	 */
@@ -361,7 +358,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 	}
 	
 	/**
-	 * Returns the number of columns for this spreadsheet.
+	 * Get the number of columns for this spreadsheet.
 	 * 
 	 * @return the number of columns for this spreadsheet
 	 */
@@ -379,7 +376,7 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
     }
     
 	/**
-     * Returns whether in Display Formulas mode.
+     * Gets whether in Display Formulas mode.
      * 
      * @return true if viewing formula mode, else false
      */

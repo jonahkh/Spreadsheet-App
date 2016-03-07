@@ -83,9 +83,10 @@ public class Operators {
      * priorities:
      *   +, - : 0
      *   *, / : 1
-     *   (    : 2
+     *   ^	  : 2
+     *   (    : 3
      *
-     * @param ch  a char
+     * @param ch  the character being evaluated
      * @return  the priority of the operator
      */
     public static int operatorPriority (char ch) {
@@ -107,9 +108,6 @@ public class Operators {
                 return 2;
             case LT_PAREN:
                 return 3;
-            //case RT_PAREN:
-                //return 3;
-
             default:
                 // This case should NEVER happen
                 System.out.println("Error in operatorPriority.");
@@ -130,7 +128,7 @@ public class Operators {
      *
      * @return  the priority of operatorToken
      */
-    public static int operatorPriority (final Token theToken) {
+    public static int operatorPriority(final Token theToken) {
         switch (((OperatorToken) theToken).getOperatorToken()) {
             case PLUS:
                 return 0;

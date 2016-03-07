@@ -20,7 +20,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 /**
- * A File drop-down menu.
+ * A File drop-down menu. Contains the open, save, and exit features.
  */
 public class FileMenu {
 
@@ -58,7 +58,7 @@ public class FileMenu {
     }
     
     /**
-     * Returns this file menu.
+     * Gets this file menu.
      * 
      * @return the File menu
      */
@@ -130,7 +130,6 @@ public class FileMenu {
         buildExitApp();
         
         myFileMenu.add(openFile);
-        //myMenu.addSeparator();
         myFileMenu.add(saveFile);
         myFileMenu.addSeparator();
         myFileMenu.add(exitApp);

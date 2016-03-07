@@ -41,7 +41,7 @@ public class WindowMenu {
     private List<WindowAction> myWindowActions;
     
     /**
-     * Constructs a Window menu.
+     * Initializes a new Window menu.
      * 
      * @param thePanel the CanvasPanel
      */
@@ -58,7 +58,7 @@ public class WindowMenu {
     }
     
     /**
-     * Returns the Window menu.
+     * Gets the Window menu.
      * 
      * @return the Options menu
      */
@@ -68,7 +68,7 @@ public class WindowMenu {
     }
     
     /**
-     * Returns the list of windows actions.
+     * Gets the list of windows actions.
      * 
      * @return the Tool actions
      */

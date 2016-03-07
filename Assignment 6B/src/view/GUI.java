@@ -20,6 +20,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -32,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 
 /**
  * This class runs the GUI interface for the spreadsheet application.
@@ -234,18 +236,21 @@ public class GUI {
     private void addToolBar() {
         
         final List<WindowMenu.WindowAction> windowActions = myWindowViews.getWindowActions();
-        final ButtonGroup btngrp = new ButtonGroup();
+        final ButtonGroup group = new ButtonGroup();
         // comment
         for (final WindowMenu.WindowAction winAction : windowActions) {
             
-            final JToggleButton tbtn = new JToggleButton(winAction);
-            btngrp.add(tbtn);
-            myToolBar.add(tbtn);
-        }
-        
+            final JToggleButton button = new JToggleButton(winAction);
+            group.add(button);
+            myToolBar.add(button);
+            if ("Display Values".equals(button.getText())) {
+                button.getAction().putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control V"));
+            } else {
+                button.getAction().putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control F"));
+            }
+        }        
         myToolBar.setFloatable(false);
         myToolBar.setLayout(new FlowLayout(FlowLayout.CENTER));
-        
         myFrame.add(myToolBar,  BorderLayout.SOUTH);
     }
 }

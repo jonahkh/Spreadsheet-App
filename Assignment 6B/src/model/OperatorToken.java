@@ -11,7 +11,8 @@
 package model;
 
 /**
- * This class represents an individual Operator Token. 
+ * This class represents an individual Operator Token. Operator tokens are used to represent
+ * operators found in a cell's formula.
  */
 public class OperatorToken extends Token{
 
@@ -35,7 +36,7 @@ public class OperatorToken extends Token{
     }
     
     /**
-     * Return this operator token.
+     * Get this operator token.
      * 
      * @return this operator token
      */

@@ -21,7 +21,7 @@ import java.util.TreeMap;
 
 /**
  * This class represents a single cell in a spreadsheet. It contains data
- * specific to this cell and can depend on the myValue of other cells for
+ * specific to this cell and can depend on the value of other cells for
  * mathematical computations.
  */
 public class Cell {
@@ -47,7 +47,7 @@ public class Cell {
 	/** The current column for this cell. */
 	private final int myColumn;
 
-	/** Maps an indegree to a list of cells that are dependent on this cell. */
+	/** Maps an in-degree to a list of cells that are dependent on this cell. */
 	private final Map<Integer, List<Cell>> dependents;
 	
 	/** The current spreadsheet. */
@@ -81,8 +81,7 @@ public class Cell {
 	/**
 	 * Add the passed token to the list of dependents.
 	 * 
-	 * @param theToken
-	 *            the token that depends on this cell
+	 * @param theToken the token that depends on this cell
 	 */
 	public void addDependent(final Cell theCell) {
 		myDependents.add(theCell);
@@ -105,9 +104,9 @@ public class Cell {
 	}
 
 	/**
-	 * Adds a dependent to the map of indegrees to cells.
+	 * Adds a dependent to the map of in-degrees to cells.
 	 * 
-	 * @param inDegree the indegree of the passed cell
+	 * @param inDegree the in-degree of the passed cell
 	 * @param theCell the cell to be added
 	 */
 	public void addDependent(final int inDegree, final Cell theCell) {
@@ -120,7 +119,7 @@ public class Cell {
 	}
 
 	/**
-	 * Returns the number of dependencies for this cell.
+	 * Gets the number of dependencies for this cell.
 	 * 
 	 * @return the number of dependencies for this cell
 	 */
@@ -143,7 +142,7 @@ public class Cell {
 
 	/**
 	 * Parse and evaluate input for this cell. Notifies any dependents that this cell has been
-	 * changed.
+	 * changed. Checks for circular dependencies.
 	 * 
 	 * @param input The new input for this cell
 	 * @throws CircularDependencyException 
@@ -178,9 +177,9 @@ public class Cell {
 	}
 
 	/**
-	 * Return the myValue for this cell.
+	 * Gets the value for this cell.
 	 * 
-	 * @return the myValue for this cell
+	 * @return the value for this cell
 	 */
 	public int getValue() {
 		return myValue;
@@ -206,7 +205,7 @@ public class Cell {
 	}
 
 	/**
-	 * Returns a stack representing the passed myFormula.
+	 * Gets a stack representing the passed myFormula.
 	 * 
 	 * @param myFormula the current myFormula being considered
 	 * @return A stack representing the passed myFormula
@@ -346,7 +345,7 @@ public class Cell {
 	}
 
 	/**
-	 * Returns the myFormula for this cell.
+	 * Gets the myFormula for this cell.
 	 * 
 	 * @return Returns a string that represents this cell's myFormula.
 	 */

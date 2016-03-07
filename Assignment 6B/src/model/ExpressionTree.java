@@ -16,7 +16,7 @@ import java.util.Stack;
 
 /**
  * This class represents an expression tree for calculating formulas
- * entered into a cell.
+ * entered into a cell. The tree is evaluated in post-order traversal.
  */
 public class ExpressionTree {
     
@@ -32,7 +32,6 @@ public class ExpressionTree {
      * @param theSpreadsheet the current spreadsheet
      */
     public ExpressionTree(final Spreadsheet theSpreadsheet) {
-        
     	mySpreadsheet = theSpreadsheet;
         root = null;
     }
@@ -41,7 +40,6 @@ public class ExpressionTree {
      * Removes all nodes from this tree.
      */
     public void makeEmpty() {
-        
         root = null;
     }
     
@@ -49,10 +47,8 @@ public class ExpressionTree {
      * Prints this tree in post-order traversal.
      */
     public void printTree() {
-        
         if(root == null)
             System.out.println( "Empty tree" );
-        
         else 
             printTree(root);
     }
@@ -63,7 +59,6 @@ public class ExpressionTree {
      * @param t the node that roots the (sub)tree
      */
     public void printTree(final ExpressionTreeNode t) {
-        
         if(t != null) {
             printTree(t.left);
             printTree(t.right);
@@ -76,7 +71,6 @@ public class ExpressionTree {
      * @return the result of the evaluated tree
      */
     public int evaluate() {
-        
     	return evaluate(root);
     }
     
@@ -86,7 +80,6 @@ public class ExpressionTree {
      * @param t the node that roots the (sub)tree
      */
     private int evaluate(final ExpressionTreeNode t) {
-        
         int total = 0;
         int value1 = 0;
         int value2 = 0;
@@ -128,7 +121,6 @@ public class ExpressionTree {
         		total = mySpreadsheet.getCells()[temp.getRow()][temp.getColumn()].getValue();
         	}
         }
-        
         return total;
     }
     
@@ -139,9 +131,7 @@ public class ExpressionTree {
      * @param theDependants the list of dependents for the current cell
      */
     public void BuildExpressionTree (final Stack<Token> s) {
-        
     	root = getExpressionTree(s);
-    	
     	if (!s.isEmpty()) {    	    
     		throw new IllegalArgumentException();
     	}

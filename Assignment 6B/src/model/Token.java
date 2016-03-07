@@ -11,7 +11,7 @@
 package model;
 
 /**
- * This interface represents a Token. It allows for a generic instantiation of a Token.
+ * This Class represents a Token. It allows for a generic instantiation of a Token.
  */
 public abstract class Token {
 
@@ -19,7 +19,7 @@ public abstract class Token {
     private String token = null;
 
     /**
-     * Returns the current token.
+     * Gets the current token.
      * 
      * @return the current token
      */

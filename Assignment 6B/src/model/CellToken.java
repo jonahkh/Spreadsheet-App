@@ -11,7 +11,8 @@
 package model;
 
 /**
- * This class represents a Cell Token.
+ * This class represents a Cell Token. Cell tokens reference a cell and are used to track
+ * dependencies between cells.
  */
 public class CellToken extends Token {
 
@@ -35,7 +36,7 @@ public class CellToken extends Token {
 	}
 	
 	/**
-	 * Returns the column for this cell token.
+	 * Get the column for this cell token.
 	 * 
 	 * @return the column for this cell token
 	 */
@@ -44,7 +45,7 @@ public class CellToken extends Token {
 	}
 
 	/**
-	 * Returns the row for this cell token.
+	 * Get the row for this cell token.
 	 * 
 	 * @return the row for this cell token
 	 */
@@ -53,7 +54,7 @@ public class CellToken extends Token {
 	}
 
 	/**
-	 * Returns a number referencing a location on the spreadsheet.
+	 * Get a number referencing a location on the spreadsheet.
 	 * 
 	 * @param inputString the input being considered
 	 * @param startIndex the starting index for the input

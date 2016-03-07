@@ -51,11 +51,14 @@ public class OptionsMenu implements PropertyChangeListener {
     private final JMenuItem addColumns;
     
     /** 
-     * Constructor to initialize fields. 
-     * 
-     * @param thePanel the CanvasPanel
+     * Initializes a new Options Menu.
+     *
+     * @param theFrame the current frame
+     * @param theSpreadsheet the current spreadsheet
+     * @param theTable the current table displaying all cells
      */
-    public OptionsMenu(final JFrame theFrame, final Spreadsheet theSpreadsheet, final JTable theTable) {
+    public OptionsMenu(final JFrame theFrame, final Spreadsheet theSpreadsheet, 
+    		final JTable theTable) {
         
         myOptionsMenu = new JMenu("Options");
         
@@ -70,7 +73,7 @@ public class OptionsMenu implements PropertyChangeListener {
     }
     
     /**
-     * Method to get myOptionsMenu field.
+     * Get myOptionsMenu field.
      * 
      * @return the Options menu
      */
@@ -176,9 +179,7 @@ public class OptionsMenu implements PropertyChangeListener {
     
     @Override
     public void propertyChange(final PropertyChangeEvent theEvent) {
-        
         if ("TableState".equals(theEvent.getPropertyName())) {
-            
             clearAll.setEnabled((boolean) theEvent.getNewValue());
         }
     }

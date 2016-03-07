@@ -11,12 +11,13 @@
 package model;
 
 /**
- * This class represents an individual Literal Token.
+ * This class represents an individual Literal Token. Literal tokens are used to build a 
+ * cell's formula when a literal value has been found (not a operator or cell reference).
  */
 public class LiteralToken extends Token {
     
     /**
-     * Initialize a new Literal Token for int passed as argument.
+     * Initialize a new Literal Token.
      * 
      * @param literal the value for this Token
      */
@@ -25,7 +26,7 @@ public class LiteralToken extends Token {
     }
     
     /**
-     * Initialize a new Literal Token for string passed as argument.
+     * Initialize a new Literal Token.
      * 
      * @param literal the value for this Token
      */
