@@ -96,6 +96,11 @@ public class OptionsMenu implements PropertyChangeListener {
             public void actionPerformed(final ActionEvent theEvent) {
                 
                 mySpreadsheet.initializeCells();
+                for (int row = 0; row < mySpreadsheet.getRows(); row++) {
+                	for (int col = 1; col <= mySpreadsheet.getColumns(); col++) {
+                		mySpreadsheet.getSpreadsheet()[row][col] = "";
+                	}
+                }
                 myFrame.repaint();
             }
         });
