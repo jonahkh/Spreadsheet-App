@@ -94,10 +94,7 @@ public class WindowMenu {
     }
     
     /**
-     * Adds menu items to WindowMenu and
-     * sets a Mnemonic and short description.
-     * 
-     * @param thePanel the CanvasPanel
+     * Adds menu items to WindowMenu and a short description.
      */
     private void setupWindowActions() {
         

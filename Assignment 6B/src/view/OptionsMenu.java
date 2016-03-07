@@ -21,6 +21,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 /**
@@ -36,9 +37,6 @@ public class OptionsMenu implements PropertyChangeListener {
        
     /** The Spreadsheet. */
     private final Spreadsheet mySpreadsheet;
-    
-    /** The table that holds the cells for the spreadsheet. */
-    private final JTable myTable;
     
     /** MenuItem to clear the entire spreadsheet. */
     private final JMenuItem clearAll;
@@ -63,8 +61,6 @@ public class OptionsMenu implements PropertyChangeListener {
         
         myFrame = theFrame;
         mySpreadsheet = theSpreadsheet;
-        myTable = theTable;
-        
         clearAll = new JMenuItem("Clear All");
         resize = new JMenuItem("Resize");
         addRows = new JMenuItem("Add Row(s)");
@@ -94,14 +90,20 @@ public class OptionsMenu implements PropertyChangeListener {
             
             @Override
             public void actionPerformed(final ActionEvent theEvent) {
-                
-                mySpreadsheet.initializeCells();
-                for (int row = 0; row < mySpreadsheet.getRows(); row++) {
-                	for (int col = 1; col <= mySpreadsheet.getColumns(); col++) {
-                		mySpreadsheet.getSpreadsheet()[row][col] = "";
-                	}
+            	// Prompts the user for confirmation that they want to clear spreadsheet.
+                int input = JOptionPane.showConfirmDialog(myFrame, 
+                		"Are you sure you want to clear the spreadsheet?", 
+                		"Clear All Cells", JOptionPane.YES_NO_OPTION);
+                // Proceeds to clear spreadsheet upon confirmation.
+                if (input == JOptionPane.YES_OPTION) {
+                    mySpreadsheet.initializeCells();
+                    for (int row = 0; row < mySpreadsheet.getRows(); row++) {
+                    	for (int col = 1; col <= mySpreadsheet.getColumns(); col++) {
+                    		mySpreadsheet.getSpreadsheet()[row][col] = "";
+                    	}
+                    }
+                    myFrame.repaint();
                 }
-                myFrame.repaint();
             }
         });
     }
