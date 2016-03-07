@@ -167,7 +167,6 @@ public class Operators {
                 (ch == Operators.MULT) ||
                 (ch == Operators.DIV) ||
                 (ch == Operators.LT_PAREN) ||
-                //(ch == Operators.RT_PAREN) ||
                 (ch == Operators.POW));
     }
 }

@@ -107,10 +107,8 @@ public class Cell {
 	/**
 	 * Adds a dependent to the map of indegrees to cells.
 	 * 
-	 * @param inDegree
-	 *            the indegree of the passed cell
-	 * @param theCell
-	 *            the cell to be added
+	 * @param inDegree the indegree of the passed cell
+	 * @param theCell the cell to be added
 	 */
 	public void addDependent(final int inDegree, final Cell theCell) {
 		if (dependents.containsKey(inDegree)) {

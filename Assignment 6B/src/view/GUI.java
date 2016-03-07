@@ -16,6 +16,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.Box;
@@ -180,12 +182,7 @@ public class GUI {
      */
     public void run() {
         
-        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		// Adds a scroll bar to the table
-        myFrame.add(new JScrollPane(mySpreadsheet.getTable(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
-
+        setupJFrame();
         addMenuBar();
         addToolBar();
         
@@ -193,6 +190,28 @@ public class GUI {
         myFrame.setLocationRelativeTo(null);
 	}
 	
+    /**
+     * Sets up the JFrame configuration.
+     */
+	private void setupJFrame() {
+		// Override default close behavior.
+		myFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		myFrame.addWindowListener(new WindowAdapter(){
+			@Override
+			public void windowClosing(WindowEvent we) { 
+                int input = JOptionPane.showConfirmDialog(myFrame, 
+                		"Are you sure you want to quit?", 
+                		"Quit?", JOptionPane.YES_NO_OPTION);
+                // Proceeds to quit the program upon confirmation.
+                if (input == JOptionPane.YES_OPTION) {
+                	System.exit(0);
+                }
+			}  
+		});
+        myFrame.add(new JScrollPane(mySpreadsheet.getTable(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
+	}
+
 	/**
 	 * Adds the menu bar to this frame.
 	 */
