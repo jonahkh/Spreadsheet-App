@@ -145,8 +145,9 @@ public class Cell {
 	 * @param input The new input for this cell
 	 * @throws CircularDependencyException 
 	 */
-	public void parseInput(final String input) throws CircularDependencyException {
+	public void parseInput(String input) throws CircularDependencyException {
 		if (!"".equals(input)) {
+			input = input.toUpperCase();
 		    final Stack<Token> formula = getFormula(input);
 		    checkForCircularDependency(this);
 		    if (hasCircDepend)
