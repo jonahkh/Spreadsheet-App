@@ -65,7 +65,7 @@ public class HelpMenu {
             @Override
             public void actionPerformed(final ActionEvent theEvent) {
                 
-            	JOptionPane.showMessageDialog(null, buildstring());
+            	JOptionPane.showMessageDialog(null, buildstring().toString(), "Help", JOptionPane.INFORMATION_MESSAGE);
             	
                 
             }
@@ -101,7 +101,9 @@ public class HelpMenu {
             @Override
             public void actionPerformed(final ActionEvent theEvent) {
                 
-                JOptionPane.showMessageDialog(null, "TCSS 342 Spreadsheet, Spring 2016");
+                JOptionPane.showMessageDialog(null, "TCSS 342 Spreadsheet, Spring 2016\n"
+                		+ "By John Bui, Jonah Howard, Henry Lai, And Lisa Taylor.", 
+                		"About", JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }

@@ -17,7 +17,10 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+
+import model.Spreadsheet;
 
 /**
  * A File drop-down menu. Contains the open, save, and exit features.
@@ -30,11 +33,11 @@ public class FileMenu {
     /** JFrame containing spreadsheet application. */
     private final JFrame myFrame;
     
-    /** MenuItem to open a file in the spreadsheet. */
-    private final JMenuItem openFile;
+    /** The Spreadsheet being used by the program. */
+    private Spreadsheet mySpreadsheet;
     
-    /** MenuItem to save spreadsheet to a file. */
-    private final JMenuItem saveFile;
+    /** MenuItem to clear the entire spreadsheet. */
+    private final JMenuItem clearAll;
     
     /** MenuItem to exit Spreadsheet Application. */
     private final JMenuItem exitApp;
@@ -44,14 +47,13 @@ public class FileMenu {
      *
      * @param theFrame the current JFrame
      */
-    public FileMenu(final JFrame theFrame) {
+    public FileMenu(final JFrame theFrame, final Spreadsheet theSpreadsheet) {
         
         myFileMenu = new JMenu("File");
-        
         myFrame = theFrame;
+        mySpreadsheet = theSpreadsheet;
         
-        openFile = new JMenuItem("Open...");
-        saveFile = new JMenuItem("Save...");
+        clearAll = new JMenuItem("Clear All");
         exitApp = new JMenuItem("Exit");
         
         setupFileMenu();
@@ -67,41 +69,7 @@ public class FileMenu {
         return myFileMenu;
     }
     
-    /**
-     * Adds ActionListener to openFile menu item.
-     */
-    private void buildOpenFile() {
-        
-        openFile.setEnabled(true);
-        openFile.setMnemonic(KeyEvent.VK_O);
-        openFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
-        openFile.addActionListener(new ActionListener() {
-            
-            @Override
-            public void actionPerformed(final ActionEvent theEvent) {
-                
-                //Code here
-            }
-        });
-    }
-    
-    /**
-     * Adds ActionListener to saveFile menu item.
-     */
-    private void buildSaveFile() {
-        
-        saveFile.setEnabled(true);
-        saveFile.setMnemonic(KeyEvent.VK_S);
-        saveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
-        saveFile.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent theEvent) {
-                
-                //Code here
-            }
-        });
-    }
+   
     
     /**
      * Adds ActionListener to exitApp menu item.
@@ -124,14 +92,41 @@ public class FileMenu {
      * Adds menu items to FileMenu and sets a Mnemonic.
      */
     private void setupFileMenu() {
-        
-        buildOpenFile();
-        buildSaveFile();
+
+        buildClearAll();
         buildExitApp();
         
-        myFileMenu.add(openFile);
-        myFileMenu.add(saveFile);
+        myFileMenu.add(clearAll);
         myFileMenu.addSeparator();
         myFileMenu.add(exitApp);
+    }
+    
+    /**
+     * Adds ActionListener to clearAll menu item.
+     */
+    private void buildClearAll() {
+        
+        clearAll.setEnabled(true);
+        clearAll.setMnemonic(KeyEvent.VK_C);
+        clearAll.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(final ActionEvent theEvent) {
+            	// Prompts the user for confirmation that they want to clear spreadsheet.
+                int input = JOptionPane.showConfirmDialog(myFrame, 
+                		"Are you sure you want to clear the spreadsheet?", 
+                		"Clear All Cells", JOptionPane.YES_NO_OPTION);
+                // Proceeds to clear spreadsheet upon confirmation.
+                if (input == JOptionPane.YES_OPTION) {
+                    mySpreadsheet.initializeCells();
+                    for (int row = 0; row < mySpreadsheet.getRows(); row++) {
+                    	for (int col = 1; col <= mySpreadsheet.getColumns(); col++) {
+                    		mySpreadsheet.getSpreadsheet()[row][col] = "";
+                    	}
+                    }
+                    myFrame.repaint();
+                }
+            }
+        });
     }
 }

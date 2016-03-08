@@ -43,6 +43,9 @@ public class GUI {
 	/** The minimum number of rows and columns allowed. */
 	private static final int MIN_DIMENSION = 5;
 
+	/** The default dimension size. (DEFAULT by 2 x DEFAULT.) */ 
+	private static final int DEFAULT_DIMENSION = 15;
+	
 	/** Horizontal offset for initial frame resizing. */
 	private static final int HORIZONTAL_OFFSET = 49;
 	
@@ -166,10 +169,11 @@ public class GUI {
 		} catch (NumberFormatException e) {	
 		    // If invalid input is entered
 			// Both dimensions set to minimum size
-			rows = cols = MIN_DIMENSION;
+			rows = DEFAULT_DIMENSION * 2;
+			cols = DEFAULT_DIMENSION;
 			JOptionPane.showMessageDialog(myFrame.getContentPane(), 
 					"Invalid dimensions entered! " + 
-					"Using default " + MIN_DIMENSION + "x" + MIN_DIMENSION + " table.", 
+					"Using default " + 2 * DEFAULT_DIMENSION + "x" + DEFAULT_DIMENSION + " table.", 
 					"Error! Invalid Dimensions!",
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -218,8 +222,7 @@ public class GUI {
 	 */
 	private void addMenuBar() {
 	    
-		myMenuBar.add(new FileMenu(myFrame).getFileMenu());
-		myMenuBar.add(new OptionsMenu(myFrame, mySpreadsheet).getOptionsMenu());
+		myMenuBar.add(new FileMenu(myFrame, mySpreadsheet).getFileMenu());
 		myMenuBar.add(myWindowViews.getWindowMenu());
 		myMenuBar.add(new HelpMenu().getHelpMenu());
 		
@@ -240,9 +243,9 @@ public class GUI {
             group.add(button);
             myToolBar.add(button);
             if ("Display Values".equals(button.getText())) {
-                button.getAction().putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control V"));
+                button.getAction().putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control shift V"));
             } else {
-                button.getAction().putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control F"));
+                button.getAction().putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control shift F"));
             }
         }        
         myToolBar.setFloatable(false);
