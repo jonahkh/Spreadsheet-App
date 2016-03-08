@@ -224,14 +224,14 @@ public class Spreadsheet extends DefaultTableModel implements TableModelListener
 			myTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
 		
-		// Special case for first column, set the background color to match the column headers
-		// in addition to centering each cell. 
+		// Get first column
 		TableColumn rowNums = myTable.getColumnModel().getColumn(0);
 		rowNums.setCellRenderer(new DefaultTableCellRenderer() {
 			
 			/** A generated serial version UID. */
 			private static final long serialVersionUID = 3565976393614019090L;
-			// Comment
+			// Special case for first column, set the background color to match the column headers
+			// in addition to centering each cell. 
 			@Override
 			public Component getTableCellRendererComponent(final JTable table, 
 					final Object value, final boolean isSelected, final boolean hasFocus, 
