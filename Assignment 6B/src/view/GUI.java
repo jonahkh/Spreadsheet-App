@@ -80,8 +80,8 @@ public class GUI {
 	public GUI() {
 
         myFrame = new JFrame("TCSS 342 Spreadsheet - Group 8");		
-	    final Dimension dimension = initialize();
-	    mySpreadsheet = new Spreadsheet((int) dimension.getWidth(), (int) dimension.getHeight(), myFrame);
+	    initialize();
+	    mySpreadsheet = new Spreadsheet(cols, rows, myFrame);
 		myMenuBar = new JMenuBar();
         myToolBar = new JToolBar();
         myWindowViews = new WindowMenu(myFrame, mySpreadsheet);
@@ -124,10 +124,9 @@ public class GUI {
 	 * 
 	 * @return the size of the spread sheet
 	 */
-	private Dimension initialize() {
+	private void initialize() {
 
 	    // Format the text fields
-		final Dimension dim = new Dimension();
 		JTextField rowSize = new JTextField(5);
 		JTextField columnSize = new JTextField(5);
 		
@@ -174,9 +173,6 @@ public class GUI {
 					"Error! Invalid Dimensions!",
 					JOptionPane.ERROR_MESSAGE);
 		}
-		
-		dim.setSize(cols, rows);
-		return dim;
     }
 
     /**
@@ -223,7 +219,7 @@ public class GUI {
 	private void addMenuBar() {
 	    
 		myMenuBar.add(new FileMenu(myFrame).getFileMenu());
-		myMenuBar.add(new OptionsMenu(myFrame, mySpreadsheet, mySpreadsheet.getTable()).getOptionsMenu());
+		myMenuBar.add(new OptionsMenu(myFrame, mySpreadsheet).getOptionsMenu());
 		myMenuBar.add(myWindowViews.getWindowMenu());
 		myMenuBar.add(new HelpMenu().getHelpMenu());
 		

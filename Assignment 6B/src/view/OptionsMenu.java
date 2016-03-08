@@ -10,6 +10,7 @@
 
 package view;
 
+import model.Cell;
 import model.Spreadsheet;
 
 import java.awt.event.ActionEvent;
@@ -36,7 +37,7 @@ public class OptionsMenu implements PropertyChangeListener {
     private final JFrame myFrame;
        
     /** The Spreadsheet. */
-    private final Spreadsheet mySpreadsheet;
+    private Spreadsheet mySpreadsheet;
     
     /** MenuItem to clear the entire spreadsheet. */
     private final JMenuItem clearAll;
@@ -57,8 +58,7 @@ public class OptionsMenu implements PropertyChangeListener {
      * @param theSpreadsheet the current spreadsheet
      * @param theTable the current table displaying all cells
      */
-    public OptionsMenu(final JFrame theFrame, final Spreadsheet theSpreadsheet, 
-    		final JTable theTable) {
+    public OptionsMenu(final JFrame theFrame, final Spreadsheet theSpreadsheet) {
         
         myOptionsMenu = new JMenu("Options");
         
@@ -123,7 +123,7 @@ public class OptionsMenu implements PropertyChangeListener {
             @Override
             public void actionPerformed(final ActionEvent theEvent) {
                 
-                //Code here
+                // code here
             }
         });
     }
@@ -140,7 +140,24 @@ public class OptionsMenu implements PropertyChangeListener {
             @Override
             public void actionPerformed(final ActionEvent theEvent) {
                 
-                //Code here
+                String input = JOptionPane.showInputDialog("Enter the number of rows to add.");
+                
+                while(!input.matches("[0-9]+")) {
+                    
+                    input = JOptionPane.showInputDialog("Please enter integer values only.");
+                }
+                
+                int numRows = mySpreadsheet.getRows();
+                int numCols = mySpreadsheet.getColumns();
+                Cell[][] prevCells = mySpreadsheet.getCells();
+                mySpreadsheet = new Spreadsheet(numRows + Integer.parseInt(input), numCols, myFrame);
+                Cell[][] cells = mySpreadsheet.getCells();
+                for (int r = 0; r < numRows; r++) {
+                    for (int c = 0; c < numCols + 1; c++) {
+                        cells[r][c] = prevCells[r][c];
+                    }
+                }
+                myFrame.repaint();
             }
         });
     }
@@ -157,7 +174,12 @@ public class OptionsMenu implements PropertyChangeListener {
             @Override
             public void actionPerformed(final ActionEvent theEvent) {
                 
-                //Code here
+                String input = JOptionPane.showInputDialog("Enter the number of rows to add.");
+                
+                while(!input.matches("[0-9]+")) {
+                    
+                    input = JOptionPane.showInputDialog("Please enter integer values only.");
+                }
             }
         });
     }
