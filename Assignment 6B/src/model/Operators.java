@@ -38,13 +38,6 @@ public class Operators {
     /** Represents a power operator. */
     public static final char POW = '^';
     
-    /** Array to hold valid operators. */
-    public static final char[] ops = {PLUS, MINUS, MULT, DIV, LT_PAREN, POW};
-    
-    static {
-        
-    }
-    
     /**
      * Evaluates the two passed values based on the current operator.
      * 
